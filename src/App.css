@@ -1,0 +1,90 @@
+
+body {
+  margin: 50px 0 50px;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(240, 244, 255);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  
+  
+  
+}
+
+h1{
+  color: #1c5386;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align:center;
+}
+
+h3{
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align:center;
+}
+
+.LoginPage{
+  background:rgb(98, 109, 170);
+  overflow: auto;
+  max-width: 100%;
+  width:800px;
+
+  
+  
+}
+
+.Registration form{
+  
+  display:flex;
+  flex-direction:column;
+  padding:0 150px;
+  align-items:center;
+  background:rgb(98, 109, 170);
+  margin:0 auto;
+  
+
+}
+
+.Registration input{
+  
+  align-items:center;
+  background:rgb(166, 198, 202);
+  min-height: 20px;
+  margin-bottom: 10px;
+  margin-top:10px;
+  margin-right:10px;
+  width:100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right:10px;
+  font-size: 20px;
+  
+  
+
+}
+
+.Registration label{
+  color: #83a6c5;
+}
+
+#submit-but{
+  margin-top: 30px;
+  margin-bottom:30px;
+  width: 50%;
+  padding-top:10px;
+  padding-bottom:10px;
+  color:rgb(241, 243, 240);
+  background-color: rgb(140, 206, 218);
+  
+}
+
+#sign_in{
+margin-top: 30px;
+margin-bottom:50px;
+width: 50%;
+padding-top:10px;
+padding-bottom:10px;
+color:rgb(241, 243, 240);
+background-color: rgb(140, 206, 218);
+
+}
