@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Profile.css";
-import {navItems} from "./navItems";
+
 import picture from './shirt2.jpg';
 import picture2 from './hp.jpg';
 import picture3 from './lor.jpg';
@@ -8,6 +8,8 @@ import picture4 from './hunger.jpg';
 import picture5 from './spider.jpg';
 import picture6 from './gravity.jpg';
 import picture7 from './interstellar.jpeg';
+import {Navbar, Nav, NavDropdown, Form, FormControl, Button, Switch} from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Profile = () => {
 
@@ -15,42 +17,57 @@ const Profile = () => {
         <section className ="main-sec">
             <section className="top">
                 <div className ="main">
-                    
-                    <div className="intro">
-                        <nav className="navi-wrapper">
-                            
-                            <ul>
-                                {navItems.map((item,index)=>{
-                                    return(
-                                        <li key ={index}>
-                                            <a className ={item.nclass}href={item.url}>
-                                             {item.title}   
-                                            </a>
-                                        </li>
-                                    )
-                                })}
+                        <Navbar bg ="light" expand ="lg">
+                            <Navbar.Brand>Navigation bar</Navbar.Brand>
+                            <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+                            <Navbar.Collapse id="basic-navbar-nav">
+                                <Nav className="Drop">
+                                    <NavDropdown title ="Users you follow" id ="basic-nav-dropdown">
+                                        <NavDropdown.Item href ="#">Nazeeha</NavDropdown.Item>
+                                        <NavDropdown.Item href ="#">David</NavDropdown.Item>
+                                    </NavDropdown>                          
+                                </Nav>
+                                <Nav className="Drop2">
+                                    <NavDropdown title ="Celebrities you follow" id ="basic-nav-dropdown">
+                                        <NavDropdown.Item href ="#">Tom Holland</NavDropdown.Item>
+                                        <NavDropdown.Item href ="#">J.K. Rowling</NavDropdown.Item>
+                                    </NavDropdown>    
+                                </Nav>
                                 
-                                
-                            </ul>
+                                <Nav className="Drop3">
+                                    <NavDropdown title ="Notifications" id ="basic-nav-dropdown">
+                                        <NavDropdown.Item href ="#">Nazeeha made a new review</NavDropdown.Item>
+                                        <NavDropdown.Item href ="#">A new movie has been added</NavDropdown.Item>
+                                    </NavDropdown>    
+                                </Nav>
+                                <Nav className="Drop4">
+                                    <NavDropdown title ="Settings" id ="basic-nav-dropdown">
+                                        <NavDropdown.Item href ="#">Change username/email</NavDropdown.Item>
+                                        <NavDropdown.Item href ="#">Change Password</NavDropdown.Item>
+                                    </NavDropdown>    
+                                </Nav>
+                                <Form inline>
+                                    <FormControl type ="text" placeholder ="Browse latest movies" className ="searchMovies"/>
+                                    <Button variant ="outline-success">Browse</Button>
+                                </Form>
+                                <Form>
+                                <Form.Check label ="Switch to contributing user" id ="switch" type ="switch"  />
+                                </Form>
                             
-                           
-                    
-                        </nav>
+                            </Navbar.Collapse>
+                            
 
+                        </Navbar>
+
+                    <div className ="toggle">
+                            
                     </div>
+                    
                     <div className ="welcome">
                         <h1>Welcome to your world of movies</h1>
                     </div>
 
-                    <div className ="left-column">
-                        
-                    </div>
-
-                    <div className ="right-column">
-                        <div id ="preview">
-                        </div>
-                        
-                    </div>
+                
                 </div>
             </section>
             

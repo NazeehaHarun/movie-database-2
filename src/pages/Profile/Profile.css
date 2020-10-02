@@ -5,128 +5,27 @@
 .top{
     background-color: var(--mainColor);
     border-bottom: 1px solid black;
-    overflow: auto;
+    
 }
 
 
 .main{
-    width: 1200px;
-    margin: 0 auto;
+    width: 100%;
+    margin: 0 ;
+    
 }
 
 .welcome{
-    display: grid;
+    display:block;
     text-align: center;
     align-content: center;
     min-height: 10em;
+    padding-top:50px;
+    padding-left: 180px;
 }
 
-.intro{
-    background-color:rgb(240, 204, 172);
-    border: 1px solid white;
-    border-radius: 5px 5px 0 0;
-    grid-template-columns: 100fr 100fr;
-    grid-template-areas:
-        "navi-wrapper nav-wrapper"
-        "left-column right-column"
 
-}
 
-.navi-wrapper{
-    /*
-    border-radius : 5px 5px 0 0;
-    grid-area: navigation;
-    border-bottom: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color:rgb(194, 191, 191);
-    */
-
-    display: grid;
-    grid-template-columns: repeat(5,auto);
-    grid-gap:10px;
-    list-style: none;
-    text-align: center;
-    width: 70vw;
-    justify-content: end;
-    margin-right: 2rem;
-}
-
-#nav{
-    max-resolutiom:0;
-    padding:10px;
-}
-
-#nav a{
-    color:black;
-}
-
-.dots{
-    display:flex;
-    padding:10px;
-}
-/*
-#profile{
-    display: block;
-    margin: 0 auto;
-    height: 200px;
-    width: 200px;
-    object-fit: cover;
-    border: 2px solid white;
-    align-items: left;
-}
-
-.left-column{
-    grid-area: left-column;
-    align-content: left;
-    padding-top: 50px;
-    padding-bottom: 50px;
-}
-
-#profile{
-    display: flex;
-    margin: 0 auto;
-    height: 500px;
-    width: 200px;
-    object-fit: cover;
-    border: 2px solid white;
-    align-items: left;
-}
-
-.right-column{
-    grid-area: right-column;
-    display: grid;
-    align-content: center;
-    padding-top: 50px;
-    padding-bottom:50px;
-}
- 
-#preview-shadow{
-    background-color: powderblue;
-    width: 300px;
-    height: 180px;
-    padding-left: 30px;
-    padding-top: 30px;
-
-}
-
-*/
-
-.left-column{
-    grid-area: left-column;
-    align-content: center;
-    padding-top: 50px;
-    padding-bottom: 50px;
-}
-
-.right-column{
-    grid-area: right-column;
-    display: grid;
-    align-content: center;
-    padding-top: 50px;
-    padding-bottom:50px;
-}
 
 .main2{
     width: 1600px;
@@ -211,3 +110,7 @@
     margin: 0 auto;
     
 }
+
+
+
+
