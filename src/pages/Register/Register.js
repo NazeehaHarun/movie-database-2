@@ -82,13 +82,13 @@ class Register extends React.Component{
 
   render(){
   return(
-    <body>
+    <body className = "body">
     <div className = "LoginPage" id="LoginPage">
  
       <div className="Registration return">
         <form id ="oldUserInfo" onSubmit ={this.handleSubmit}>
-          <h1>Welcome Back</h1>
-          <h3>Sign back in to start where you left!</h3>
+          <h1 className = "h1">Welcome Back</h1>
+          <h3 className = "h3">Sign back in to start where you left!</h3>
           
             <label className ="label2" htmlFor="returningUser">Username</label>
             <input type ="text" id ="returningUser" className ="input2" placeholder="Enter your username"name ="returningUser"value ={this.state.returningusername}onChange={this.handlereturningusernameChange}/>
