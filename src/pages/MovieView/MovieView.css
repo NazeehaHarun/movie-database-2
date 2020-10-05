@@ -1,5 +1,6 @@
 .body {
     background-color: rgb(240, 244, 255);
+    margin-top: 10px;
 }
 
 .h3{
@@ -8,6 +9,19 @@
     text-align:center;
   }
 
-.carousel {
+.producerTable {
 
+  padding: 10px;
+  margin-top: 15px;
+
+}
+
+.moviePoster {
+  display: grid;
+  width: 400;
+  height: 400;
+}
+
+.carousel {
+  text-align: center;
 }
