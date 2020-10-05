@@ -1,0 +1,131 @@
+.top{
+    background-color: rgb(150, 209, 236);
+    border-bottom: none;
+    
+}
+
+h1{
+    text-align: left;
+    padding-right: 100px;
+    padding-top:50px;
+}
+
+h3{
+    color: rgb(152, 143, 229);
+}
+.main{
+    width: 100%;
+    margin: 0 ;
+    
+}
+
+.welcome{
+    display:block;
+    text-align: center;
+    align-content: center;
+    min-height: 10em;
+    padding-top:50px;
+    padding-left: 180px;
+}
+
+
+
+
+.mid2{
+    width: 100%;
+    margin: 0 auto;
+}
+
+.middle2{
+   
+    background-color: rgb(178, 169, 236);
+    border-bottom: 1px solid none;
+    overflow: auto;
+    
+}
+
+
+.movies{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 500px);
+    grid-area: 5px;
+    justify-content:center;
+    padding-bottom: 30px;
+    padding-top:30px
+}
+
+.post{
+    border: none;
+    
+}
+
+#p1{
+    height:500px;
+    width:400px;
+    display: block;
+    margin: 0 auto;
+    
+}
+
+#p2{
+    height:500px;
+    width:400px;
+    display: block;
+    margin: 0 auto;
+    
+}
+
+#p3{
+    height:500px;
+    width:400px;
+    display: block;
+    margin: 0 auto;
+    
+}
+
+.bottom2{
+   
+    background-color: rgb(139, 133, 173);
+    border-bottom: 1px solid none;
+    overflow: auto;
+    
+}
+
+#p4{
+    height:500px;
+    width:400px;
+    display: block;
+    margin: 0 auto;
+    
+}
+
+#p5{
+    height:500px;
+    width:400px;
+    display: block;
+    margin: 0 auto;
+    
+}
+
+#p6{
+    height:500px;
+    width:400px;
+    display: block;
+    margin: 0 auto;
+    
+}
+
+.newPeople{
+    padding-top:10px;
+    padding-left: 20px;
+    
+}
+.addMovie{
+    padding-top:10px;
+    padding-left: 20px;
+    
+}
+
+
+
+
