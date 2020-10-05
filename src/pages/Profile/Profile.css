@@ -1,14 +1,18 @@
-:root{
-    --mainColor:rgb(150, 209, 236);
-}
-
 .top{
-    background-color: var(--mainColor);
-    border-bottom: 1px solid black;
+    background-color: rgb(150, 209, 236);
+    border-bottom: none;
     
 }
 
+h1{
+    text-align: left;
+    padding-right: 100px;
+    padding-top:50px;
+}
 
+h3{
+    color: rgb(152, 143, 229);
+}
 .main{
     width: 100%;
     margin: 0 ;
@@ -27,12 +31,12 @@
 
 
 
-.main2{
-    width: 1600px;
+.mid2{
+    width: 100%;
     margin: 0 auto;
 }
 
-.middle{
+.middle2{
    
     background-color: rgb(178, 169, 236);
     border-bottom: 1px solid none;
@@ -79,7 +83,7 @@
     
 }
 
-.bottom{
+.bottom2{
    
     background-color: rgb(139, 133, 173);
     border-bottom: 1px solid none;
@@ -108,6 +112,17 @@
     width:400px;
     display: block;
     margin: 0 auto;
+    
+}
+
+.newPeople{
+    padding-top:10px;
+    padding-left: 20px;
+    
+}
+.addMovie{
+    padding-top:10px;
+    padding-left: 20px;
     
 }
 
