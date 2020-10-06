@@ -132,6 +132,15 @@ const MovieView = () => {
         </Form.Group>
       </Form>
 
+      <Card className = "reviewForm">
+        <Card.Title as = "h5">
+            Fantastic Movie [10/10]
+        </Card.Title>
+        <Card.Text>
+        Makoto Shinkai has truly created another masterpiece. 
+        </Card.Text>
+      </Card>
+
     </div>
   );
 };

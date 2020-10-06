@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import "./Actor.css";
 import picture11 from './tom.jpg';
 import picture12 from './home.jpg';
@@ -8,9 +8,13 @@ import picture15 from './infinity.jpg';
 import picture16 from './war.jpg';
 import picture17 from './sea.jpg';
 import {Button} from 'react-bootstrap'
+import FollowButton from '../../components/FollowButton/FollowButton';
 
+const Actor = () => {
 
-const   Actor = () => {
+    const [data, setData] = useState({
+        name: "Tom Holland"
+    })
 
     return (
         <div className ="main-sec1">
@@ -51,13 +55,8 @@ const   Actor = () => {
                                 </ul>
 
                             </div>
-                            <div className="But1">
-                                <Button variant ="primary" size="lg" >
-                                Follow
-                                </Button>
-                            </div>
-                        
-                        
+                            <FollowButton size = "lg" name = {data.name}/>
+                
                             </div>
         
                         </div>

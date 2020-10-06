@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import "./Director.css";
 import pictureaa from './joe.jpg';
 import pictureab from './captain.jpg';
@@ -6,10 +6,14 @@ import pictureac from './civil.jpg';
 import picturead from './infinity.jpg';
 import pictureae from './endgame.png';
 import {Button} from 'react-bootstrap'
-
+import FollowButton from '../../components/FollowButton/FollowButton';
 
 
 const Director = () => {
+
+    const [data, setData] = useState({
+        name: "Joe Russo"
+    })
 
     return (
         <div className ="main-sec2">
@@ -49,11 +53,8 @@ const Director = () => {
                                 </ul>
 
                             </div>
-                            <div className="But2">
-                                <Button variant ="primary" size="lg" >
-                                Follow
-                                </Button>
-                            </div>
+
+                            <FollowButton size = "lg" name = {data.name}/>
                         
                         
                         </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import "./Writer.css";
 import picturea from './stephen.jpg';
 import pictureb from './captain.jpg';
@@ -10,10 +10,14 @@ import pictureg from './narnia1.jpg';
 import pictureh from './narnia2.jpg';
 import picturei from './narnia3.jpg';
 import {Button} from 'react-bootstrap';
-
+import FollowButton from '../../components/FollowButton/FollowButton';
 
 
 const Writer = () => {
+
+    const [data, setData] = useState({
+        name: "Stephen McFeely"
+    })
 
     return (
         <div className ="main-sec3">
@@ -51,12 +55,7 @@ const Writer = () => {
                                 </ul>
 
                             </div>
-                            <div className="But3">
-                                <Button variant ="primary" size="lg" >
-                                Follow
-                                </Button>
-                            </div>
-                        
+                            <FollowButton size = "lg" name = {data.name}/>
                         
                         </div>
                         

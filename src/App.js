@@ -14,7 +14,7 @@ import Director from "./pages/Director/Director";
 import Writer from "./pages/Writer/Writer";
 import AddMovie from "./pages/AddMovie/AddMovie";
 
-import UserProfile from "./pages/UserProfile/UserProfile"
+import OtherUser from "./pages/OtherUser/OtherUser"
 
 import Header from "./components/Header/Header";
 
@@ -38,7 +38,7 @@ class App extends React.Component {
         <Route exact path="/viewWriterPage" component={Writer} exact/>
         <Route exact path="/viewAddMovieForm" component={AddMovie} exact/>
 
-        <Route exact path="/viewOtherProfiles" component={UserProfile} exact/>
+        <Route exact path="/viewOtherProfiles" component={OtherUser} exact/>
 
         </Switch>
       </Router>
