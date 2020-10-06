@@ -12,7 +12,6 @@ const UserProfile = () => {
 
   return (
     <div>
-      <Header />
 
       <Jumbotron>
         <Container>

@@ -12,28 +12,36 @@ const Header = () => {
                             <Navbar.Brand>Navigation bar</Navbar.Brand>
                             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                             <Navbar.Collapse id="basic-navbar-nav">
+                            
                                 <Nav className="Drop">
-                                    <Nav.Link>View Movies</Nav.Link>                        
+                                    <Nav.Link href = "/viewmovies">View Movies</Nav.Link>                        
                                 </Nav>
 
                                 <Nav className="Drop">
-                                    <Nav.Link>View Directors</Nav.Link>                        
+                                    <Nav.Link href = "/viewDirectorPage">View Directors</Nav.Link>                        
                                 </Nav>
                                 
                                 <Nav className="Drop">
-                                    <Nav.Link>View Writers</Nav.Link>                        
+                                    <Nav.Link href = "/viewWriterPage">View Writers</Nav.Link>                        
                                 </Nav>
 
                                 <Nav className="Drop">
-                                    <Nav.Link>View Actors</Nav.Link>                        
+                                    <Nav.Link href = "/viewActorPage">View Actors</Nav.Link>                        
                                 </Nav>
 
                                 <Nav className="Drop">
-                                    <Nav.Link>View Other Profiles</Nav.Link>                        
+                                    <Nav.Link href = "/viewAddMovieForm">Add Movie</Nav.Link>                        
                                 </Nav>
 
                                 <Nav className="Drop">
-                                    <Nav.Link>Login/Register</Nav.Link>                        
+                                    <Nav.Link href = "/viewUserProfile">View Profile</Nav.Link>                        
+                                </Nav>
+                                <Nav className="Drop">
+                                    <Nav.Link href = "/viewOtherProfiles">View Other Profiles</Nav.Link>                        
+                                </Nav>
+
+                                <Nav className="Drop">
+                                    <Nav.Link href = "registration">Login/Register</Nav.Link>                        
                                 </Nav>
 
                                 <Form inline>

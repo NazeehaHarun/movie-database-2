@@ -22,24 +22,24 @@ const Director = () => {
                             <img id ="paa" src ={pictureaa} alt="Joe Russo" />;
                             
                             <div className="info2">
-                                <p>Name: Joseph Russo</p>
-                                <p>Born: July 18, 1971, Cleveland, Ohio, United States</p>
-                                <p>Nominations: Hugo Award for Best Dramatic Presentation</p>
-                                <p>Siblings: Anthony Russo</p>
-                                <p>Parents: Basil Russo, Patricia Russo</p>
+                                <p className = "p">Name: Joseph Russo</p>
+                                <p className = "p">Born: July 18, 1971, Cleveland, Ohio, United States</p>
+                                <p className = "p">Nominations: Hugo Award for Best Dramatic Presentation</p>
+                                <p className = "p">Siblings: Anthony Russo</p>
+                                <p className = "p">Parents: Basil Russo, Patricia Russo</p>
                             </div>
                         </div>
 
                         <div className ="right2">
-                            <h1>Joe Russo</h1>
+                            <h1 className = "h1">Joe Russo</h1>
                             <div id="about2">
                             
-                                <p>Joseph Russo, 49, is an American director and producer
+                                <p className = "p">Joseph Russo, 49, is an American director and producer
                                     best known for directing the four films in the Marvel Cinematic Universe.
                                 </p>
 
-                                <h4>Frequent collaborators</h4>
-                                <ul>
+                                <h4 className = "h4">Frequent collaborators</h4>
+                                <ul className = "ul">
                                     <li>Jon Watts</li>
                                     <li>Tom Holland</li>
                                     <li>Anthony Russo</li>
@@ -59,7 +59,7 @@ const Director = () => {
                         </div>
                         
                     </div>
-                    <h3>Known For</h3>
+                    <h3 className = "h3">Known For</h3>
                         <div className="movies2">
                             <div>
                                 <div className="post2">

@@ -89,7 +89,7 @@ const Profile = () => {
                                 
                     
                     <div className ="welcome">
-                        <h1>Welcome to your world of movies</h1>
+                        <h1 className = "h1">Welcome to your world of movies</h1>
                     </div>
 
                   
@@ -100,7 +100,7 @@ const Profile = () => {
             
             <div className="middle2">
                 <div className ="mid2">
-                    <h3>Your top 3 recommended movies </h3>
+                    <h3 className = "h3">Your top 3 recommended movies </h3>
                     <div className="movies">
                         <div>
                             <div className="post">
@@ -125,7 +125,7 @@ const Profile = () => {
             
             <div className="bottom2">
                 <div className ="mid3">
-                    <h3>Latest movies streaming</h3>
+                    <h3 className = "h3">Latest movies streaming</h3>
                     <div className="movies">
                         <div>
                             <div className="post">
