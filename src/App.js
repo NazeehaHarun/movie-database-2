@@ -19,6 +19,7 @@ import OtherUser from "./pages/OtherUser/OtherUser"
 import Header from "./components/Header/Header";
 
 import { Simulate } from "react-dom/test-utils";
+//import DynamicMovieView from "./pages/MovieView/DynamicMovieView";
 
 
 class App extends React.Component {
@@ -29,6 +30,7 @@ class App extends React.Component {
         <Header />
           
         <Switch>
+        <Route exact path = "/" component = {Header} exact />
         <Route exact path="/registration" component={Register} exact/>
         <Route exact path="/viewmovies" component={MovieView} exact/>
 
@@ -39,7 +41,7 @@ class App extends React.Component {
         <Route exact path="/viewAddMovieForm" component={AddMovie} exact/>
 
         <Route exact path="/viewOtherProfiles" component={OtherUser} exact/>
-
+        
         </Switch>
       </Router>
     );
