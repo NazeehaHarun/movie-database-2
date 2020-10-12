@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import "./Writer.css";
 import picturea from './stephen.jpg';
 import pictureb from './captain.jpg';
@@ -10,10 +10,14 @@ import pictureg from './narnia1.jpg';
 import pictureh from './narnia2.jpg';
 import picturei from './narnia3.jpg';
 import {Button} from 'react-bootstrap';
-
+import FollowButton from '../../components/FollowButton/FollowButton';
 
 
 const Writer = () => {
+
+    const [data, setData] = useState({
+        name: "Stephen McFeely"
+    })
 
     return (
         <div className ="main-sec3">
@@ -26,22 +30,22 @@ const Writer = () => {
                             <img id ="pa" src ={picturea} alt="" />;
                             
                             <div className="info3">
-                                <p>Name: Stephen McFeely</p>
-                                <p>Born: November 12, 1969, Contra Costa County, California, United States</p>
-                                <p>Nominations: Hugo Award for Best Dramatic Presentation</p>
+                                <p className = "p">Name: Stephen McFeely</p>
+                                <p className = "p">Born: November 12, 1969, Contra Costa County, California, United States</p>
+                                <p className = "p">Nominations: Hugo Award for Best Dramatic Presentation</p>
                             </div>
                         </div>
 
                         <div className ="right3">
-                            <h1>Stephen McFeely</h1>
+                            <h1 className = "h1">Stephen McFeely</h1>
                             <div id="about3">
                             
-                                <p>Stephen McFeely, 50, is an American screenwriter and producer. He is the third most
+                                <p className = "p">Stephen McFeely, 50, is an American screenwriter and producer. He is the third most
                                     successful screenwriters of all times in terms of U.S. box office reseipts.
                                 </p>
 
-                                <h4>Frequent collaborators</h4>
-                                <ul>
+                                <h4 className = "h4">Frequent collaborators</h4>
+                                <ul className = "ul">
                                     <li>Christopher Markus</li>
                                     <li>Tom Holland</li>
                                     <li>Anthony Russo</li>
@@ -51,17 +55,12 @@ const Writer = () => {
                                 </ul>
 
                             </div>
-                            <div className="But3">
-                                <Button variant ="primary" size="lg" >
-                                Follow
-                                </Button>
-                            </div>
-                        
+                            <FollowButton size = "lg" name = {data.name}/>
                         
                         </div>
                         
                     </div>
-                    <h3>Known For</h3>
+                    <h3 className = "h3">Known For</h3>
                         <div className="movies4">
                             <div>
                                 <div className="post3">

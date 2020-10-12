@@ -1,6 +1,6 @@
 .body {
     background-color: rgb(240, 244, 255);
-    margin-top: 10px;
+    margin-top: 50px;
 }
 
 .h3{
@@ -24,4 +24,19 @@
 
 .carousel {
   text-align: center;
+}
+
+.reviewForm {
+  text-align: left;
+  width: 50%;
+  margin-top: 50px;
+}
+
+.ratings {
+  text-align: right;
+  margin-left: 5px;
+}
+
+.modalText {
+  color: black;
 }

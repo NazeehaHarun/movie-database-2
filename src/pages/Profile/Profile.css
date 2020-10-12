@@ -1,16 +1,16 @@
 .top{
     background-color: rgb(150, 209, 236);
     border-bottom: none;
-    
+    padding-top: 50px;
 }
 
-h1{
+.h1{
     text-align: left;
     padding-right: 100px;
     padding-top:50px;
 }
 
-h3{
+.h3{
     color: rgb(152, 143, 229);
 }
 .main{

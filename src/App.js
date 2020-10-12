@@ -14,40 +14,23 @@ import Director from "./pages/Director/Director";
 import Writer from "./pages/Writer/Writer";
 import AddMovie from "./pages/AddMovie/AddMovie";
 
-import UserProfile from "./pages/UserProfile/UserProfile"
+import OtherUser from "./pages/OtherUser/OtherUser"
+
+import Header from "./components/Header/Header";
 
 import { Simulate } from "react-dom/test-utils";
+//import DynamicMovieView from "./pages/MovieView/DynamicMovieView";
 
 
 class App extends React.Component {
   render() {
     return (
       <Router>
-
-            <ul>
-          <li>
-            <Link to="/registration">Click to view registration/sign up page</Link>
-          </li>
-          <li>
-            <Link to="/viewmovies">Click to view Movie page</Link>
-          </li>
-          <li>
-            <Link to="/viewUserProfile">Click to view user's profile page</Link>
-          </li>
-          <li>
-            <Link to="/viewActorPage">Click to view actor's page</Link>
-          </li>
-          <li>
-            <Link to="/viewDirectorPage">Click to view director's page</Link>
-          </li>
-          <li>
-            <Link to="/viewWriterPage">Click to view writer's page</Link>
-          </li>
-          <li>
-            <Link to="/viewAddMovieForm">Click to view Add Movie Form</Link>
-          </li>
-        </ul>
+          
+        <Header />
+          
         <Switch>
+        <Route exact path = "/" component = {Header} exact />
         <Route exact path="/registration" component={Register} exact/>
         <Route exact path="/viewmovies" component={MovieView} exact/>
 
@@ -57,8 +40,8 @@ class App extends React.Component {
         <Route exact path="/viewWriterPage" component={Writer} exact/>
         <Route exact path="/viewAddMovieForm" component={AddMovie} exact/>
 
-        <Route exact path="/viewOtherProfiles" component={UserProfile} exact/>
-
+        <Route exact path="/viewOtherProfiles" component={OtherUser} exact/>
+        
         </Switch>
       </Router>
     );

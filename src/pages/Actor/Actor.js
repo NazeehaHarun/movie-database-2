@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import "./Actor.css";
 import picture11 from './tom.jpg';
 import picture12 from './home.jpg';
@@ -8,9 +8,13 @@ import picture15 from './infinity.jpg';
 import picture16 from './war.jpg';
 import picture17 from './sea.jpg';
 import {Button} from 'react-bootstrap'
+import FollowButton from '../../components/FollowButton/FollowButton';
 
+const Actor = () => {
 
-const   Actor = () => {
+    const [data, setData] = useState({
+        name: "Tom Holland"
+    })
 
     return (
         <div className ="main-sec1">
@@ -23,25 +27,25 @@ const   Actor = () => {
                             <img id ="p11" src ={picture11} alt="Tom Holland" />;
                             
                             <div className="info1">
-                                <p>Name: Thomas Stanley Holland (Actor)</p>
-                                <p>Born: June 1, 1996, Kingston upon Thames, United Kingdom</p>
-                                <p>Height: 1.73 m</p>
-                                <p>Siblings: Harry Holland, Sam Holland, Paddy Holland</p>
-                                <p>Parents: Dominic Holland, Nicola Elizabeth Frost</p>
+                                <p className = "p">Name: Thomas Stanley Holland (Actor)</p>
+                                <p className = "p">Born: June 1, 1996, Kingston upon Thames, United Kingdom</p>
+                                <p className = "p">Height: 1.73 m</p>
+                                <p className = "p">Siblings: Harry Holland, Sam Holland, Paddy Holland</p>
+                                <p className = "p">Parents: Dominic Holland, Nicola Elizabeth Frost</p>
                             </div>
                         </div>
 
                         <div className ="right1">
-                            <h1>Tom Holland</h1>
+                            <h1 className = "h1">Tom Holland</h1>
                             <div id="about1">
                             
-                                <p>Thomas Stanley Holland is a 24 year old English Actor
+                                <p className = "p"> Thomas Stanley Holland is a 24 year old English Actor
                                     who began his career on stage in London's West End from 2008 to 
                                     2010. 
                                 </p>
                                 
-                                <h4>Frequent collaborators</h4>
-                                <ul>
+                                <h4 className = "h4">Frequent collaborators</h4>
+                                <ul className = "ul">
                                     <li>Jon Watts</li>
                                     <li>Joe Russo</li>
                                     <li>Anthony Russo</li>
@@ -51,17 +55,12 @@ const   Actor = () => {
                                 </ul>
 
                             </div>
-                            <div className="But1">
-                                <Button variant ="primary" size="lg" >
-                                Follow
-                                </Button>
-                            </div>
-                        
-                        
+                            <FollowButton size = "lg" name = {data.name}/>
+                
                             </div>
         
                         </div>
-                        <h3>Known For</h3>
+                        <h3 className = "h3">Known For</h3>
                         <div className="movies1">
                             <div>
                                 <div className="post1">
