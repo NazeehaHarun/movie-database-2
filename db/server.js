@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const movies = require("./assets/movie-data.json");
+const movies = require("./movie-data.json");
 
 app.use(cors());
 app.use(express.json());
