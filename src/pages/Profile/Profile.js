@@ -6,8 +6,10 @@ import picture4 from './hunger.jpg';
 import picture5 from './spider.jpg';
 import picture6 from './gravity.jpg';
 import picture7 from './interstellar.jpeg';
-import {Navbar, Nav, NavDropdown, Form, FormControl, Button, ButtonGroup} from 'react-bootstrap'
+import {Navbar, Nav, NavLink, NavDropdown, Form, FormControl, Button, ButtonGroup} from 'react-bootstrap'
+import {Link} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 const Profile = () => {
@@ -32,9 +34,9 @@ const Profile = () => {
                                 </Nav>
                                 <Nav className="Drop2">
                                     <NavDropdown title ="Celebrities you follow" id ="basic-nav-dropdown">
-                                        <NavDropdown.Item href ="#">Tom Holland</NavDropdown.Item>
-                                        <NavDropdown.Item href ="#">Joseph Russo</NavDropdown.Item>
-                                        <NavDropdown.Item href ="#">Stephen McFeely</NavDropdown.Item>
+                                        <NavDropdown.Item as={Link} to="../Actor/Actor.js" key="1">Tom Holland</NavDropdown.Item>
+                                        <NavDropdown.Item as={Link} to="../Director/Director.js" key="1">Joseph Russo</NavDropdown.Item>
+                                        <NavDropdown.Item as={Link} to="../Writer/Writer.js" key="1">Stephen McFeely</NavDropdown.Item>
                                     </NavDropdown>    
                                 </Nav>
                                 
