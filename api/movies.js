@@ -62,26 +62,7 @@ router.get('/getSimilarMovies', (req, res) => {
     }
     console.log(max);
     console.log(maxVal);
-    /*
-    let pairs = Object.entries(freq);
-   
-    
-    let sorted = pairs.sort((a,b)=>{
-        if(a[1] <b[1]){
-            return 1;
-        }
-        else if(a[1]>b[1]){
-            return -1;
-        }
-        else{
-            return 0;
-        }
-    });
 
-    let genreType =pairs.map((array)=>{
-        return array[0];
-    });
-    */
 
     
     const movieGenre = max;
@@ -97,7 +78,7 @@ router.get('/getSimilarMovies', (req, res) => {
             count++;
             //Returns movie as a JSON object if found        
         }
-        if(count===100){
+        if(count===3){
             return res.json(similar);
         }
     
