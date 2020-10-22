@@ -73,7 +73,7 @@ Base expectations we have completed and the files you can look at to evaluate ou
 	•We have used Express as our server capable of serving static resources created within project check-in #1.	
 	• searchMovie will start an Express server on PORT 5000 which will process requests to search for movies from movie-data.json.
 
-2.movies.js (movie-database->api):
+2.movies.js (movie-database->api->movies.js):
 	•Uses express as the server
 	•Uses movie-data.json to generate movie details
 	•To return movies to user they search for:
@@ -87,7 +87,7 @@ Base expectations we have completed and the files you can look at to evaluate ou
 	•The request is sent from the client by the findMovie function, which uses Axios to make the request and returns a Promise 
 Note for this component, while the client doesn't update in response to the new object, the client's state object does store the movie object the user searched for, which can be verified by checking the console in Chrome
 
-4. Profile.js: (movie-database ->src->pages->Profile):
+4. Profile.js: (movie-database ->src->pages->Profile->Profile.js):
 •	Links have been added to the drop down menu items for the actor, writer and director pages, under the drop down menu heading “celebrities you follow”
 
 
