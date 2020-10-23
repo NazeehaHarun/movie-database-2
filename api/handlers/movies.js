@@ -54,9 +54,8 @@ router.post('/', (req, res) => {
 router.post('/review', (req, res) => {
 
     const reviewObj = req.body.review;
-    //console.log(reviewObj);
     const review = movies.leaveReview(reviewObj);
-    //console.log(review);
+    console.log(review);
 
     if (review !== null) {
         res.status(200).json({review});
