@@ -9,7 +9,6 @@ const movies = require("../functions/movies");
  */
 router.get('/', (req, res) => {
 
-    
     const title = req.query.title;
     const genre = req.query.genre;
     const year = req.query.year;
