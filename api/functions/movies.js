@@ -86,8 +86,8 @@ const createMovie = (movieObj) => {
 
 const leaveReview = (review) => {
 
-    //Ensure the review has all
-    if (!review.movieTitle && !review.rating && !review.reviewSummary && !review.fullReview) {
+    //Ensure the review has all necessary information 
+    if (!review.movieTitle || !review.rating || !review.reviewSummary || !review.fullReview) {
         return null;
     }
 
@@ -121,13 +121,15 @@ const leaveReview = (review) => {
             //Console.log(movie) below verifies that review has been added to the movie object
             console.log(movie);
 
-            console.log(review);
-            return review;
+            //console.log(review);
+            //return review;
+            //break; 
 
         }
     });
 
-    return null;
+    console.log("HI")
+    return review;
 
 }
 

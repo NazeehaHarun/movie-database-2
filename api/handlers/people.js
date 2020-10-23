@@ -15,3 +15,5 @@ router.post('/', (req, res) => {
     res.status(400);
     
 });
+
+module.exports = router; 

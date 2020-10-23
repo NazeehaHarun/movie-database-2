@@ -7,6 +7,9 @@ app.use(express.json());
 
 const PORT = 5001;
 
+//const publicRoute = require("../public/")
+//app.use(express.static("../public"));
+
 const moviesRoute = require("../api/handlers/movies");
 const usersRoute = require("../api/handlers/users");
 const peopleRoute = require("../api/handlers/people");
