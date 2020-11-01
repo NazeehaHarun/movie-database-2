@@ -18,7 +18,7 @@ const getMovies = (searchParameters) => {
     movies.forEach(movie => {
 
         if (searchParameters.title !== undefined) {
-            if (movie.Title === searchParameters.title) {
+            if (JSON.stringify(movie.Title).toLowerCase() === JSON.stringify(searchParameters.title).toLowerCase()) {
                 
                 movieList.push(movie); 
             }
