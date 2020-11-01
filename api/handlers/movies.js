@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
     res.sendStatus(400);
 });
 
-router.get('/id', (req, res) => {
+router.get('/:id', (req, res) => {
     const id = req.params.id;
     const search = movies.getMovieWithId(id);
 
