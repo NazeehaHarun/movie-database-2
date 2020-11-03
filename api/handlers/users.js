@@ -5,6 +5,8 @@ let movieSearchHistory=[{"Title":"Toy Story","Year":"1995","Rated":"G","Released
 const users = require("../functions/users");
 const movies = require("../../db/movie-data.json");
 
+
+
 router.post("/", (req, res) => {
 
     const userObject = req.body.user; 
@@ -100,5 +102,31 @@ router.get("/similarMovies", (req, res) => {
     res.sendStatus(400);
 
 });
+
+router.get('/', (req, res) => {
+
+    const name = req.query.name;
+    const searchedUser = user.getUser({name});
+
+    if (searchedUser !== null) {
+        res.status(200).json({searchedUser});
+        return;
+    }
+
+    //Returns a response of bad request if movie is not found
+    res.sendStatus(400);
+});
+
+router.get('/:id', (req, res) => {
+    const id = req.params.id;
+    const search = users.getUserWithId(id);
+
+    if (search !== null) {
+        res.status(200).json({search});
+        return;
+    }
+
+    res.status(400); 
+})
 
 module.exports = router;
