@@ -119,16 +119,11 @@ const leaveReview = (review) => {
             movie.averageRating = (averageRating/count);
 
             //Console.log(movie) below verifies that review has been added to the movie object
-            console.log(movie);
-
-            //console.log(review);
-            //return review;
-            //break; 
+            console.log(movie); 
 
         }
     });
 
-    console.log("HI")
     return review;
 
 }

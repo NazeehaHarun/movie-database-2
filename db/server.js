@@ -1,18 +1,28 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const session = require("express-session");
 
 app.use(cors());
 app.use(express.json());
 
-const PORT = 5001;
+//New session created - secret should be secret
+app.use(session ({secret: 'some session here', resave: true, saveUninitialized: true}));
 
-//const publicRoute = require("../public/")
-//app.use(express.static("../public"));
+app.use(express.urlencoded({extended: true}));
+
+const PORT = 5001;
 
 const moviesRoute = require("../api/handlers/movies");
 const usersRoute = require("../api/handlers/users");
 const peopleRoute = require("../api/handlers/people");
+
+app.use("/", (req, res, next) => {
+
+    console.log(req.session);
+    next();
+
+});
 
 app.use('/movies', moviesRoute);
 app.use('/users', usersRoute);
