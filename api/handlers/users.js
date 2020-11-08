@@ -13,11 +13,16 @@ router.post("/", (req, res) => {
     const createdUser = users.registerUser(userObject);
 
     if (createdUser !== null) {
+        console.log(createdUser);
         res.status(200).json(createdUser);
+        return;
+    } else {
+        
+        res.status(400).send("User already exists");
         return;
     }
     
-    res.status(400);
+    
 });
 
 router.post("/:id/follow", (req, res) => {
@@ -33,21 +38,6 @@ router.post("/:id/follow", (req, res) => {
     }
     
     res.status(400);
-
-});
-
-router.post("/login", (req, res) => {
-    
-    const userObject = req.body.user;
-    const user = users.loginUser(userObject);
-    
-    if (user !== null) {
-        req.session.user = user;
-        res.status(200).json(user);
-        return; 
-    }
-
-    res.status(401).send("Invalid Credentials"); 
 
 });
 
