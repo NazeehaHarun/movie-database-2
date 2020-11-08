@@ -18,6 +18,8 @@ const usersRoute = require("../api/handlers/users");
 const peopleRoute = require("../api/handlers/people");
 const loginRoute = require("../api/handlers/login");
 
+const admin = require("../api/functions/auth");
+
 app.use("/", (req, res, next) => {
 
     console.log(req.session);
@@ -26,7 +28,7 @@ app.use("/", (req, res, next) => {
 });
 
 app.use('/', loginRoute);
-app.use('/movies', moviesRoute);
+app.use('/movies', admin.auth, moviesRoute);
 app.use('/users', usersRoute);
 app.use('/people', peopleRoute);
 

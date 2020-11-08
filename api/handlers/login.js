@@ -5,6 +5,11 @@ const auth = require("../functions/login");
 
 router.post("/login", (req, res) => {
     
+    if (req.session.loggedIn) {
+        res.status(200).send("User Already Logged In");
+        return;
+    }
+
     const userObject = req.body.user;
     const user = auth.loginUser(userObject);
     

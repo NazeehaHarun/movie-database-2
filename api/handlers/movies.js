@@ -23,6 +23,7 @@ router.get('/', (req, res) => {
 
     //Returns a response of bad request if movie is not found
     res.sendStatus(400);
+    return; 
 });
 
 router.get('/:id', (req, res) => {

@@ -45,7 +45,9 @@ const getMovies = (searchParameters) => {
         }
     });
 
-    
+    if (movieList.length === 0) {
+        return null;
+    }
 
     return movieList;
 };

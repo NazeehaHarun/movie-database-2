@@ -12,3 +12,8 @@ function contributor(req, res, next) {
     res.status(200).send("Contributor");
     return; 
 }
+
+module.exports = {
+    auth,
+    contributor,
+}

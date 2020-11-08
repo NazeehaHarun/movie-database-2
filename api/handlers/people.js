@@ -10,6 +10,7 @@ router.post('/', (req, res) => {
 
     if (person !== null) {
         res.status(200).json({person});
+        return;
     } 
 
     res.status(400);
