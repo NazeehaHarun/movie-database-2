@@ -2,16 +2,7 @@ const bcrypt = require("bcrypt");
 const {v4: uuidv4} = require("uuid");
 const { use } = require("../handlers/users");
 
-const users= require("../../db/users.json"); 
-
-let users=[{"Type":"Contributing","userName":"David", "id":"1"},
-{"Type":"Regular","userName":"Nazeeha","id":"2"},
-{"Type":"Contributing","userName":"Micheal", "id":"3"},
-{"Type":"Contributing", "userName": "John", "id":"4"},
-{"Type":"Regular", "userName":"Rob","id":"5"},
-{"Type":"Contributing", "userName":"Jon","id":"6"},
-{"Type":"Regular", "userName":"Jordon","id":"7"},
-{"Type":"Regular","userName":"Brad", "id":"8"}]
+const users= require("../../db/users-data.json"); 
 
 const registerUser = (user) => {
 

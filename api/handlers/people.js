@@ -7,13 +7,17 @@ router.post('/', (req, res) => {
 
     const personObj = req.body.person; 
     const person = people.createPeople(personObj);
+    console.log(person );
 
     if (person !== null) {
         res.status(200).json({person});
         return;
-    } 
 
-    res.status(400);
+    } else {
+
+        res.status(400).send("Person already exists");
+        return;
+    }
     
 });
 

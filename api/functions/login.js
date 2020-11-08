@@ -1,4 +1,4 @@
-const users = require("../../db/users.json");
+const users = require("../../db/users-data.json");
 
 const loginUser = (userObj) => {
     

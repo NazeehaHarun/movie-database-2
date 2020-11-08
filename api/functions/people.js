@@ -1,17 +1,27 @@
 const {v4: uuidv4} = require("uuid")
 
-const people=[{"Role":"Director","Name":"Joe Johnston", "id":"1"},
-{"Role":"Writer","Name":"Jonathan Hensleigh","id":"2"},
-{"Role":"Writer","Name":"Greg Taylor", "id":"3"},
-{"Role":"Writer", "Name": "Jim Strain", "id":"4"},
-{"Role":"Actors", "Name":"Robin Williams","id":"5"},
-{"Role":"Actors", "Name":"Jonathan Hyde","id":"6"},
-{"Role":"Actors", "Name":"Kirsten Dunst","id":"7"},
-{"Role":"Actors","Name":"Bradley Pierce", "id":"8"}]
+const people= require("../../db/people-data.json");
 
 const createPeople = (personObj) => {
 
-    const newPerson = {
+    if (personObj === null) {
+        return null;
+    }
+
+    let newPerson = null;
+    
+    //Ensure person does not already exist
+    for (person of people) {
+        if (person.Name == personObj.name) {
+            newPerson = person;
+        }
+    }
+
+    if (newPerson !== null) {
+        return null;
+    }
+    
+    newPerson = {
         id: uuidv4(),
         name: personObj.name,
         pastWorks: personObj.pastWorks,

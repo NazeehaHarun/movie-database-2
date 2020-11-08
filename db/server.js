@@ -28,7 +28,8 @@ app.use("/", (req, res, next) => {
 });
 
 app.use('/', loginRoute);
-app.use('/movies', admin.auth, moviesRoute);
+app.use('/movies', moviesRoute);
+//app.use('/movies', admin.auth, moviesRoute);
 app.use('/users', usersRoute);
 app.use('/people', peopleRoute);
 
