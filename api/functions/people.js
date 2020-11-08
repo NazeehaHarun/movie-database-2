@@ -62,9 +62,7 @@ const getPeopleWithId = (peopleId) => {
             }
         }
     });
-    
-
-    //console.log("not found people id"); 
+  
     return p;
     
 
