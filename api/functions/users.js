@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const {v4: uuidv4} = require("uuid")
 
-const users=[{"Type":"Contributing","userName":"David", "id":"1"},
+let users=[{"Type":"Contributing","userName":"David", "id":"1"},
 {"Type":"Regular","userName":"Nazeeha","id":"2"},
 {"Type":"Contributing","userName":"Micheal", "id":"3"},
 {"Type":"Contributing", "userName": "John", "id":"4"},
@@ -71,22 +71,25 @@ const getUser = (searchParameters) => {
 };
 
 const getUserWithId = (userId) => {
-
+    let p = null;
     users.forEach(user => {
-        if (user.hasOwnProperty(id)) {
+        if (user.hasOwnProperty("id")) {
             if(user.id === userId) {
-                return user;
+                p = user;
+                return;
             }
         }
     });
 
-    return null; 
+    return p; 
 
 }
+
 
 module.exports = {
     registerUser, 
     followUser,
     getUser,
-    getUserWithId
+    getUserWithId,
+   
 }

@@ -31,9 +31,9 @@ router.get('/', (req, res) => {
     res.sendStatus(400);
 });
 
-router.get('/:id', (req, res) => {
-    const id = req.params.id;
-    const search = people.getPeopleWithId(id);
+router.get('/:person', (req, res) => {
+    const person = req.params.person;
+    const search = people.getPeopleWithId(person);
 
     if (search !== null) {
         res.status(200).json({search});

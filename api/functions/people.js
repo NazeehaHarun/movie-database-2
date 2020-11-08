@@ -2,8 +2,8 @@ const {v4: uuidv4} = require("uuid")
 
 const people=[{"Role":"Director","Name":"Joe Johnston", "id":"1"},
 {"Role":"Writer","Name":"Jonathan Hensleigh","id":"2"},
-{"Role":"Writer","Name":"Greg Taylor (screenplay by)", "id":"3"},
-{"Role":"Writer", "Name": "Jim Strain (screenplay by)", "id":"4"},
+{"Role":"Writer","Name":"Greg Taylor", "id":"3"},
+{"Role":"Writer", "Name": "Jim Strain", "id":"4"},
 {"Role":"Actors", "Name":"Robin Williams","id":"5"},
 {"Role":"Actors", "Name":"Jonathan Hyde","id":"6"},
 {"Role":"Actors", "Name":"Kirsten Dunst","id":"7"},
@@ -23,6 +23,7 @@ const createPeople = (personObj) => {
 };
 
 const getPeople = (searchParameters) => {
+   
     
     let peopleList = [];
 
@@ -50,16 +51,22 @@ const getPeople = (searchParameters) => {
 };
 
 const getPeopleWithId = (peopleId) => {
-
+    //console.log("inside get people id");
+    let p = null;
     people.forEach(person => {
-        if (person.hasOwnProperty(id)) {
+        if (person.hasOwnProperty("id")) {
             if(person.id === peopleId) {
-                return person;
+                //console.log("found people id");
+                p=person;
+                return;
             }
         }
     });
+    
 
-    return null; 
+    //console.log("not found people id"); 
+    return p;
+    
 
 }
 
