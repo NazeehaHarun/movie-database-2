@@ -1,0 +1,8 @@
+[{"Type":"Contributing","userName":"David", "password": "12345", "id":"1"},
+    {"Type":"Regular","userName":"Nazeeha","password": "12345", "id":"2"},
+    {"Type":"Contributing","userName":"Micheal", "password": "12345", "id":"3"},
+    {"Type":"Contributing", "userName": "John", "password": "12345", "id":"4"},
+    {"Type":"Regular", "userName":"Rob", "password": "12345", "id":"5"},
+    {"Type":"Contributing", "userName":"Jon", "password": "12345", "id":"6"},
+    {"Type":"Regular", "userName":"Jordon", "password": "12345", "id":"7"},
+    {"Type":"Regular","userName":"Brad", "password": "12345", "id":"8"}]

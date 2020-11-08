@@ -2,15 +2,7 @@ const bcrypt = require("bcrypt");
 const {v4: uuidv4} = require("uuid");
 const { use } = require("../handlers/users");
 
-const users=[{"Type":"Contributing","userName":"David", "password": "12345", "id":"1"},
-{"Type":"Regular","userName":"Nazeeha","password": "12345", "id":"2"},
-{"Type":"Contributing","userName":"Micheal", "password": "12345", "id":"3"},
-{"Type":"Contributing", "userName": "John", "password": "12345", "id":"4"},
-{"Type":"Regular", "userName":"Rob", "password": "12345", "id":"5"},
-{"Type":"Contributing", "userName":"Jon", "password": "12345", "id":"6"},
-{"Type":"Regular", "userName":"Jordon", "password": "12345", "id":"7"},
-{"Type":"Regular","userName":"Brad", "password": "12345", "id":"8"}]
-
+const users= require("../../db/users-data.json"); 
 
 const registerUser = (user) => {
 
@@ -19,7 +11,20 @@ const registerUser = (user) => {
         return null;
     }
 
-    //When database is added, checking unique usernames and ensuring user does not already exist in database will be added
+    //Checking unique usernames and ensuring user does not already exist in database
+
+    let userObj = null; 
+
+    users.forEach(userInstance => {
+       
+        if (user.username === userInstance.userName) {
+            userObj = userInstance;
+        }
+    })
+
+    if (userObj !== null) {
+        return null;
+    }
 
     let password = user.password;
 
@@ -29,8 +34,6 @@ const registerUser = (user) => {
         password: password,
         type: "regular"
     }
-
-    users.push(newUser); 
 
     return newUser;
     
@@ -48,24 +51,52 @@ const followUser = (user, userToFollow) => {
 
 };
 
-
-const loginUser = (userObj) => {
+const getUser = (searchParameters) => {
     
-    let currentUser = null;
+    let userList = [];
+
+    //If no parameters were supplied --> Return all the movies
+    if (!searchParameters.name) {
+        users.forEach(user => {
+            userList.push(user);
+        });
+
+        return userList;
+    }
 
     users.forEach(user => {
-        if (user.userName === userObj.username && user.password === userObj.password) {
-            currentUser = user;
-            
+
+        if (searchParameters.name !== undefined) {
+            if (JSON.stringify(user.userName).toLowerCase() === JSON.stringify(searchParameters.name).toLowerCase()) {
+                userList.push(user); 
+            }
+          
+        } 
+
+    });
+
+    return userList;
+};
+
+const getUserWithId = (userId) => {
+    let p = null;
+    users.forEach(user => {
+        if (user.hasOwnProperty("id")) {
+            if(user.id === userId) {
+                p = user;
+                return;
+            }
         }
     });
 
-    return currentUser;
+    return p; 
 
 }
+
 
 module.exports = {
     registerUser, 
     followUser,
-    loginUser
+    getUser,
+    getUserWithId,
 }

@@ -33,6 +33,7 @@ class App extends React.Component {
         <Route exact path = "/" component = {Header} exact />
         <Route exact path="/registration" component={Register} exact/>
         <Route exact path="/viewmovies" component={MovieView} exact/>
+        <Route path="/viewmovies/:movieTitle" component={MovieView}/>
 
         <Route exact path="/viewUserProfile" component={Profile} exact/>
         <Route exact path="/viewActorPage" component={Actor} exact/>
