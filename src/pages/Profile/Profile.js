@@ -68,6 +68,7 @@ const Profile = () => {
                             <div>
                                 <Form inline>
                                     <Form.Check type="switch" id="custom-switch" label="Change to contributing user"/>
+ 
                                 </Form>
                             </div>
                             
