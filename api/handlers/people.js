@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
 
     const name = req.query.name;
-    const searchedPeople = people.getPeople({name});
+    const searchedPeople = people.people({name});
 
     if (searchedPeople !== null) {
         res.status(200).json({searchedPeople});
@@ -33,7 +33,7 @@ router.get('/', (req, res) => {
 
 router.get('/:person', (req, res) => {
     const person = req.params.person;
-    const search = people.getPeopleWithId(person);
+    const search = people.peopleWithId(person);
 
     if (search !== null) {
         res.status(200).json({search});

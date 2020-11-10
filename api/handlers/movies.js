@@ -38,8 +38,8 @@ router.get('/:id', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-
-    const movieObj = req.body.movie;
+    //console.log(req.body);
+    const movieObj = req.body;
     const movie = movies.createMovie(movieObj);
 
     if (movie !== null) {
