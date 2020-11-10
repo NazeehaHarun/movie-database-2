@@ -10,6 +10,8 @@ import FollowButton from '../../components/FollowButton/FollowButton';
 import axios from 'axios';
 
 
+
+
 const Director = ({match}) => {
 
     const {params: {name}} = match;
