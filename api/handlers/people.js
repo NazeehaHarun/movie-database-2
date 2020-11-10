@@ -24,7 +24,7 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
 
     const name = req.query.name;
-    const searchedPeople = people.getPeople({name});
+    const searchedPeople = people.people({name});
 
     if (searchedPeople !== null) {
         res.status(200).json({searchedPeople});
@@ -37,7 +37,7 @@ router.get('/', (req, res) => {
 
 router.get('/:person', (req, res) => {
     const person = req.params.person;
-    const search = people.getPeopleWithId(person);
+    const search = people.peopleWithId(person);
 
     if (search !== null) {
         res.status(200).json({search});
@@ -46,5 +46,22 @@ router.get('/:person', (req, res) => {
 
     res.status(400); 
 })
+
+
+router.post("/:id/follow", (req, res) => {
+
+    //Implemented for purposes of theoretical business logic - No users actually exist on the system
+    console.log("got it");
+    const userObject = req.body.user;
+    const peopleToFollowObject = req.body.people;
+
+    if (people.followUser(userObject, peopleToFollowObject) !== false) {
+        res.status(200).json(userObject.followers);
+        return;
+    }
+    
+    res.status(400);
+
+});
 
 module.exports = router; 
