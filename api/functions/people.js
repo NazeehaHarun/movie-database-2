@@ -78,6 +78,18 @@ const peopleWithId = (peopleId) => {
 
 }
 
+const followPeople = (users, peopleToFollow) => {
+
+    if (users === null || peopleToFollow === null) {
+        return false;
+    }
+
+    users.following.push(peopleToFollow);
+    users.follwers.push(users);
+    return true;
+
+};
+
 module.exports = {
-    createPeople, people, peopleWithId
+    createPeople, people, peopleWithId, followPeople
 }
