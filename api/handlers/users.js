@@ -8,7 +8,7 @@ const users = require("../functions/users");
 const movies = require("../../db/movie-data.json");
 const { unstable_renderSubtreeIntoContainer } = require("react-dom");
 
-
+const admin = require("../functions/auth");
 
 router.post("/", (req, res) => {
     
@@ -28,8 +28,8 @@ router.post("/", (req, res) => {
     
 });
 
-router.post("/:id/follow", (req, res) => {
-
+router.post("/:id/follow", admin.auth, (req, res) => {
+    
     //Implemented for purposes of theoretical business logic - No users actually exist on the system
 
     const userObject = req.body.user;
@@ -44,7 +44,7 @@ router.post("/:id/follow", (req, res) => {
 
 });
 
-router.get("/similarMovies", (req, res) => {
+router.get("/similarMovies", admin.auth, (req, res) => {
 
     let genre=[];
     let freq ={};
@@ -111,7 +111,7 @@ router.get("/similarMovies", (req, res) => {
 
 });
 
-router.get('/', (req, res) => {
+router.get('/', admin.auth, (req, res) => {
 
     const name = req.query.name;
     const searchedUser = users.getUser({name});
@@ -125,7 +125,7 @@ router.get('/', (req, res) => {
     res.sendStatus(400);
 });
 
-router.get('/:user', (req, res) => {
+router.get('/:user', admin.auth, (req, res) => {
     const user = req.params.user;
     
     const search = users.getUserWithId(user);
@@ -139,7 +139,7 @@ router.get('/:user', (req, res) => {
 })
 
 
-router.post('/changeStatus', putUser);
+router.post('/changeStatus', admin.auth, putUser);
 
 function putUser (req,res){
     let userId = req.body.userId;
