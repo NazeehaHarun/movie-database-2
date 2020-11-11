@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from "axios";
+
 import "./Profile.css";
 import picture2 from './hp.jpg';
 import picture3 from './lor.jpg';
@@ -10,7 +12,51 @@ import {Navbar, Nav, NavDropdown, Form, FormControl, Button, ButtonGroup} from '
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-const Profile = () => {
+const Profile = ({match}) => {
+
+    const [data, setData] = useState({
+        name: "Nazeeha",
+        recommendedMovies: [ {Title: "Toy Story",Poster: "https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_SX300.jpg"},
+                            {Title: "Harry Potter", Poster: "https://i.pinimg.com/originals/5f/a4/b7/5fa4b7287975bbb34f0d61008cc1d586.jpg" },
+                            {Title: "A Silent Voice", Poster: "https://m.media-amazon.com/images/M/MV5BZGRkOGMxYTUtZTBhYS00NzI3LWEzMDQtOWRhMmNjNjJjMzM4XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg"},
+                            {Title: "Crazy Rich Asians", Poster: "https://m.media-amazon.com/images/M/MV5BMTYxNDMyOTAxN15BMl5BanBnXkFtZTgwMDg1ODYzNTM@._V1_.jpg"},
+                            {Title: "The Lion King", Poster: "https://m.media-amazon.com/images/M/MV5BYTYxNGMyZTYtMjE3MS00MzNjLWFjNmYtMDk3N2FmM2JiM2M1XkEyXkFqcGdeQXVyNjY5NDU4NzI@._V1_.jpg"},
+                            {Title: "Star Wars: A New Hope", Poster: "https://kbimages1-a.akamaihd.net/ea6a1631-34e8-4369-b777-cf342521d3e0/1200/1200/False/a-new-hope-star-wars-episode-iv.jpg"},
+    ], 
+    recentMovies: [
+        {Title: "Violet Evergarden", Poster: "https://i.redd.it/mh0czsfbgu641.jpg"},
+        {Title: "Demon Slayer", Poster: "https://upload.wikimedia.org/wikipedia/en/2/21/Kimetsu_no_Yaiba_Mugen_Ressha_Hen_Poster.jpg"},
+        {Title: "All My Life", Poster: "https://media2.firstshowing.net/firstshowing/img11/AllmyLifeOfficialPosterimagebig5990.jpg"},
+    ]
+    });
+
+    const {
+        params: { name },
+      } = match;
+      
+      useEffect(() => {
+
+        
+
+      });
+
+      let userRecommendedMovies = [];
+
+      data.recommendedMovies.forEach(movie => {
+
+        userRecommendedMovies.push(
+            <img id ="p1" src ={movie.Poster} alt="moviePoster" />
+        );
+      });
+
+      let userRecentMovies = [];
+
+      data.recentMovies.forEach(movie => {
+          userRecentMovies.push(
+            <img id ="p1" src ={movie.Poster} alt="moviePoster" />
+          );
+      })
+
 
     return (
         <div className ="main-sec">
@@ -19,7 +65,7 @@ const Profile = () => {
                         <Navbar bg ="dark" variant="dark" expand ="xl">
                             
                             <Navbar.Text>
-                            Signed in as: Nazeeha Harun
+                            Signed in as: {data.name}
                             </Navbar.Text>
                             
                             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
@@ -105,17 +151,17 @@ const Profile = () => {
                     <div className="movies">
                         <div>
                             <div className="post">
-                                <img id ="p1" src ={picture2} alt="moviePoster" />;
+                                {userRecommendedMovies[Math.floor(Math.random() * userRecommendedMovies.length)]}
                             </div>
                         </div>
                         <div>
                             <div className="post">
-                                <img id ="p2" src ={picture3} alt="moviePoster" />;
+                                {userRecommendedMovies[Math.floor(Math.random() * userRecommendedMovies.length)]};
                             </div>
                         </div>
                         <div>
                             <div className="post">
-                                <img id ="p3" src ={picture4} alt="moviePoster" />;
+                                {userRecommendedMovies[Math.floor(Math.random() * userRecommendedMovies.length)]};
                             </div>
                         </div>
                     </div>
@@ -130,17 +176,17 @@ const Profile = () => {
                     <div className="movies">
                         <div>
                             <div className="post">
-                                <img id ="p4" src ={picture5} alt="moviePoster" />;
+                                {userRecentMovies[Math.floor(Math.random() * userRecentMovies.length)]};
                             </div>
                         </div>
                         <div>
                             <div className="post">
-                                <img id ="p5" src ={picture6} alt="moviePoster" />;
+                                {userRecentMovies[Math.floor(Math.random() * userRecentMovies.length)]};
                             </div>
                         </div>
                         <div>
                             <div className="post">
-                                <img id ="p6" src ={picture7} alt="moviePoster" />;
+                                {userRecentMovies[Math.floor(Math.random() * userRecentMovies.length)]};
                             </div>
                         </div>
                     </div>

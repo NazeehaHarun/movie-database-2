@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 import './Register.css';
 
@@ -64,7 +65,65 @@ class Register extends React.Component{
   }
 
   handleSubmit = event =>{
-    alert("Confirm Submission")
+    event.preventDefault();
+
+    alert("Confirm Submission");
+
+    const formData = {
+      firstName: this.state.FirstName,
+      lastName: this.state.LastName,
+      username: this.state.username,
+      email: this.state.email,
+      password: this.state.password,
+      reconfirmPassword: this.state.reconfirm_password,
+      returningUsername: this.state.returningusername,
+      returningPassword: this.state.returningpassword,
+      userType: this.state.userType
+    }
+
+    //Register
+    if (formData.returningUsername.length !== 0 && formData.returningPassword !== 0) {
+
+      const user = {
+        user: {
+
+          username: formData.returningUsername,
+          password: formData.returningPassword
+
+        }
+        
+      }
+
+      axios.post("http://localhost:5001/login", user)
+      .then((response => {
+
+        console.log(response);
+
+      }))
+      .catch(err =>{
+        console.log(err);
+      });
+      
+    } 
+
+    else {
+
+      const user = {
+        user: formData
+    }
+
+    axios.post("http://localhost:5001/users", user)
+      .then((response => {
+
+        console.log(response);
+
+      }))
+      .catch(err =>{
+        console.log(err);
+      });
+    
+    }
+
   }
   
   handlereturningusernameChange=(event)=>{

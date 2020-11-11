@@ -1,4 +1,15 @@
-[{"Type":"Contributing","userName":"David", "password": "12345", "id":"1"},
+[{"Type":"Contributing","userName":"David", "password": "12345", "id":"1", 
+    "followers": [
+        {"Type":"Regular","userName":"Nazeeha","password": "12345", "id":"2"},
+        {"Type":"Contributing","userName":"Micheal", "password": "12345", "id":"3"},
+        {"Type":"Contributing", "userName": "John", "password": "12345", "id":"4"}
+    ],
+    "reviews": [
+        {"Title": "Toy Story", "Score": 10, "Summary": "Fantastic Movie!", "Full Review": "Incredible Animation!"},
+        {"Title": "Jumanji", "Score": 10, "Summary": "Fantastic Movie!", "Full Review": "Incredible Plot!"},
+        {"Title": "Heat", "Score": 10, "Summary": "Fantastic Movie!", "Full Review": "Very Scary!"}
+    ]
+},
     {"Type":"Regular","userName":"Nazeeha","password": "12345", "id":"2"},
     {"Type":"Contributing","userName":"Micheal", "password": "12345", "id":"3"},
     {"Type":"Contributing", "userName": "John", "password": "12345", "id":"4"},

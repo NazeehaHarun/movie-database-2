@@ -24,6 +24,7 @@ import './MovieView.css'
 const MovieView = ({match}) => {
   
   const {params: {movieTitle}} = match;
+  console.log(movieTitle);
 
   const initialState = ({
     name: "Weathering With You", 

@@ -97,12 +97,7 @@ const userWithId = (userId) => {
 module.exports = {
     registerUser, 
     followUser,
-<<<<<<< HEAD
-    getUser,
-    getUserWithId,
-=======
     user,
     userWithId,
    
->>>>>>> 542d689003906db11cc6f39ca38d243f88f3c7c2
 }

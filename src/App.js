@@ -52,6 +52,7 @@ class App extends React.Component {
         <Route exact path="/viewAddMovieForm" component={AddMovie} exact/>
 
         <Route exact path="/viewOtherProfiles" component={OtherUser} exact/>
+        <Route path="/viewOtherProfiles/:name" component={OtherUser} exact/>
         
         </Switch>
       </Router>
