@@ -16,6 +16,7 @@ class Register extends React.Component{
       returningusername:"",
       returningpassword:"",
       userType:"Regular",
+      success: false
       
     }
     
@@ -67,7 +68,7 @@ class Register extends React.Component{
   handleSubmit = event =>{
     event.preventDefault();
 
-    alert("Confirm Submission");
+    
 
     const formData = {
       firstName: this.state.FirstName,
@@ -83,7 +84,9 @@ class Register extends React.Component{
 
     //Register
     if (formData.returningUsername.length !== 0 && formData.returningPassword !== 0) {
-
+      this.setState({
+        success: true 
+      });
       const user = {
         user: {
 
@@ -122,7 +125,15 @@ class Register extends React.Component{
         console.log(err);
       });
     
+    };
+
+    if (this.state.success === true) {
+      alert("Confirm Submission - Success!");
+    } else {
+      alert("Confirm Submission - Unsuccessful");
     }
+
+    
 
   }
   
