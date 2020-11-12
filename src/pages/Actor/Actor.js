@@ -37,7 +37,7 @@ const Actor = ({match}) => {
     const [data, setData] = useState(initialState);
     
     useEffect(() => {
-        axios.get(`http://localhost:5001/people?name=${name}`)
+        axios.get(`/people?name=${name}`)
           .then((response) => {
             const peopleObj = response.data.searchedPeople[0];
             setData({Role: peopleObj.Role, 

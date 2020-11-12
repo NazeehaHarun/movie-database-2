@@ -43,7 +43,7 @@ const MovieView = ({match}) => {
   const ratingNumbers = [1,2,3,4,5,6,7,8,9,10];
 
   useEffect(() => {
-    axios.get(`http://localhost:5001/movies?title=${movieTitle}`)
+    axios.get(`/movies?title=${movieTitle}`)
       .then((response) => {
         const movieObj = response.data.searchedMovies[0];
         setData({name: movieObj.Title, 

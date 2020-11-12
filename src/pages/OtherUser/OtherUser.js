@@ -31,7 +31,7 @@ const OtherUser = ({ match }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/users?name=${name}`)
+      .get(`/users?name=${name}`)
       .then((response) => {
         console.log(response);
         console.log(response.data.searchedUser[0].userName);

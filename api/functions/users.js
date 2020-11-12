@@ -55,7 +55,7 @@ const user = (searchParameters) => {
     
     let userList = [];
 
-    //If no parameters were supplied --> Return all the movies
+    //If no parameters were supplied --> Return all the users
     if (!searchParameters.name) {
         users.forEach(person => {
             userList.push(person);

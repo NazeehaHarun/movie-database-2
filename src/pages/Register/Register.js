@@ -94,7 +94,7 @@ class Register extends React.Component{
         
       }
 
-      axios.post("http://localhost:5001/login", user)
+      axios.post("/login", user)
       .then((response => {
 
         console.log(response);
@@ -112,7 +112,7 @@ class Register extends React.Component{
         user: formData
     }
 
-    axios.post("http://localhost:5001/users", user)
+    axios.post("/users", user)
       .then((response => {
 
         console.log(response);

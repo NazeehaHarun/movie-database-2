@@ -36,7 +36,11 @@ class App extends React.Component {
         <Route path="/viewmovies/:movieTitle" component={MovieView}/>
 
         <Route exact path="/viewUserProfile" component={Profile} exact/>
+        
+        <Route path="/viewUserProfile/:name" component={Profile} />
+
         <Route exact path="/viewActorPage" component={Actor} exact/>
+        
        
         <Route path="/viewActorPage/:name" component={Actor} />
         
