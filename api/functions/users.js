@@ -46,7 +46,8 @@ const followUser = (user, userToFollow) => {
     }
 
     user.following.push(userToFollow);
-    user.follwers.push(user);
+    userToFollow.followers.push(user);
+    
     return true;
 
 };

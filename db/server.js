@@ -28,11 +28,11 @@ app.use("/", (req, res, next) => {
 });
 
 app.use('/', loginRoute);
-//app.use('/movies', admin.auth, moviesRoute);
-app.use('/movies', moviesRoute);
+app.use('/movies', admin.auth, moviesRoute);
+//app.use('/movies', moviesRoute);
 app.use('/users', usersRoute);
-//app.use('/people', admin.auth, peopleRoute);
-app.use('/people', peopleRoute);
+app.use('/people', admin.auth, peopleRoute);
+//app.use('/people', peopleRoute);
 
 app.listen(PORT, () => {
     console.log("Server running on port " + PORT); 

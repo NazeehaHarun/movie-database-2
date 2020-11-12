@@ -89,9 +89,11 @@ const followPeople = (users, peopleToFollow) => {
     if (users === null || peopleToFollow === null) {
         return false;
     }
+    //User is now following the person
 
     users.following.push(peopleToFollow);
-    users.follwers.push(users);
+    peopleToFollow.followers.push(peopleToFollow);
+    
     return true;
 
 };

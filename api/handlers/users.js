@@ -32,7 +32,7 @@ router.post("/:id/follow", admin.auth, (req, res) => {
     
     //Implemented for purposes of theoretical business logic - No users actually exist on the system
 
-    const userObject = req.body.user;
+    const userObject = req.session.user;
     const userToFollowObject = req.body.otherUser;
 
     if (users.followUser(userObject, userToFollowObject) !== false) {
@@ -181,43 +181,6 @@ function putMovie (req,res){
 }
 
 
-/*
-router.put('/:id/:name', putMovie); // /users/edit/5 ?name=Harry
-
-///edit?id={id}&name={name}
-
-function putMovie (req,res){
-    console.log("Hello");
-    //Toy Story tt0114709
-    let flag =0;
-    let id= req.params.id;
-    let name=req.params.name;
-    let obj ={
-        "imdbID":id,
-        "Title":name
-    }
-    let index =0;
-    console.log("Hello again");
-    movies.forEach(movieJS=>{
-        //console.log(" before if Hello again");
-        if(movieJS.imdbID==id){
-            console.log("after if Hello again");
-            movies[index]=obj;
-            flag =1;
-            res.status(200).json(movies[index]);
-            console.log("after flag Hello again");
-            //fs.writeFileSync("../../db/movie-data.json",movie);
-        }
-        index++;
-    
-    });
-    
-    if(flag ===0){
-        res.sendStatus(400);
-    }
-    
-}
-*/
 
 
 
