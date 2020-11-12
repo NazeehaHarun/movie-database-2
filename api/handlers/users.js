@@ -8,7 +8,7 @@ const users = require("../functions/users");
 const movies = require("../../db/movie-data.json");
 const { unstable_renderSubtreeIntoContainer } = require("react-dom");
 
-
+const admin = require("../functions/auth");
 
 router.post("/", (req, res) => {
     
@@ -28,8 +28,8 @@ router.post("/", (req, res) => {
     
 });
 
-router.post("/:id/follow", (req, res) => {
-
+router.post("/:id/follow", admin.auth, (req, res) => {
+    
     //Implemented for purposes of theoretical business logic - No users actually exist on the system
 
     const userObject = req.body.user;
@@ -44,7 +44,7 @@ router.post("/:id/follow", (req, res) => {
 
 });
 
-router.get("/similarMovies", (req, res) => {
+router.get("/similarMovies", admin.auth, (req, res) => {
 
     let genre=[];
     let freq ={};
@@ -111,10 +111,10 @@ router.get("/similarMovies", (req, res) => {
 
 });
 
-router.get('/', (req, res) => {
+router.get('/', admin.auth, (req, res) => {
 
     const name = req.query.name;
-    const searchedUser = users.getUser({name});
+    const searchedUser = users.user({name});
 
     if (searchedUser !== null) {
         res.status(200).json({searchedUser});
@@ -125,10 +125,10 @@ router.get('/', (req, res) => {
     res.sendStatus(400);
 });
 
-router.get('/:user', (req, res) => {
+router.get('/:user', admin.auth, (req, res) => {
     const user = req.params.user;
     
-    const search = users.getUserWithId(user);
+    const search = users.userWithId(user);
 
     if (search !== null) {
         res.status(200).json({search});
@@ -138,12 +138,11 @@ router.get('/:user', (req, res) => {
     res.status(400); 
 })
 
-
-router.post('/changeStatus', putUser);
+router.post('/status', admin.auth, putUser);
 
 function putUser (req,res){
     let userId = req.body.userId;
-    let x = users.getUserWithId(userId);
+    let x = users.userWithId(userId);
     if(x == null){
         return null;
     }
@@ -155,5 +154,72 @@ function putUser (req,res){
     }
     res.json(x);
 }
+
+router.put('/:id', putMovie); 
+
+function putMovie (req,res){
+    
+    let flag =0;
+    let movieId = req.params.id; //store id
+    let movieObj = movies.getMovieWithId(movieId); //movie obj with the id
+    const movieForm = req.body; //obj
+    //let movie =JSON.stringify(movieForm);
+    let i =0;
+    movies.forEach(movieJS=>{
+        if(movieJS.imdbID==movieId){
+            movies[i]=movieForm;
+            flag =1;
+            res.status(200).json(movies[i]);
+            //fs.writeFileSync("../../db/movie-data.json",movie);
+        }
+        i++
+    
+    });
+    if(flag ===0){
+        res.sendStatus(400);
+    }
+}
+
+
+/*
+router.put('/:id/:name', putMovie); // /users/edit/5 ?name=Harry
+
+///edit?id={id}&name={name}
+
+function putMovie (req,res){
+    console.log("Hello");
+    //Toy Story tt0114709
+    let flag =0;
+    let id= req.params.id;
+    let name=req.params.name;
+    let obj ={
+        "imdbID":id,
+        "Title":name
+    }
+    let index =0;
+    console.log("Hello again");
+    movies.forEach(movieJS=>{
+        //console.log(" before if Hello again");
+        if(movieJS.imdbID==id){
+            console.log("after if Hello again");
+            movies[index]=obj;
+            flag =1;
+            res.status(200).json(movies[index]);
+            console.log("after flag Hello again");
+            //fs.writeFileSync("../../db/movie-data.json",movie);
+        }
+        index++;
+    
+    });
+    
+    if(flag ===0){
+        res.sendStatus(400);
+    }
+    
+}
+*/
+
+
+
 
 module.exports = router;

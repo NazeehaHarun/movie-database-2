@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 import './Register.css';
 
@@ -15,6 +16,7 @@ class Register extends React.Component{
       returningusername:"",
       returningpassword:"",
       userType:"Regular",
+      success: false
       
     }
     
@@ -64,7 +66,75 @@ class Register extends React.Component{
   }
 
   handleSubmit = event =>{
-    alert("Confirm Submission")
+    event.preventDefault();
+
+    
+
+    const formData = {
+      firstName: this.state.FirstName,
+      lastName: this.state.LastName,
+      username: this.state.username,
+      email: this.state.email,
+      password: this.state.password,
+      reconfirmPassword: this.state.reconfirm_password,
+      returningUsername: this.state.returningusername,
+      returningPassword: this.state.returningpassword,
+      userType: this.state.userType
+    }
+
+    //Register
+    if (formData.returningUsername.length !== 0 && formData.returningPassword !== 0) {
+      this.setState({
+        success: true 
+      });
+      const user = {
+        user: {
+
+          username: formData.returningUsername,
+          password: formData.returningPassword
+
+        }
+        
+      }
+
+      axios.post("/login", user)
+      .then((response => {
+
+        console.log(response);
+
+      }))
+      .catch(err =>{
+        console.log(err);
+      });
+      
+    } 
+
+    else {
+
+      const user = {
+        user: formData
+    }
+
+    axios.post("/users", user)
+      .then((response => {
+
+        console.log(response);
+
+      }))
+      .catch(err =>{
+        console.log(err);
+      });
+    
+    };
+
+    if (this.state.success === true) {
+      alert("Confirm Submission - Success!");
+    } else {
+      alert("Confirm Submission - Unsuccessful");
+    }
+
+    
+
   }
   
   handlereturningusernameChange=(event)=>{

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import "./Writer.css";
 import picturea from './stephen.jpg';
 import pictureb from './captain.jpg';
@@ -11,13 +11,64 @@ import pictureh from './narnia2.jpg';
 import picturei from './narnia3.jpg';
 import {Button} from 'react-bootstrap';
 import FollowButton from '../../components/FollowButton/FollowButton';
+import axios from 'axios';
 
 
-const Writer = () => {
+const Writer = ({match}) => {
+    const {params: {name}} = match;
 
+    const initialState = ({ 
+        
+        Role: "Writer", 
+        Name:"Stephen McFeely",
+        id:"3",
+        Description:"Stephen McFeely, 50, is an American screenwriter and producer. He is the third most successful screenwriters of all times in terms of U.S. box office reseipts.",
+        C1:"Brad Pitt", 
+        C2:"Emma Watson",
+        C3:"Anthony Russo",
+        C4:"Justin Russo",
+        C5:"Robert Downey, Jr",
+        C6:"Chris Evans",
+        Profile:"https://photos.geni.com/p13/96/0b/3b/d9/53444847bff51f98/stephen_mcfeely_original.jpg",
+        M1:"https://upload.wikimedia.org/wikipedia/en/b/b7/The_Mummy_Returns_poster.jpg",
+        M2:"https://resizing.flixster.com/Zdh9vCOYKFwrrzMCxRFmJZ1lHJE=/206x305/v2/https://flxt.tmsimg.com/assets/p19239_p_v8_ab.jpg",
+        M3:"https://upload.wikimedia.org/wikipedia/en/b/b6/Jumanji_poster.jpg"
+     
+    });
+
+    const [data, setData] = useState(initialState);
+    
+    useEffect(() => {
+        axios.get(`/people?name=${name}`)
+          .then((response) => {
+            const peopleObj = response.data.searchedPeople[0];
+            setData({Role: peopleObj.Role, 
+              Name: peopleObj.Name,
+              id: peopleObj.id,
+              Description: peopleObj.Description,
+              C1: peopleObj.C1,
+              C2: peopleObj.C2,
+              C3: peopleObj.C3,
+              C4: peopleObj.C4,
+              C5: peopleObj.C5,
+              C6: peopleObj.C6,
+              Profile:peopleObj.Profile,
+              M1: peopleObj.M1,
+              M2: peopleObj.M2,
+              M3: peopleObj.M3
+            });
+            console.log(response.data.searchedPeople[0]);
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      }, [name]);
+
+    /*
     const [data, setData] = useState({
         name: "Stephen McFeely"
     })
+    */
 
     return (
         <div className ="main-sec3">
@@ -27,31 +78,30 @@ const Writer = () => {
                     <div className="intro-wrapper3">
                         <div className ="left3">
                         
-                            <img id ="pa" src ={picturea} alt="" />;
+                            <img id ="pa" src ={data.Profile} alt="" />;
                             
                             <div className="info3">
-                                <p className = "p">Name: Stephen McFeely</p>
-                                <p className = "p">Born: November 12, 1969, Contra Costa County, California, United States</p>
-                                <p className = "p">Nominations: Hugo Award for Best Dramatic Presentation</p>
+                                <p className = "p">Name: {data.Name}</p>
+                                <p className = "p">Role: {data.Role}</p>
+                                <p className = "p">ID: {data.id}</p>
                             </div>
                         </div>
 
                         <div className ="right3">
-                            <h1 className = "h1">Stephen McFeely</h1>
+                            <h1 className = "h1">{data.Name}</h1>
                             <div id="about3">
                             
-                                <p className = "p">Stephen McFeely, 50, is an American screenwriter and producer. He is the third most
-                                    successful screenwriters of all times in terms of U.S. box office reseipts.
+                                <p className = "p">{data.Description}
                                 </p>
 
                                 <h4 className = "h4">Frequent collaborators</h4>
                                 <ul className = "ul">
-                                    <li>Christopher Markus</li>
-                                    <li>Tom Holland</li>
-                                    <li>Anthony Russo</li>
-                                    <li>Joe Russo</li>
-                                    <li>Robert Downey, Jr.</li>
-                                    <li>Chris Evans</li>
+                                    <li>{data.C1}</li>
+                                    <li>{data.C2}</li>
+                                    <li>{data.C3}</li>
+                                    <li>{data.C4}</li>
+                                    <li>{data.C5}</li>
+                                    <li>{data.C6}</li>
                                 </ul>
 
                             </div>
@@ -64,44 +114,23 @@ const Writer = () => {
                         <div className="movies4">
                             <div>
                                 <div className="post3">
-                                    <img id ="pb" src ={pictureb} alt="moviePoster2" />;
+                                    <img id ="pb" src ={data.M1} alt="moviePoster2" />;
                                 </div>
                             </div>
                             <div>
                                 <div className="post3">
-                                    <img id ="pc" src ={picturec} alt="moviePoster2" />;
+                                    <img id ="pc" src ={data.M2} alt="moviePoster2" />;
                                 </div>
                             </div>
                             <div>
                                 <div className="post3">
-                                    <img id ="pd" src ={pictured} alt="moviePoster2" />;
+                                    <img id ="pd" src ={data.M3} alt="moviePoster2" />;
                                 </div>
                             </div>
-                            <div>
-                                <div className="post3">
-                                    <img id ="pe" src ={picturee} alt="moviePoster2" />;
-                                </div>
-                            </div>
-                            <div>
-                                <div className="post3">
-                                    <img id ="pf" src ={picturef} alt="moviePoster2" />;
-                                </div>
-                            </div>
-                            <div>
-                                <div className="post3">
-                                    <img id ="pg" src ={pictureg} alt="moviePoster2" />;
-                                </div>
-                            </div>
-                            <div>
-                                <div className="post3">
-                                    <img id ="ph" src ={pictureh} alt="moviePoster2" />;
-                                </div>
-                            </div>
-                            <div>
-                                <div className="post3">
-                                    <img id ="pi" src ={picturei} alt="moviePoster2" />;
-                                </div>
-                            </div>
+                          
+                            
+                          
+                         
                         </div>
                     </div>
                 

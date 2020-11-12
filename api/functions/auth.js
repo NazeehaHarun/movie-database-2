@@ -2,6 +2,7 @@ function auth(req, res, next) {
 
     if (!req.session.loggedIn) {
         res.status(401).send("Unauthorized");
+        res.redirect("http://localhost:3000/");
         return;
     }
 

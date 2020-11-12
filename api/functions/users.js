@@ -51,24 +51,24 @@ const followUser = (user, userToFollow) => {
 
 };
 
-const getUser = (searchParameters) => {
+const user = (searchParameters) => {
     
     let userList = [];
 
-    //If no parameters were supplied --> Return all the movies
+    //If no parameters were supplied --> Return all the users
     if (!searchParameters.name) {
-        users.forEach(user => {
-            userList.push(user);
+        users.forEach(person => {
+            userList.push(person);
         });
 
         return userList;
     }
 
-    users.forEach(user => {
+    users.forEach(person => {
 
         if (searchParameters.name !== undefined) {
-            if (JSON.stringify(user.userName).toLowerCase() === JSON.stringify(searchParameters.name).toLowerCase()) {
-                userList.push(user); 
+            if (JSON.stringify(person.userName).toLowerCase() === JSON.stringify(searchParameters.name).toLowerCase()) {
+                userList.push(person); 
             }
           
         } 
@@ -78,12 +78,12 @@ const getUser = (searchParameters) => {
     return userList;
 };
 
-const getUserWithId = (userId) => {
+const userWithId = (userId) => {
     let p = null;
-    users.forEach(user => {
-        if (user.hasOwnProperty("id")) {
-            if(user.id === userId) {
-                p = user;
+    users.forEach(person => {
+        if (person.hasOwnProperty("id")) {
+            if(person.id === userId) {
+                p = person;
                 return;
             }
         }
@@ -97,6 +97,7 @@ const getUserWithId = (userId) => {
 module.exports = {
     registerUser, 
     followUser,
-    getUser,
-    getUserWithId,
+    user,
+    userWithId,
+   
 }

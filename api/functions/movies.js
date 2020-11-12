@@ -68,6 +68,7 @@ const getMovieWithId = (movieId) => {
 
 const createMovie = (movieObj) => {
 
+    
     //Ensures movie has minimum informated before being created
 
     if (!movieObj.title || !movieObj.genre || !movieObj.year) {
