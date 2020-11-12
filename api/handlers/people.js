@@ -51,8 +51,8 @@ router.get('/:person', (req, res) => {
 router.post("/:id/follow", (req, res) => {
 
     //Implemented for purposes of theoretical business logic - No users actually exist on the system
-    console.log("got it");
-    const userObject = req.body.user;
+    
+    const userObject = req.session.user;
     const peopleToFollowObject = req.body.people;
 
     if (people.followUser(userObject, peopleToFollowObject) !== false) {

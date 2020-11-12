@@ -1,6 +1,6 @@
 const movies = require("../../db/movie-data.json");
 const moviesShort = require("../../db/movie-data-short.json");
-const {v4: uuidv4} = require("uuid")
+const {v4: uuidv4} = require("uuid");
 
 const getMovies = (searchParameters) => {
     
