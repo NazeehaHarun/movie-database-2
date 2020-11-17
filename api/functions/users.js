@@ -52,6 +52,22 @@ const followUser = (user, userToFollow) => {
 
 };
 
+
+const userWithId = (userId) => {
+    let p = null;
+    users.forEach(person => {
+        if (person.hasOwnProperty("id")) {
+            if(person.id === userId) {
+                p = person;
+                return;
+            }
+        }
+    });
+
+    return p; 
+
+}
+
 const user = (searchParameters) => {
     
     let userList = [];
@@ -79,20 +95,11 @@ const user = (searchParameters) => {
     return userList;
 };
 
-const userWithId = (userId) => {
-    let p = null;
-    users.forEach(person => {
-        if (person.hasOwnProperty("id")) {
-            if(person.id === userId) {
-                p = person;
-                return;
-            }
-        }
-    });
 
-    return p; 
 
-}
+
+
+
 
 
 module.exports = {
