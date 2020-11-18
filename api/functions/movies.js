@@ -71,17 +71,16 @@ const createMovie = (movieObj) => {
     
     //Ensures movie has minimum informated before being created
 
-    if (!movieObj.title || !movieObj.genre || !movieObj.year) {
+    if (!movieObj.movie.title || !movieObj.movie.genre || !movieObj.movie.year) {
         return null;
     }
 
     const movie = {
         id: uuidv4(),
-        Title: movieObj.title,
-        Genre: movieObj.genre,
-        Year: movieObj.year
+        Title: movieObj.movie.title,
+        Genre: movieObj.movie.genre,
+        Year: movieObj.movie.year
     }
-    console.log(movie);
 
     return movie;
 

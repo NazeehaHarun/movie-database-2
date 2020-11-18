@@ -17,7 +17,9 @@ const createPeople = (personObj) => {
     let newPerson = null;
     
     //Ensure person does not already exist
-    for (person of people) {
+    for (person of peopleDB) {
+        console.log(person.Name);
+        console.log(personObj);
         if (person.Name == personObj.name) {
             newPerson = person;
         }
@@ -29,8 +31,8 @@ const createPeople = (personObj) => {
     
     newPerson = {
         id: uuidv4(),
-        name: personObj.name,
-        pastWorks: personObj.pastWorks,
+        name:  personObj.name,
+        pastWorks:  personObj.pastWorks,
         roles: "Actor",
     }
 
