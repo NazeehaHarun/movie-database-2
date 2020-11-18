@@ -5,14 +5,6 @@ import axios from 'axios';
 
 const AddMovie = () => {
 
-    const [data, setData] = useState({
-        movie: {
-            title: "",
-            genre: "",
-            year: "",
-        }
-    })
-
     return (
        
         <div className ="movie-form">
