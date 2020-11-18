@@ -18,8 +18,7 @@ const createPeople = (personObj) => {
     
     //Ensure person does not already exist
     for (person of peopleDB) {
-        console.log(person.Name);
-        console.log(personObj);
+        
         if (person.Name == personObj.name) {
             newPerson = person;
         }
