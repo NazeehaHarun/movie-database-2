@@ -41,7 +41,7 @@ const Writer = ({match}) => {
     useEffect(() => {
         axios.get(`/people?name=${name}`)
           .then((response) => {
-            const peopleObj = response.data.searchedPeople[0];
+            const peopleObj = response.data.result;
             setData({Role: peopleObj.Role, 
               Name: peopleObj.Name,
               id: peopleObj.id,
@@ -57,7 +57,7 @@ const Writer = ({match}) => {
               M2: peopleObj.M2,
               M3: peopleObj.M3
             });
-            console.log(response.data.searchedPeople[0]);
+            console.log(response.data.result);
           })
           .catch((error) => {
             console.log(error)

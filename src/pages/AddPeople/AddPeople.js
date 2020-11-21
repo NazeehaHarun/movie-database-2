@@ -3,6 +3,11 @@ import "./AddPeople.css";
 import {Button, Form, FormControl} from 'react-bootstrap'
 import axios from 'axios';
 
+const mongoose = require("mongoose");
+
+//let peopleModel= require("././schemaPeople.js")
+let peopleModel=require("C:/Users/nazee/Documents/Carleton Fall 2020/COMP 2406/movie_project/movie-database/src/pages/schemaPeople/schemaPeople.js")
+
 const AddPeople = () => {
 
     return (
@@ -17,6 +22,8 @@ const AddPeople = () => {
                         <Form.Control id = "name" size ="lg" type="text" placeholder="Name"/>
                         <br />
                         <Form.Control id = "description" size ="lg" type="text" placeholder="Description"/>
+                        <br />
+                        <Form.Control id = "id" size ="lg" type="text" placeholder="ID"/>
                         <br />
                         <Form.Control id = "c1" size ="lg" type="text" placeholder="Contributor 1"/>
                         <br />
@@ -64,6 +71,7 @@ function add(){
     let role = document.getElementById("role").value;
     let name = document.getElementById("name").value;
     let description = document.getElementById("description").value;
+    let id = document.getElementById("id").value;
     let c1 = document.getElementById("c1").value;
     let c2 = document.getElementById("c2").value;
     let c3 = document.getElementById("c3").value;
@@ -81,6 +89,7 @@ function add(){
         "role":role,
         "name": name,
         "description":description,
+        "id":id,
         "c1":c1,
         "c2":c2,
         "c3":c3,
@@ -98,6 +107,31 @@ function add(){
         */
      
     }};
+    /*
+    let obj = { person: {
+
+        "Role":role,
+        "Name": name,
+        "Description":description,
+        "id":id,
+        "C1":c1,
+        "C2":c2,
+        "C3":c3,
+        "C4":c4,
+        "C5":c5,
+        "C6":c6,
+        "Profile":profile,
+        "M1":m1,
+        "M2":m2,
+        "M3":m3,
+        /*
+        "name":name,
+        "pastWorks":pastWorks,
+        "role":role,
+        */
+     
+    //}};
+    
     
     var xhttp = new XMLHttpRequest();
 
