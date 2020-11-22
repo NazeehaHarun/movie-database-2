@@ -30,10 +30,28 @@ const createPeople = (personObj) => {
     
     newPerson = {
         id: uuidv4(),
+        role:"Actor",
+        name: personObj.name,
+        description:personObj.description,
+        c1:personObj.c1,
+        c2:personObj.c2,
+        c3:personObj.c3,
+        c4:personObj.c4,
+        c5:personObj.c5,
+        c6:personObj.c6,
+        profile:personObj.profile,
+        m1:personObj.m1,
+        m2:personObj.m2,
+        m3:personObj.m3,
+        
+        /*
         name:  personObj.name,
         pastWorks:  personObj.pastWorks,
         roles: "Actor",
+        */
     }
+
+  
 
     return newPerson; 
 

@@ -94,11 +94,24 @@ const userWithId = (userId) => {
 
 }
 
+const changeUserType = (user) => {
+
+    if (user.Type === "Regular") {
+        user.Type = "Contributing";
+    } else {
+        user.Type = "Regular";
+    }
+
+    return user;
+
+}
+
 
 module.exports = {
     registerUser, 
     followUser,
     user,
     userWithId,
+    changeUserType
    
 }

@@ -5,7 +5,8 @@ const people = require("../functions/people");
 
 router.post('/', (req, res) => {
 
-    const personObj = req.body.person; 
+    const personObj = req.body.person;
+    console.log(personObj); 
     const person = people.createPeople(personObj);
 
     if (person !== null) {

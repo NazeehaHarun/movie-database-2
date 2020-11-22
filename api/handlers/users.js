@@ -138,11 +138,22 @@ router.get('/:user', admin.auth, (req, res) => {
     res.status(400); 
 })
 
-router.post('/status', admin.auth, putUser);
+router.put('/status', admin.auth, (req, res) => {
+    let user = req.session.user;
 
+    if (user !== null) {
+        user = users.changeUserType(user);
+        res.status(200).send({user});
+        return;
+    } 
+
+    res.status(400);
+});
+/*
 function putUser (req,res){
     let userId = req.body.userId;
     let x = users.userWithId(userId);
+
     if(x == null){
         return null;
     }
@@ -153,8 +164,8 @@ function putUser (req,res){
         x.Type="Regular";
     }
     res.json(x);
-}
-
+},*/
+/*
 router.put('/:id', putMovie); 
 
 function putMovie (req,res){
@@ -179,7 +190,7 @@ function putMovie (req,res){
         res.sendStatus(400);
     }
 }
-
+*/
 
 
 
