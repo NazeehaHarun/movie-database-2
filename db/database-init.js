@@ -1,7 +1,12 @@
 let person= require("./people-data.json")
 
-let People= require("./schemaPeople.js")
+let People= require("../db/schema/schemaPeople");
 
+let user = require("./users-data.json");
+let User = require("../db/schema/userSchema");
+
+let movie = require("./movie-data.json");
+let Movie = require("../db/schema/movieSchema");
 
 const mongoose = require("mongoose")
 
@@ -21,6 +26,20 @@ mongoose.connection.once("open", function() {
         console.log(result);
     });
 
+    User.insertMany(user, function(err, result) {
+
+        if (err) {
+            throw err; 
+        }
+        console.log(result);
+    });
+    /*
+    Movie.insertMany(movie, function(err, result) {
+        if (err) {
+            throw err;
+        }
+        console.log(result);
+    });*/
 
  });
 

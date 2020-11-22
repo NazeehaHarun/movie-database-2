@@ -6,7 +6,7 @@ const people = require("../functions/people");
 const mongoose = require("mongoose");
 
 //let peopleModel= require("././schemaPeople.js")
-let peopleModel=require("../../db/schemaPeople.js")
+let peopleModel=require("../../db/schema/schemaPeople")
 
 
 router.post('/', (req, res) => {
@@ -24,17 +24,7 @@ router.post('/', (req, res) => {
         }
         res.status(200).json({result});
 
-    })
-    /*
-    if (person !== null) {
-        res.status(200).json({person});
-        return;
-
-    } else {
-
-        res.status(400).send("Person already exists");
-        return;
-    }*/
+    });
     
 });
 
@@ -67,14 +57,6 @@ router.get('/:person', (req, res) => {
         res.status(200).json({result});
     })
     
-/*
-    if (search !== null) {
-        res.status(200).json({search});
-        return;
-    }
-
-    res.status(400); 
-    */
 })
 
 

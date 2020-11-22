@@ -1,42 +1,42 @@
 const mongoose = require("mongoose");
 
 const movieSchema = mongoose.Schema({
-    title: {
+    Title: {
         type: String,
         required: true,
     },
-    genre: [{
+    Genre: [{
         type: String,
         required: true, 
     }],
-    releaseYear: {
+    Year: {
         type: Number,
         required: true,
     },
     averageRating: {
         type: Number,
-        required: true,
+        required: false,
     },
-    runtime: {
-        type: Number,
-        required: true,
-    },
-    plot: {
+    Runtime: {
         type: String,
         required: true,
     },
-    directors: [{
+    Plot: {
+        type: String,
+        required: true,
+    },
+    Director: [{
         type: mongoose.Schema.Types.ObjectId,
         required: false, 
         ref: "People",
     }],
 
-    writers: [{
+    Writer: [{
         type: mongoose.Schema.Types.ObjectId,
         required: false,
         ref: "People",
     }],
-    actors: [{
+    Actor: [{
         type: mongoose.Schema.Types.ObjectId,
         required: false,
         ref: "People",
@@ -48,7 +48,7 @@ const movieSchema = mongoose.Schema({
         ref: "Review"
     }],
 
-    moviePoster: [{
+    Poster: [{
         type: String,
         required: false,
     }]
