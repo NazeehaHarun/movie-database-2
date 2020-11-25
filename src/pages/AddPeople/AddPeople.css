@@ -1,0 +1,17 @@
+.movie-form{
+    width: 800px;
+    height:800px;
+    margin: 0 ;
+    background-color: aquamarine;
+    padding-top:80px;
+    padding-left:10px;
+    padding-right:10px;
+    
+}
+.picture{
+    padding-top: 30px;;
+}
+
+.button{
+    padding-top: 30px;
+}

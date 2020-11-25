@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const movies = require("../functions/movies");
+const Movie = require("../../db/schema/movieSchema");
 
 /**
  * @route GET /movies
@@ -14,16 +15,16 @@ router.get('/', (req, res) => {
     const year = req.query.year;
     const minrating = req.query.minrating; 
 
-    const searchedMovies = movies.getMovies({title, genre, year, minrating});
+    const movieList = movies.getMovies({title, genre, year, minrating});
 
-    if (searchedMovies !== null) {
-        res.status(200).json({searchedMovies});
-        return;
-    }
-
-    //Returns a response of bad request if movie is not found
-    res.sendStatus(400);
-    return; 
+    if (movieList.length === 0) {
+        //Returns a response of bad request if movie is not found
+        res.status(400);
+        return; 
+    } else {
+        res.status(200).json(movieList);
+        return; 
+    }    
 });
 
 router.get('/:id', (req, res) => {
@@ -41,16 +42,45 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
     
     const movieObj = req.body;
+    console.log(movieObj);
     
-    const movie = movies.createMovie(movieObj);
+    let movie = movies.createMovie(movieObj);
 
     if (movie !== null) {
-        res.status(200).json({movie});
-        return;
+        let movie = new Movie({
+            Title: movieObj.movie.title,
+            Genre: movieObj.movie.genre,
+            Year: movieObj.movie.year,
+            averageRating: movieObj.movie.rating,
+
+        });
+
+        Movie.findOne({Title: movieObj.movie.title})
+        .then(foundMovie => {
+            
+            if (foundMovie) {
+                res.status(400).send("Movie already exists");
+            } 
+            else {
+
+                movie.save(function(err, result){
+
+                    if (err) {
+                        throw err; 
+                    }
+        
+                    res.status(200).json({movie});
+                    return;
+        
+                });
+
+            }
+
+        });
+        
+    } else {
+        res.status(400).send("Missing Data on Form");
     }
-
-    res.sendStatus(400);
-
 });
 
 router.post('/review', (req, res) => {
@@ -66,5 +96,30 @@ router.post('/review', (req, res) => {
 
     res.sendStatus(400);
 });
+
+router.put('/:id', putMovie); 
+
+function putMovie (req,res){
+    
+    let flag =0;
+    let movieId = req.params.id; //store id
+    let movieObj = movies.getMovieWithId(movieId); //movie obj with the id
+    const movieForm = req.body; //obj
+    //let movie =JSON.stringify(movieForm);
+    let i =0;
+    movies.forEach(movieJS=>{
+        if(movieJS.imdbID==movieId){
+            movies[i]=movieForm;
+            flag =1;
+            res.status(200).json(movies[i]);
+            //fs.writeFileSync("../../db/movie-data.json",movie);
+        }
+        i++
+    
+    });
+    if(flag ===0){
+        res.sendStatus(400);
+    }
+}
 
 module.exports = router;

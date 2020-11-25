@@ -3,20 +3,28 @@ const router = express.Router();
 
 const people = require("../functions/people");
 
+const mongoose = require("mongoose");
+
+//let peopleModel= require("././schemaPeople.js")
+let peopleModel=require("../../db/schema/schemaPeople")
+
+
 router.post('/', (req, res) => {
 
-    const personObj = req.body.person; 
+    const personObj = req.body.person;
+    //personObj.Role = "actor";
+    console.log(personObj); 
     const person = people.createPeople(personObj);
+    let newPerson = new peopleModel(person);
+    newPerson.save(function(err,result){
+        if (err){
+            res.status(400).send("People cannot be added");
+            console.log(err.message);
 
-    if (person !== null) {
-        res.status(200).json({person});
-        return;
+        }
+        res.status(200).json({result});
 
-    } else {
-
-        res.status(400).send("Person already exists");
-        return;
-    }
+    });
     
 });
 
@@ -24,27 +32,31 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
 
     const name = req.query.name;
-    const searchedPeople = people.people({name});
+    //const searchedPeople = people.people({name});
+    peopleModel.findOne({"Name": name.toLowerCase()},function(err,result){
+        if (err){
+            res.status(400).send("People cannot be found");
+            console.log(err.message);
 
-    if (searchedPeople !== null) {
-        res.status(200).json({searchedPeople});
-        return;
-    }
+        }
+        res.status(200).json({result});
+    })
+    
 
-    //Returns a response of bad request if movie is not found
-    res.sendStatus(400);
 });
 
 router.get('/:person', (req, res) => {
     const person = req.params.person;
     const search = people.peopleWithId(person);
+    peopleModel.findOne({"id": person},function(err,result){
+        if (err){
+            res.status(400).send("People cannot be found");
+            console.log(err.message);
 
-    if (search !== null) {
-        res.status(200).json({search});
-        return;
-    }
-
-    res.status(400); 
+        }
+        res.status(200).json({result});
+    })
+    
 })
 
 

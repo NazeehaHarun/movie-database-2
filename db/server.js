@@ -3,6 +3,13 @@ const app = express();
 const cors = require("cors");
 const session = require("express-session");
 
+
+const mongoose = require("mongoose")
+
+mongoose.connect("mongodb://localhost:27017/movie-database", {useNewUrlParser: true}, {useUnifiedTopology: true})
+
+mongoose.connection.on("error", console.error.bind(console, 'connection error:'));
+
 app.use(cors());
 app.use(express.json());
 
@@ -34,9 +41,20 @@ app.use('/users', usersRoute);
 app.use('/people', admin.auth, peopleRoute);
 //app.use('/people', peopleRoute);
 
+/*
 app.listen(PORT, () => {
     console.log("Server running on port " + PORT); 
 });
+*/
+
+
+mongoose.connection.once("open", function() {
+    app.listen(PORT, () => {
+        console.log("Server running on port " + PORT); 
+    });
+
+});
+
 
 
 

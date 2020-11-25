@@ -13,6 +13,7 @@ import Actor from "./pages/Actor/Actor";
 import Director from "./pages/Director/Director";
 import Writer from "./pages/Writer/Writer";
 import AddMovie from "./pages/AddMovie/AddMovie";
+import AddPeople from "./pages/AddPeople/AddPeople";
 
 import OtherUser from "./pages/OtherUser/OtherUser"
 
@@ -54,6 +55,7 @@ class App extends React.Component {
         <Route path="/viewWriterPage/:name" component={Writer} />
 
         <Route exact path="/viewAddMovieForm" component={AddMovie} exact/>
+        <Route exact path="/viewAddPeopleForm" component={AddPeople} exact/>
 
         <Route exact path="/viewOtherProfiles" component={OtherUser} exact/>
         <Route path="/viewOtherProfiles/:name" component={OtherUser} exact/>

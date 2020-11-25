@@ -27,13 +27,59 @@ const createPeople = (personObj) => {
     if (newPerson !== null) {
         return null;
     }
-    
+
+
+        
     newPerson = {
-        id: uuidv4(),
+        
+        Role:personObj.role,
+        Name: personObj.name.toLowerCase(),
+        Description:personObj.description,
+        id:personObj.id,
+        C1:personObj.c1,
+        C2:personObj.c2,
+        C3:personObj.c3,
+        C4:personObj.c4,
+        C5:personObj.c5,
+        C6:personObj.c6,
+        Profile:personObj.profile,
+        M1:personObj.m1,
+        M2:personObj.m2,
+        M3:personObj.m3,
+        //The left side has to match the schema
+        //the right side has to match client (left side in add people)
+        /*
         name:  personObj.name,
         pastWorks:  personObj.pastWorks,
         roles: "Actor",
+        */
     }
+    /*
+    newPerson = {
+        id: uuidv4(),
+        role:"Actor",
+        name: personObj.name,
+        description:personObj.description,
+        c1:personObj.c1,
+        c2:personObj.c2,
+        c3:personObj.c3,
+        c4:personObj.c4,
+        c5:personObj.c5,
+        c6:personObj.c6,
+        profile:personObj.profile,
+        m1:personObj.m1,
+        m2:personObj.m2,
+        m3:personObj.m3,
+        
+        /*
+        name:  personObj.name,
+        pastWorks:  personObj.pastWorks,
+        roles: "Actor",
+        */
+    //}
+    
+
+  
 
     return newPerson; 
 

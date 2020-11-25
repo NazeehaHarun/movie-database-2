@@ -1,29 +1,18 @@
 [{"Type":"Contributing","userName":"David", "password": "12345", "id":"1", 
     "followers": [
-        {"Type":"Regular","userName":"Nazeeha","password": "12345", "id":"2"},
-        {"Type":"Contributing","userName":"Micheal", "password": "12345", "id":"3"},
-        {"Type":"Contributing", "userName": "John", "password": "12345", "id":"4"}
+        
     ],
     "recommendedMovies": [
-        {"Title": "Toy Story 2", "Poster": "https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_SX300.jpg"},
-        {"Title": "Your Name", "Poster": "https://upload.wikimedia.org/wikipedia/en/0/0b/Your_Name_poster.png" },
-        {"Title": "Spirited Away", "Poster": "https://m.media-amazon.com/images/M/MV5BMjlmZmI5MDctNDE2YS00YWE0LWE5ZWItZDBhYWQ0NTcxNWRhXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg"},
-        {"Title": "Konosuba", "Poster": "https://upload.wikimedia.org/wikipedia/en/6/66/KonoSuba_film_poster.jpg"},
-        {"Title": "Aladdin", "Poster": "https://d2e111jq13me73.cloudfront.net/sites/default/files/styles/product_image_aspect_switcher_170w/public/product-images/csm-movie/aladdin-movie-poster-image0.jpg?itok=VwOr0A5i"},
-        {"Title": "Parasite", "Poster": "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_UY1200_CR90,0,630,1200_AL_.jpg"}
+       
     ],
     "reviews": [
-        {"Title": "Toy Story", "Score": 10, "Summary": "Fantastic Movie!", "Full Review": "Incredible Animation!"},
-        {"Title": "Jumanji", "Score": 10, "Summary": "Fantastic Movie!", "Full Review": "Incredible Plot!"},
-        {"Title": "Heat", "Score": 10, "Summary": "Fantastic Movie!", "Full Review": "Very Scary!"}
+      
     ],
-    "followingPeople":[{"Role":"Actors", "Name":"Jonathan Hyde","id":"6"},
-    {"Role":"Actors", "Name":"Kirsten Dunst","id":"7"},
-    {"Role":"Actors","Name":"Bradley Pierce", "id":"8"}],
+    "followingPeople":[
+        
+    ],
 
-    "followingUsers":[{"Type":"Regular","userName":"Nazeeha","password": "12345", "id":"2"},
-        {"Type":"Contributing","userName":"Micheal", "password": "12345", "id":"3"},
-        {"Type":"Contributing", "userName": "John", "password": "12345", "id":"4"}]
+    "followingUsers":[]
     
 },
     {"Type":"Regular","userName":"Nazeeha","password": "12345", "id":"2"},
