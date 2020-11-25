@@ -52,7 +52,7 @@ router.post('/', (req, res) => {
             Genre: movieObj.movie.genre,
             Year: movieObj.movie.year,
             averageRating: movieObj.movie.rating,
-            
+
         });
 
         Movie.findOne({Title: movieObj.movie.title})
@@ -96,5 +96,30 @@ router.post('/review', (req, res) => {
 
     res.sendStatus(400);
 });
+
+router.put('/:id', putMovie); 
+
+function putMovie (req,res){
+    
+    let flag =0;
+    let movieId = req.params.id; //store id
+    let movieObj = movies.getMovieWithId(movieId); //movie obj with the id
+    const movieForm = req.body; //obj
+    //let movie =JSON.stringify(movieForm);
+    let i =0;
+    movies.forEach(movieJS=>{
+        if(movieJS.imdbID==movieId){
+            movies[i]=movieForm;
+            flag =1;
+            res.status(200).json(movies[i]);
+            //fs.writeFileSync("../../db/movie-data.json",movie);
+        }
+        i++
+    
+    });
+    if(flag ===0){
+        res.sendStatus(400);
+    }
+}
 
 module.exports = router;
