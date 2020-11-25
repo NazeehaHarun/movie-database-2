@@ -1,52 +1,52 @@
 const movies = require("../../db/movie-data.json");
-const moviesShort = require("../../db/movie-data-short.json");
+const Movie = require("../../db/schema/movieSchema");
 const {v4: uuidv4} = require("uuid");
 
 const getMovies = (searchParameters) => {
     
+    let parameters = {};
     let movieList = [];
 
-    //If no parameters were supplied --> Return all the movies
     if (!searchParameters.title && !searchParameters.genre && !searchParameters.year && !searchParameters.minRating) {
-        moviesShort.forEach(movie => {
-            movieList.push(movie);
-        });
-
-        return movieList;
+        movieList.push(movies);
     }
 
-    movies.forEach(movie => {
+    if (searchParameters.title) {
 
-        if (searchParameters.title !== undefined) {
-            if (JSON.stringify(movie.Title).toLowerCase() === JSON.stringify(searchParameters.title).toLowerCase()) {
-                
-                movieList.push(movie); 
+        Movie.findByTitle(searchParameters.title, function(err, results) {
+            if (err) {
+                throw err;
             }
-        } 
-        else if (searchParameters.genre !== undefined) {
-            if (movie.Genre.includes(searchParameters.genre)) {
-                
-                movieList.push(movie);
-            }
-        }
-        else if (searchParameters.year !== undefined) {
-            if (movie.Year === searchParameters.year) {
-                
-                movieList.push(movie);
-            }
-        }
+            movieList.push(results);
+        });
+    }
 
-        else {
-            if (searchParameters.minRating !== undefined) {
-                if (movie.minRating > searchParameters.minRating && movieList.includes(movie) !== true) {
-                    movieList.push(movie);
-                }
-            }
-        }
-    });
+    else if (searchParameters.genre) {
 
-    if (movieList.length === 0) {
-        return null;
+        Movie.findByGenre(searchParameters.genre, function(err, results) {
+            if (err) {
+                throw err;
+            }
+            movieList.push(results);
+        });
+    }
+
+    else if (searchParameters.year) {
+        Movie.findByYear(searchParameters.year, function(err, results) {
+            if (err) {
+                throw err;
+            }
+            movieList.push(results);
+        });
+    }
+
+    else if (searchParameters.minRating) {
+        Movie.findByRating(searchParameters.minRating, function(err, results) {
+            if (err) {
+                throw err;
+            }
+            movieList.push(results);
+        });
     }
 
     return movieList;
@@ -75,14 +75,7 @@ const createMovie = (movieObj) => {
         return null;
     }
 
-    const movie = {
-        id: uuidv4(),
-        Title: movieObj.movie.title,
-        Genre: movieObj.movie.genre,
-        Year: movieObj.movie.year
-    }
-
-    return movie;
+    return movieObj;
 
 }
 

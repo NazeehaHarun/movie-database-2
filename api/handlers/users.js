@@ -10,6 +10,7 @@ const movies = require("../../db/movie-data.json");
 const User = require("../../db/schema/userSchema");
 
 const admin = require("../functions/auth");
+const { user } = require("../functions/users");
 
 router.post("/", (req, res) => {
     
@@ -56,16 +57,48 @@ router.post("/", (req, res) => {
 
 router.post("/:id/follow", admin.auth, (req, res) => {
     
-    //Implemented for purposes of theoretical business logic - No users actually exist on the system
-
     const userObject = req.session.user;
     const userToFollowObject = req.body.otherUser;
 
+    //Shouldn't need to search for session user since they are already logged in
+
     if (users.followUser(userObject, userToFollowObject) !== false) {
-        res.status(200).json(userObject.followers);
-        return;
+
+        User.findOne({userName: userObject.username})
+        .then(user => {
+            
+            if (err) {
+                throw err; 
+            }
+
+            //User not Found
+            if (!user) {
+                res.status(400).send("User Does Not Exist");
+                return;
+            }
+            User.findOne({userName: userToFollowObject.username})
+            .then(userFollow => {
+
+                if (err) {
+                    throw err;
+                }
+
+                if (!userFollow) {
+                    res.status(400).send("Cannot Find User you are trying to follow");
+                    return;
+                }
+
+                user.followingUsers.push(userFollow.id);
+                userFollow.followers.push(user.id);
+
+                res.status(200).json(userFollow);
+                return;
+
+            });          
+        });
+        
     }
-    
+
     res.status(400);
 
 });
@@ -175,6 +208,7 @@ router.put('/status', admin.auth, (req, res) => {
 
     res.status(400);
 });
+
 /*
 function putUser (req,res){
     let userId = req.body.userId;

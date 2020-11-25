@@ -33,13 +33,13 @@ mongoose.connection.once("open", function() {
         }
         console.log(result);
     });
-    /*
+    
     Movie.insertMany(movie, function(err, result) {
         if (err) {
             throw err;
         }
         console.log(result);
-    });*/
+    });
 
  });
 

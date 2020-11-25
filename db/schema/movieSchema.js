@@ -10,7 +10,7 @@ const movieSchema = mongoose.Schema({
         required: true, 
     }],
     Year: {
-        type: Number,
+        type: String,
         required: true,
     },
     averageRating: {
@@ -19,11 +19,11 @@ const movieSchema = mongoose.Schema({
     },
     Runtime: {
         type: String,
-        required: true,
+        required: false,
     },
     Plot: {
         type: String,
-        required: true,
+        required: false,
     },
     Director: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -36,7 +36,7 @@ const movieSchema = mongoose.Schema({
         required: false,
         ref: "People",
     }],
-    Actor: [{
+    Actors: [{
         type: mongoose.Schema.Types.ObjectId,
         required: false,
         ref: "People",
@@ -53,5 +53,21 @@ const movieSchema = mongoose.Schema({
         required: false,
     }]
 });
+
+movieSchema.statics.findByTitle = function(title, callback) {
+    this.find({Title: title}, callback);
+}
+
+movieSchema.statics.findByGenre = function(genre, callback) {
+    this.find({Genre: genre}, callback);
+}
+
+movieSchema.statics.findByYear = function(year, callback) {
+    this.find({Year: year}, callback);
+}
+
+movieSchema.statics.findByRating = function(rating, callback) {
+    this.find({averageRating: rating}, callback);
+}
 
 module.exports = mongoose.model("Movie", movieSchema);
