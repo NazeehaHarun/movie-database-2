@@ -97,8 +97,8 @@ router.post('/review', (req, res) => {
     res.sendStatus(400);
 });
 
-router.put('/:id', putMovie); 
-
+//router.put('/:id', putMovie); 
+/*
 function putMovie (req,res){
     
     let flag =0;
@@ -121,5 +121,46 @@ function putMovie (req,res){
         res.sendStatus(400);
     }
 }
+*/
+router.put('/', (req, res) => {
+    
+    const movie = req.body.movie;
+    console.log(movie);
+
+        Movie.findOne({Title:movie.title})
+        .exec(function(err,result) {
+            if (err) {
+                res.status(500);
+                return; 
+            }
+
+            result.Title = movie.title;
+            result.Genre = movie.genre;
+            result.Year = movie.year;
+            result.averageRating= movie.averageRating;
+            
+                console.log(result);
+                result.save(function(err, result){
+                    if (err) {
+                        res.status(500);
+                        return; 
+                    }
+                    console.log("Movie UPDATED");
+                    console.log("Inside function");
+                    console.log(result);
+                    res.status(200).json({movie});
+                    return;
+        
+                });
+            
+          
+
+        });
+        
+     
+});
+
+
+
 
 module.exports = router;
