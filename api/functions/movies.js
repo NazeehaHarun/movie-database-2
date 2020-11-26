@@ -4,52 +4,27 @@ const {v4: uuidv4} = require("uuid");
 
 const getMovies = (searchParameters) => {
     
-    let parameters = {};
-    let movieList = [];
-
-    if (!searchParameters.title && !searchParameters.genre && !searchParameters.year && !searchParameters.minRating) {
-        movieList.push(movies);
-    }
+    let queryObject = {}
 
     if (searchParameters.title) {
-
-        Movie.findByTitle(searchParameters.title, function(err, results) {
-            if (err) {
-                throw err;
-            }
-            movieList.push(results);
-        });
+        
+        queryObject.Title = searchParameters.title;
     }
 
-    else if (searchParameters.genre) {
+    if (searchParameters.genre) {
 
-        Movie.findByGenre(searchParameters.genre, function(err, results) {
-            if (err) {
-                throw err;
-            }
-            movieList.push(results);
-        });
+        queryObject.Genre = searchParameters.genre;
     }
 
-    else if (searchParameters.year) {
-        Movie.findByYear(searchParameters.year, function(err, results) {
-            if (err) {
-                throw err;
-            }
-            movieList.push(results);
-        });
+    if (searchParameters.year) {
+        queryObject.Year = searchParameters.year;
     }
 
-    else if (searchParameters.minRating) {
-        Movie.findByRating(searchParameters.minRating, function(err, results) {
-            if (err) {
-                throw err;
-            }
-            movieList.push(results);
-        });
+    if (searchParameters.minRating) {
+        queryObject.averageRating = searchParameters.minRating;
     }
 
-    return movieList;
+    return queryObject;
 };
 
 const getMovieWithId = (movieId) => {

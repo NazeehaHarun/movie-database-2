@@ -15,16 +15,23 @@ router.get('/', (req, res) => {
     const year = req.query.year;
     const minrating = req.query.minrating; 
 
-    const movieList = movies.getMovies({title, genre, year, minrating});
+    const queryObject = movies.getMovies({title, genre, year, minrating});
+    let movieList = [];
 
-    if (movieList.length === 0) {
-        //Returns a response of bad request if movie is not found
-        res.status(400);
-        return; 
-    } else {
-        res.status(200).json(movieList);
-        return; 
-    }    
+    Movie.find(queryObject, function(err, result) {
+        console.log(queryObject);
+        if (err) {
+            
+            res.status(400);
+            return; 
+
+        } else {
+            console.log(result);
+            movieList = result;
+            res.status(200).json(movieList);
+            return;
+        }
+    });
 });
 
 router.get('/:id', (req, res) => {
