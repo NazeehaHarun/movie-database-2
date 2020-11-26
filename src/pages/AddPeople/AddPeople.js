@@ -12,7 +12,7 @@ const AddPeople = () => {
 
     return (
        
-        <div className ="movie-form">
+        <div className ="people-form">
 
             <Form>
                 <Form.Group>
