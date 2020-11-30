@@ -4,65 +4,36 @@ const {v4: uuidv4} = require("uuid");
 
 const getMovies = (searchParameters) => {
     
-    let parameters = {};
-    let movieList = [];
-
-    if (!searchParameters.title && !searchParameters.genre && !searchParameters.year && !searchParameters.minRating) {
-        movieList.push(movies);
-    }
+    let queryObject = {}
 
     if (searchParameters.title) {
-
-        Movie.findByTitle(searchParameters.title, function(err, results) {
-            if (err) {
-                throw err;
-            }
-            movieList.push(results);
-        });
+        
+        queryObject.Title = searchParameters.title;
     }
 
-    else if (searchParameters.genre) {
+    if (searchParameters.genre) {
 
-        Movie.findByGenre(searchParameters.genre, function(err, results) {
-            if (err) {
-                throw err;
-            }
-            movieList.push(results);
-        });
+        queryObject.Genre = searchParameters.genre;
     }
 
-    else if (searchParameters.year) {
-        Movie.findByYear(searchParameters.year, function(err, results) {
-            if (err) {
-                throw err;
-            }
-            movieList.push(results);
-        });
+    if (searchParameters.year) {
+        queryObject.Year = searchParameters.year;
     }
 
-    else if (searchParameters.minRating) {
-        Movie.findByRating(searchParameters.minRating, function(err, results) {
-            if (err) {
-                throw err;
-            }
-            movieList.push(results);
-        });
+    if (searchParameters.minRating) {
+        queryObject.averageRating = searchParameters.minRating;
     }
 
-    return movieList;
+    return queryObject;
 };
 
 const getMovieWithId = (movieId) => {
 
-    movies.forEach(movie => {
-        if (movie.hasOwnProperty(id)) {
-            if(movie.id === movieId) {
-                return movie;
-            }
-        }
-    });
-
-    return null; 
+    if (movieId == null) {
+        return null;
+    } else {
+        return movieId;
+    }
 
 }
 
@@ -82,42 +53,9 @@ const createMovie = (movieObj) => {
 const leaveReview = (review) => {
 
     //Ensure the review has all necessary information 
-    if (!review.movieTitle || !review.rating || !review.reviewSummary || !review.fullReview) {
+    if (!review.rating || !review.summary || !review.fullReview) {
         return null;
     }
-
-    movies.forEach(movie => {
-        if (movie.Title === review.movieTitle) {
-
-            //Here, a new array needs to be created since no data is actually saved everytime the server is run, and thus the array won't be saved in the object
-            //When the database is added to save the data, the movie can simply be pushed to the database 
-
-            movie.userReview = [];
-            movie.userReview.push(review);
-
-            //Change movie minRating if necessary - Again, since no data is saved, I must initialize minrating in the movie to some random value (5) to compare against. When the database is added, it will simply compare with whatever rating value is saved in that particular movie
-
-            movie.minRating = 5;  
-            if (review.rating < movie.minRating) {
-                movie.minRating = review.rating;
-            }
-
-            //Calculate averageRating
-            let averageRating = 0;
-            let count = 0;
-            movie.userReview.forEach(reviewObj => {
-
-                averageRating += reviewObj.rating;
-                count += 1; 
-            });
-
-            movie.averageRating = (averageRating/count);
-
-            //Console.log(movie) below verifies that review has been added to the movie object
-            console.log(movie); 
-
-        }
-    });
 
     return review;
 

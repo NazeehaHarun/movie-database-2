@@ -54,20 +54,4 @@ const movieSchema = mongoose.Schema({
     }]
 });
 
-movieSchema.statics.findByTitle = function(title, callback) {
-    this.find({Title: title}, callback);
-}
-
-movieSchema.statics.findByGenre = function(genre, callback) {
-    this.find({Genre: genre}, callback);
-}
-
-movieSchema.statics.findByYear = function(year, callback) {
-    this.find({Year: year}, callback);
-}
-
-movieSchema.statics.findByRating = function(rating, callback) {
-    this.find({averageRating: rating}, callback);
-}
-
 module.exports = mongoose.model("Movie", movieSchema);

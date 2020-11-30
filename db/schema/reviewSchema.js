@@ -14,7 +14,7 @@ const reviewSchema = mongoose.Schema({
         ref: "User"
     },
 
-    score: {
+    rating: {
         type: Number,
         required: true,
     },

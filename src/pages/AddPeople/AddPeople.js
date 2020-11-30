@@ -3,11 +3,6 @@ import "./AddPeople.css";
 import {Button, Form, FormControl} from 'react-bootstrap'
 import axios from 'axios';
 
-const mongoose = require("mongoose");
-
-//let peopleModel= require("././schemaPeople.js")
-let peopleModel=require("C:/Users/nazee/Documents/Carleton Fall 2020/COMP 2406/movie_project/movie-database/src/pages/schemaPeople/schemaPeople.js")
-
 const AddPeople = () => {
 
     return (

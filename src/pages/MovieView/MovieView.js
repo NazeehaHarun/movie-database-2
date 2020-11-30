@@ -7,9 +7,9 @@ import Image from "react-bootstrap/Image";
 import JumboTron from "react-bootstrap/Jumbotron";
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table"; 
-import Header from "../../components/Header/Header";
-import InputGroup from "react-bootstrap/InputGroup";
+
 import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 
 import axios from 'axios';
@@ -24,7 +24,6 @@ import './MovieView.css'
 const MovieView = ({match}) => {
   
   const {params: {movieTitle}} = match;
-  console.log(movieTitle);
 
   const initialState = ({
     name: "Weathering With You", 
@@ -39,13 +38,20 @@ const MovieView = ({match}) => {
   });
 
   const [data, setData] = useState(initialState);
+  const [reviews, setReview] = useState({
+      rating: 0,
+      summary: "",
+      fullReview: "",
+  });
 
   const ratingNumbers = [1,2,3,4,5,6,7,8,9,10];
 
   useEffect(() => {
     axios.get(`/movies?title=${movieTitle}`)
       .then((response) => {
+        console.log(response);
         const movieObj = response.data.searchedMovies[0];
+        
         setData({name: movieObj.Title, 
           releaseYear: movieObj.Year, 
           runTime: movieObj.Runtime, 
@@ -61,6 +67,24 @@ const MovieView = ({match}) => {
         console.log(error)
       });
   }, [movieTitle]);
+
+  const handleChange = (event) => {
+    setReview({ ...reviews, [event.target.name]: event.target.value });
+    
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    
+    const review = {
+      rating: reviews.rating,
+      summary: reviews.summary,
+      fullReview: reviews.fullReview
+    }
+
+    console.log(review);
+
+  }
 
 
   return (
@@ -155,16 +179,18 @@ const MovieView = ({match}) => {
 
       </Carousel>
 
-      <Form className = "reviewForm"> 
+      <Form className = "reviewForm" onSubmit = {handleSubmit}> 
         <Form.Group>
           <Form.Label>Leave a Review</Form.Label> 
           {ratingNumbers.map((number, index) => (
 
-            <Form.Check className = "ratings" inline type = "radio" label = {number} /> 
+            <Form.Check value = {index + 1} name = "rating" onChange = {handleChange} className = "ratings" inline type = "radio" label = {number} /> 
           ))}
-          
-          <Form.Control  as = "textarea" rows = "5" size = "lg" />
+
+          <Form.Control placeholder = "Review Summary" name = "summary" onChange = {handleChange} as = "textarea" rows = "1" size = "sm" />
+          <Form.Control placeholder = "Full Review" name = "fullReview" onChange = {handleChange} as = "textarea" rows = "5" size = "lg" />
         </Form.Group>
+        <Button variant = "primary" type = "submit">Submit</Button>
       </Form>
 
       <Card className = "reviewForm">

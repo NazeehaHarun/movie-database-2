@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const mongoose = require("mongoose");
 
 const movies = require("../functions/movies");
 const Movie = require("../../db/schema/movieSchema");
+const Review = require("../../db/schema/reviewSchema");
 
 /**
  * @route GET /movies
@@ -15,16 +17,23 @@ router.get('/', (req, res) => {
     const year = req.query.year;
     const minrating = req.query.minrating; 
 
-    const movieList = movies.getMovies({title, genre, year, minrating});
+    const queryObject = movies.getMovies({title, genre, year, minrating});
+    let movieList = [];
 
-    if (movieList.length === 0) {
-        //Returns a response of bad request if movie is not found
-        res.status(400);
-        return; 
-    } else {
-        res.status(200).json(movieList);
-        return; 
-    }    
+    Movie.find(queryObject, function(err, result) {
+        console.log(queryObject);
+        if (err) {
+            
+            res.status(400);
+            return; 
+
+        } else {
+            console.log(result);
+            movieList = result;
+            res.status(200).json(movieList);
+            return;
+        }
+    });
 });
 
 router.get('/:id', (req, res) => {
@@ -32,11 +41,17 @@ router.get('/:id', (req, res) => {
     const search = movies.getMovieWithId(id);
 
     if (search !== null) {
-        res.status(200).json({search});
-        return;
+        Movie.findById(id, function(err, result){
+            if (err){
+                res.status(400);
+                return;
+            }
+            res.status(200).json(result);
+        });
+    } else {
+        res.status(400); 
     }
-
-    res.status(400); 
+   
 })
 
 router.post('/', (req, res) => {
@@ -83,19 +98,84 @@ router.post('/', (req, res) => {
     }
 });
 
-router.post('/review', (req, res) => {
+router.put('/:movie/review', (req, res) => {
+
+    const movieId = req.params.movie;
 
     const reviewObj = req.body.review;
     const review = movies.leaveReview(reviewObj);
-    console.log(review);
+    
 
     if (review !== null) {
-        res.status(200).json({review});
+        
+        const newReview = new Review(review);
+        newReview.user = req.session.user._id; 
+        newReview.movie = movieId;
+
+        newReview.save(function(err, result) {
+            if (err) {
+                throw err;
+
+            } else {
+                
+                const update = {movieReviews: result};
+
+                Movie.findByIdAndUpdate(movieId, { $push: update}, function(err, result) {
+                    if (err){
+                        throw err; 
+        
+                    } else {        
+                        res.status(200).json(result);
+                        return;
+        
+                    }
+                });
+
+            }
+        });
+
+    } else {
+        res.sendStatus(400);
         return;
     }
 
-    res.sendStatus(400);
 });
+
+router.get('/:movie/review', (req, res) => {
+
+    const movieId = req.params.movie;
+
+    if (movieId !== null) {
+        
+        Movie.findById(movieId, function(err, result) {
+
+            if (err) {
+                throw err;
+            } else {
+
+                const foundMovie = result;
+                const reviews = foundMovie.movieReviews;
+                
+                Review.find({"_id": { $in: reviews}}, function(err, result) {
+                    if (err) {
+                        throw err;
+                    } else {
+                        res.status(200).json(result);
+                    }
+                });
+            }
+
+        });
+
+    } else {
+        res.sendStatus(400);
+        return;
+    }
+
+});
+
+
+
 
 router.put('/:id', putMovie); 
 
