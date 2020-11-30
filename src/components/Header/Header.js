@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Notification from "../../components/Notification/Notification";
 import axios from "axios";
+import {Link} from "react-router-dom";
+import NavigateButton from "../NavigateButton/NavigateButton";
 
 import "./Header.css";
 
@@ -18,20 +20,10 @@ import {
 const Header = () => {
   const [search, setSearch] = useState({ movieTitle: "" });
   const [hasSearch, setHasSearch] = useState(false);
-  const [movie, setMovie] = useState({ 
-    movieData : {
-      name: "Weathering With You",
-      releaseYear: "2019",
-      averageRating: "8.0",
-      runTime: "1h 51m",
-      genres: "Anime, Romance, Fantasy",
-      moviePlot:
-        "A boy runs away to Tokyo and befriends a girl who appears to be able to manipulate the weather.",
-    }
-  });
 
   const handleChange = (event) => {
     setSearch({ ...search, [event.target.name]: event.target.value });
+    console.log(search.movieTitle);
   };
 
   const handleSubmit = (event) => {
@@ -87,9 +79,9 @@ const Header = () => {
               name="movieTitle"
               onChange={handleChange}
             />
-            <Button onClick={handleSubmit} variant="outline-success">
-              Browse
-            </Button>
+
+            <NavigateButton route = {"/searchMovie/" + search.movieTitle} text = "Browse" variant = "outline-success"/>
+
           </Form>
           <Form>
             <Form.Check

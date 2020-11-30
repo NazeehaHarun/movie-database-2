@@ -61,17 +61,12 @@ const user = (searchParameters) => {
 };
 
 const userWithId = (userId) => {
-    let p = null;
-    users.forEach(person => {
-        if (person.hasOwnProperty("id")) {
-            if(person.id === userId) {
-                p = person;
-                return;
-            }
-        }
-    });
-
-    return p; 
+    
+    if (userId == null) {
+        return null;
+    } else {
+        return userId;
+    }
 
 }
 

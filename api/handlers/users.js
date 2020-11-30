@@ -186,15 +186,26 @@ router.get('/', admin.auth, (req, res) => {
 
 router.get('/:user', admin.auth, (req, res) => {
     const user = req.params.user;
-    
     const search = users.userWithId(user);
 
     if (search !== null) {
-        res.status(200).json({search});
+        User.findById(user, function(err, result) {
+
+            if (err) {
+                throw err;
+            } 
+
+            res.status(200).json(result);
+            return;
+            
+        });
+
+    } else {
+        res.status(400); 
         return;
     }
 
-    res.status(400); 
+    
 })
 
 router.put('/status', admin.auth, (req, res) => {
