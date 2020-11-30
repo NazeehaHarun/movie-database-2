@@ -7,8 +7,7 @@ import Image from "react-bootstrap/Image";
 import JumboTron from "react-bootstrap/Jumbotron";
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table"; 
-import Header from "../../components/Header/Header";
-import InputGroup from "react-bootstrap/InputGroup";
+
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
