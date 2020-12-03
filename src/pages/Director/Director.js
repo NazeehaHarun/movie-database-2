@@ -14,7 +14,7 @@ import axios from 'axios';
 
 const Director = ({match}) => {
 
-    const {params: {name}} = match;
+    const {params: {directorId}} = match;
 
     const initialState = ({ 
 
@@ -39,12 +39,12 @@ const Director = ({match}) => {
     const [data, setData] = useState(initialState);
     
     useEffect(() => {
-        axios.get(`/people?name=${name}`)
+        axios.get(`/people/${directorId}`)
           .then((response) => {
             const peopleObj = response.data.result;
             setData({Role: peopleObj.Role, 
               Name: peopleObj.Name,
-              id: peopleObj.id,
+              //id: peopleObj.id,
               Description: peopleObj.Description,
               C1: peopleObj.C1,
               C2: peopleObj.C2,
@@ -62,7 +62,7 @@ const Director = ({match}) => {
           .catch((error) => {
             console.log(error)
           });
-      }, [name]);
+      }, [directorId]);
 
     /*
     const [data, setData] = useState({

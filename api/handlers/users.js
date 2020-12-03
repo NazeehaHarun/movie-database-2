@@ -10,7 +10,6 @@ const movies = require("../../db/movie-data.json");
 const User = require("../../db/schema/userSchema");
 
 const admin = require("../functions/auth");
-const { user } = require("../functions/users");
 
 router.post("/", (req, res) => {
     
@@ -55,118 +54,32 @@ router.post("/", (req, res) => {
     }
 });
 
-router.post("/:id/follow", admin.auth, (req, res) => {
+router.put("/:id/follow", admin.auth, (req, res) => {
     
     const userObject = req.session.user;
-    const userToFollowObject = req.body.otherUser;
+    const userToFollowObjectId = req.params.id;
+    
+    let newFollowingUpdate = {followingUsers: userToFollowObjectId};
 
-    //Shouldn't need to search for session user since they are already logged in
-
-    if (users.followUser(userObject, userToFollowObject) !== false) {
-
-        User.findOne({userName: userObject.username})
-        .then(user => {
+    User.findByIdAndUpdate(userObject._id, {$push: newFollowingUpdate}, function(err, result) {
+        if (err) {
+            throw err;
+        } else {
             
-            if (err) {
-                throw err; 
-            }
+            const update = {followers: userObject._id}
 
-            //User not Found
-            if (!user) {
-                res.status(400).send("User Does Not Exist");
-                return;
-            }
-            User.findOne({userName: userToFollowObject.username})
-            .then(userFollow => {
-
+            User.findByIdAndUpdate(userToFollowObjectId, {$push: update}, function(err, result) {
                 if (err) {
                     throw err;
-                }
-
-                if (!userFollow) {
-                    res.status(400).send("Cannot Find User you are trying to follow");
+                } else {
+                    
+                    res.status(200).send(result);
                     return;
                 }
+            });
+        }
 
-                user.followingUsers.push(userFollow.id);
-                userFollow.followers.push(user.id);
-
-                res.status(200).json(userFollow);
-                return;
-
-            });          
-        });
-        
-    }
-
-    res.status(400);
-
-});
-
-router.get("/similarMovies", admin.auth, (req, res) => {
-
-    let genre=[];
-    let freq ={};
-
-    let maximum =0;
-    //Need to figure out the logic to find the most common genre
-    
-    movieSearchHistory.forEach((movie)=>{
-       let gen= movie.Genre.split(",") //creates an array of genre
-       gen.forEach((g)=>{
-            genre.push(g.trim());
-            console.log(genre);
-       
-         });
     });
-    
-    //Making an object from genre array
-    //{Adventure:3, Comedy:5, Action:8, Sci-Fic:10}
-    for(let i =0; i <genre.length; i++){
-        let type = genre[i];
-        if(freq[type]){
-            freq[type]++;
-        }
-        else{
-            freq[type]=1;
-        }
-    }
-    console.log(freq);
-
-    //Will return an array of keys and values in the object as nested arrays
-    let max ="";
-    let maxVal =-1;
-
-    for(let g of Object.keys(freq)){
-        
-        if(freq[g]>maxVal){
-            maxVal = freq[g];
-            max =g;
-        }
-    }
-    console.log(max);
-    console.log(maxVal);
-
-    const movieGenre = max;
-    console.log(movieGenre);
-
-    let count =0;
-    let similar=[];
-
-    movies.forEach((movie) => {
-
-        if (movie.Genre===movieGenre) {
-            similar.push(movie);
-            count++;
-            //Returns movie as a JSON object if found        
-        }
-        if(count===3){
-            return res.json(similar);
-        }
-    
-    });
-    //Returns a response of bad request if movie is not found
-    res.sendStatus(400);
 
 });
 
@@ -175,49 +88,61 @@ router.get('/', admin.auth, (req, res) => {
     const name = req.query.name;
     const searchedUser = users.user({name});
 
-    if (searchedUser !== null) {
-        res.status(200).json({searchedUser});
-        return;
-    }
+    User.findOne({userName: name}, function(err, result) {
 
-    //Returns a response of bad request if movie is not found
-    res.sendStatus(400);
+        if (err) {
+            throw err; 
+        } else {
+            res.status(200).json({result});
+            return; 
+        }
+
+    });
+    
 });
 
 router.get('/:user', admin.auth, (req, res) => {
     const user = req.params.user;
     const search = users.userWithId(user);
 
-    if (search !== null) {
-        User.findById(user, function(err, result) {
-
-            if (err) {
-                throw err;
-            } 
-
-            res.status(200).json(result);
+    User.findById( user, function(err,result){
+        if (err){
+            res.status(400).send("user cannot be found");
+            console.log(err.message);
             return;
-            
-        });
 
-    } else {
-        res.status(400); 
-        return;
-    }
+        } else {
+            res.status(200).json({result});
+        }
+    })
 
     
 })
 
 router.put('/status', admin.auth, (req, res) => {
     let user = req.session.user;
+    const id = user._id;
+    const newUserType = users.changeUserType(user);
+    user.Type = newUserType;
 
     if (user !== null) {
-        user = users.changeUserType(user);
-        res.status(200).send({user});
-        return;
-    } 
 
-    res.status(400);
+        const update = {Type: newUserType}
+        User.findByIdAndUpdate(id, update, function(err, result) {
+            if (err) {
+                throw err; 
+            } else {
+                console.log(result);
+                res.status(200).send(result);
+                return;
+            }
+        });
+
+    } else{
+        res.status(400);
+    }
+
+    
 });
 
 module.exports = router;

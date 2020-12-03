@@ -15,7 +15,7 @@ import axios from 'axios';
 
 
 const Writer = ({match}) => {
-    const {params: {name}} = match;
+    const {params: {writerId}} = match;
 
     const initialState = ({ 
         
@@ -39,7 +39,7 @@ const Writer = ({match}) => {
     const [data, setData] = useState(initialState);
     
     useEffect(() => {
-        axios.get(`/people?name=${name}`)
+        axios.get(`/people/${writerId}`)
           .then((response) => {
             const peopleObj = response.data.result;
             setData({Role: peopleObj.Role, 
@@ -62,7 +62,7 @@ const Writer = ({match}) => {
           .catch((error) => {
             console.log(error)
           });
-      }, [name]);
+      }, [writerId]);
 
     /*
     const [data, setData] = useState({

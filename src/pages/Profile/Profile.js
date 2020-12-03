@@ -22,7 +22,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const Profile = ({ match }) => {
 
     const {
-        params: { name },
+        params: { userId },
       } = match;
 
   const [data, setData] = useState({
@@ -90,7 +90,7 @@ const Profile = ({ match }) => {
   useEffect(() => {
       
       axios
-      .get(`/users?name=${name}`)
+      .get(`/users/${userId}`)
       .then((response) => {
         console.log(response);
         console.log(response.data.searchedUser[0].userName);

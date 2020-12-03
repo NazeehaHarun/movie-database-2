@@ -23,7 +23,7 @@ import './MovieView.css'
 
 const MovieView = ({match}) => {
   
-  const {params: {movieTitle}} = match;
+  const {params: {movieId}} = match;
 
   const initialState = ({
     name: "Weathering With You", 
@@ -34,7 +34,8 @@ const MovieView = ({match}) => {
     moviePlot: "A boy runs away to Tokyo and befriends a girl who appears to be able to manipulate the weather.",
     director: "Makoto Shinkai",
     writer: "Makoto Shinkai",
-    posterLink: MoviePoster
+    posterLink: MoviePoster,
+    reviews: []
   });
 
   const [data, setData] = useState(initialState);
@@ -44,13 +45,30 @@ const MovieView = ({match}) => {
       fullReview: "",
   });
 
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+
   const ratingNumbers = [1,2,3,4,5,6,7,8,9,10];
 
   useEffect(() => {
-    axios.get(`/movies?title=${movieTitle}`)
+    console.log(hasSubmitted)
+    if (hasSubmitted === true) {
+      let review = reviews;
+      axios.put(`/movies/${movieId}/review`, review)
+      .then((response => {
+        console.log(response);
+        hasSubmitted = false; 
+
+      }))
+      .catch(err =>{
+        console.log(err);
+      });
+
+    } else {
+
+      axios.get(`/movies/${movieId}`)
       .then((response) => {
         console.log(response);
-        const movieObj = response.data.searchedMovies[0];
+        const movieObj = response.data.movie;
         
         setData({name: movieObj.Title, 
           releaseYear: movieObj.Year, 
@@ -60,13 +78,39 @@ const MovieView = ({match}) => {
           posterLink: movieObj.Poster,
           director: movieObj.Director,
           writer: movieObj.Writer,
+          reviews: movieObj.reviews 
         });
-        console.log(response.data.searchedMovies[0]);
+
       })
       .catch((error) => {
         console.log(error)
       });
-  }, [movieTitle]);
+
+    }
+    /*
+    axios.get(`/movies/${movieId}`)
+      .then((response) => {
+        console.log(response);
+        const movieObj = response.data.movie;
+        
+        setData({name: movieObj.Title, 
+          releaseYear: movieObj.Year, 
+          runTime: movieObj.Runtime, 
+          genres: movieObj.Genre, 
+          moviePlot: movieObj.Plot, 
+          posterLink: movieObj.Poster,
+          director: movieObj.Director,
+          writer: movieObj.Writer,
+          reviews: movieObj.reviews 
+        });
+
+      })
+      .catch((error) => {
+        console.log(error)
+      });*/
+
+    
+  }, [movieId]);
 
   const handleChange = (event) => {
     setReview({ ...reviews, [event.target.name]: event.target.value });
@@ -75,17 +119,27 @@ const MovieView = ({match}) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+   
+    setHasSubmitted(!hasSubmitted);
+    console.log(hasSubmitted);
     
-    const review = {
-      rating: reviews.rating,
-      summary: reviews.summary,
-      fullReview: reviews.fullReview
-    }
-
-    console.log(review);
-
   }
 
+  let movieReviews = [];
+  
+  data.reviews.forEach(review => {
+    movieReviews.push(
+      <div>
+        <Card.Title as = "h5">
+            {review.summary} 
+        </Card.Title>
+        <Card.Text>
+          {review.fullReview}
+        </Card.Text>
+
+      </div>
+    )
+  });
 
   return (
     <div className = "body">
@@ -194,12 +248,7 @@ const MovieView = ({match}) => {
       </Form>
 
       <Card className = "reviewForm">
-        <Card.Title as = "h5">
-            Fantastic Movie [10/10]
-        </Card.Title>
-        <Card.Text>
-        Makoto Shinkai has truly created another masterpiece. 
-        </Card.Text>
+        {movieReviews}
       </Card>
 
     </div>

@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 
 //let peopleModel= require("././schemaPeople.js")
 let peopleModel=require("../../db/schema/schemaPeople")
+let User = require("../../db/schema/userSchema");
 
 
 router.post('/', (req, res) => {
@@ -47,14 +48,16 @@ router.get('/', (req, res) => {
 
 router.get('/:person', (req, res) => {
     const person = req.params.person;
-    const search = people.peopleWithId(person);
-    peopleModel.findOne({"id": person},function(err,result){
+    //const search = people.peopleWithId(person);
+    peopleModel.findById(person, function(err,result){
         if (err){
             res.status(400).send("People cannot be found");
             console.log(err.message);
+            return;
 
+        } else {
+            res.status(200).json({result});
         }
-        res.status(200).json({result});
     })
     
 })
@@ -65,14 +68,29 @@ router.post("/:id/follow", (req, res) => {
     //Implemented for purposes of theoretical business logic - No users actually exist on the system
     
     const userObject = req.session.user;
-    const peopleToFollowObject = req.body.people;
-
-    if (people.followUser(userObject, peopleToFollowObject) !== false) {
-        res.status(200).json(userObject.followers);
-        return;
-    }
+    const personToFollowObjectId = req.params.id;
     
-    res.status(400);
+    let newFollowingUpdate = {followingPeople: personToFollowObjectId};
+
+    User.findByIdAndUpdate(userObject._id, {$push: newFollowingUpdate}, function(err, result) {
+        if (err) {
+            throw err;
+        } else {
+            
+            const update = {followers: userObject._id}
+
+            peopleModel.findByIdAndUpdate(personToFollowObjectId, {$push: update}, function(err, result) {
+                if (err) {
+                    throw err;
+                } else {
+                    
+                    res.status(200).send(result);
+                    return;
+                }
+            });
+        }
+
+    });
 
 });
 

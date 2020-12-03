@@ -9,7 +9,7 @@ import "./OtherUser.css";
 
 const OtherUser = ({ match }) => {
   const {
-    params: { name },
+    params: { userId },
   } = match;
 
   const [data, setData] = useState({
@@ -31,14 +31,14 @@ const OtherUser = ({ match }) => {
 
   useEffect(() => {
     axios
-      .get(`/users?name=${name}`)
+      .get(`/users/${userId}`)
       .then((response) => {
         console.log(response);
-        console.log(response.data.searchedUser[0].userName);
+        console.log(response.data.result);
         setData({
-          name: response.data.searchedUser[0].userName,
-          followers: response.data.searchedUser[0].followers,
-          reviews: response.data.searchedUser[0].reviews
+          name: response.data.result.userName,
+          //followers: response.data.result.followers,
+          //reviews: response.data.result.reviews
         })
       })
       .catch((err) => {
@@ -47,7 +47,8 @@ const OtherUser = ({ match }) => {
   });
 
   let userReviews= [];
-
+  let userFollowers= [];
+  /*
   data.reviews.forEach(review => {
 
     userReviews.push(
@@ -61,7 +62,7 @@ const OtherUser = ({ match }) => {
 
   });
 
-  let userFollowers= [];
+  
 
   data.followers.forEach(follower => {
 
@@ -72,7 +73,7 @@ const OtherUser = ({ match }) => {
       </Card>
     );
 
-  });
+  });*/
 
   return (
     <div>

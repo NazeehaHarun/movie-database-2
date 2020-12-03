@@ -13,7 +13,7 @@ import FollowButton from '../../components/FollowButton/FollowButton';
 import axios from 'axios';
 
 const Actor = ({match}) => {
-    const {params: {name}} = match;
+    const {params: {actorId}} = match;
 
     const initialState = ({ 
         Role: "Actor", 
@@ -37,7 +37,7 @@ const Actor = ({match}) => {
     const [data, setData] = useState(initialState);
     
     useEffect(() => {
-        axios.get(`/people?name=${name}`)
+        axios.get(`/people/${actorId}`)
           .then((response) => {
             const peopleObj = response.data.result;
             setData({Role: peopleObj.Role, 
@@ -60,7 +60,7 @@ const Actor = ({match}) => {
           .catch((error) => {
             console.log(error)
           });
-      }, [name]);
+      }, [actorId]);
 
       
     return (

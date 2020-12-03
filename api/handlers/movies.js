@@ -40,17 +40,30 @@ router.get('/:id', (req, res) => {
     const id = req.params.id;
     const search = movies.getMovieWithId(id);
 
-    if (search !== null) {
-        Movie.findById(id, function(err, result){
-            if (err){
-                res.status(400);
-                return;
-            }
-            res.status(200).json(result);
-        });
-    } else {
-        res.status(400); 
-    }
+    Movie.findById(req.params.id, function(err, result){
+        if (err){
+            res.status(400).send("Movie cannot be found");
+            console.log(err.message);
+            return;
+            
+        } else {
+            let movie = JSON.parse(JSON.stringify(result));
+            const reviewId = result.movieReviews;
+
+            //reviewId is a list
+            Review.find({"_id": { $in: reviewId}}, function(err, result) {
+                if (err) {
+                    throw err;
+                    
+                } else {
+                    
+                    const reviews = result;
+                    movie.reviews = reviews;
+                    res.status(200).json({movie});
+                }
+            });
+        }
+    });
    
 })
 
