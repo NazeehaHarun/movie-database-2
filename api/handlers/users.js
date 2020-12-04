@@ -8,8 +8,11 @@ const users = require("../functions/users");
 const movies = require("../../db/movie-data.json");
 
 const User = require("../../db/schema/userSchema");
+const Review = require("../../db/schema/reviewSchema");
+const peopleModel = require("../../db/schema/schemaPeople");
 
 const admin = require("../functions/auth");
+const reviewSchema = require("../../db/schema/reviewSchema");
 
 router.post("/", (req, res) => {
     
@@ -60,7 +63,7 @@ router.put("/:id/follow", admin.auth, (req, res) => {
     const userToFollowObjectId = req.params.id;
     
     let newFollowingUpdate = {followingUsers: userToFollowObjectId};
-
+   
     User.findByIdAndUpdate(userObject._id, {$push: newFollowingUpdate}, function(err, result) {
         if (err) {
             throw err;
@@ -112,7 +115,44 @@ router.get('/:user', admin.auth, (req, res) => {
             return;
 
         } else {
-            res.status(200).json({result});
+            let foundObj = result; 
+            let userObj = JSON.parse(JSON.stringify(result));
+            const userReviews = result.reviews; 
+
+            //Find all Reviews made by this user
+            Review.find({"_id": { $in: userReviews}}, function(err, result) {
+                if (err) {
+                    throw err;
+                    
+                } else {
+                    
+                    const reviews = result;
+                    userObj.reviewList = reviews;
+                    
+                    const followingUsers = foundObj.followingUsers;
+                    User.find({"_id": { $in: followingUsers}}, function(err, result) {
+                        
+                        if (err) {
+                            throw err;
+                        }
+
+                        const following = result; 
+                        userObj.followingUsersList = following;
+
+                        const followingPeople = foundObj.followingPeople;
+                        peopleModel.find({"_id": {$in: followingPeople }}, function(err, result) {
+                            if (err) {
+                                throw err;
+                            } else {
+                                const peopleFollowing = result;
+                                userObj.followingPeopleList = peopleFollowing;
+                                res.status(200).json(userObj);
+                            }
+                        });
+                    
+                    })
+                }
+            });
         }
     })
 

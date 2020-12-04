@@ -5,6 +5,9 @@ const mongoose = require("mongoose");
 const movies = require("../functions/movies");
 const Movie = require("../../db/schema/movieSchema");
 const Review = require("../../db/schema/reviewSchema");
+const User = require("../../db/schema/userSchema");
+
+const admin = require("../functions/auth");
 
 /**
  * @route GET /movies
@@ -67,7 +70,7 @@ router.get('/:id', (req, res) => {
    
 })
 
-router.post('/', (req, res) => {
+router.post('/', admin.contributor, (req, res) => {
     
     const movieObj = req.body;
     console.log(movieObj);
@@ -80,6 +83,9 @@ router.post('/', (req, res) => {
             Genre: movieObj.movie.genre,
             Year: movieObj.movie.year,
             averageRating: movieObj.movie.rating,
+            Director: movieObj.movie.director,
+            Writer: movieObj.movie.writer,
+            Actors: movieObj.movie.actors
 
         });
 
@@ -131,6 +137,7 @@ router.put('/:movie/review', (req, res) => {
 
             } else {
                 
+                const savedReview = result;
                 const update = {movieReviews: result};
 
                 Movie.findByIdAndUpdate(movieId, { $push: update}, function(err, result) {
@@ -138,12 +145,21 @@ router.put('/:movie/review', (req, res) => {
                         throw err; 
         
                     } else {        
-                        res.status(200).json(result);
-                        return;
-        
+                        const movieObj = result; 
+                        const update = {reviews: savedReview._id}
+                        User.findByIdAndUpdate(req.session.user._id, {$push: update}, function(err, result) {
+
+                            if (err) {
+                                throw err; 
+                            
+                            } else {
+                                res.status(200).json(movieObj);
+                                return;
+                            }
+
+                        });
                     }
                 });
-
             }
         });
 
@@ -190,7 +206,7 @@ router.get('/:movie/review', (req, res) => {
 
 
 
-router.put('/:id', putMovie); 
+router.put('/:id', admin.contributor, putMovie); 
 
 function putMovie (req,res){
     

@@ -19,6 +19,8 @@ import {
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import {Link} from "react-router-dom";
+
 const Profile = ({ match }) => {
 
     const {
@@ -27,6 +29,7 @@ const Profile = ({ match }) => {
 
   const [data, setData] = useState({
     name: "Nazeeha",
+    type: "Regular",
     recommendedMovies: [
       {
         Title: "Toy Story",
@@ -92,13 +95,15 @@ const Profile = ({ match }) => {
       axios
       .get(`/users/${userId}`)
       .then((response) => {
-        console.log(response);
-        console.log(response.data.searchedUser[0].userName);
+
+        const userObj = response.data; 
+        
         setData({
-          name: response.data.searchedUser[0].userName,
-          recommendedMovies: response.data.searchedUser[0].recommendedMovies,
-          followingUsers: response.data.searchedUser[0].followingUsers,
-          followingCelebrites: response.data.searchedUser[0].followingPeople,
+          name: userObj.userName,
+          type: userObj.Type,
+          recommendedMovies: userObj.recommendedMovies,
+          followingUsers: userObj.followingUsers,
+          followingCelebrites: userObj.followingPeople,
           recentMovies: [
             {
               Title: "Violet Evergarden",
@@ -122,14 +127,27 @@ const Profile = ({ match }) => {
       });
   });
 
-  let userRecommendedMovies = [];
+  const handleChange = () => {
 
+    axios.put(`/users/status`)
+    .then(response => {
+      console.log(response);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+
+
+  console.log(data.name);
+  let userRecommendedMovies = [];
+/*
   data.recommendedMovies.forEach((movie) => {
     userRecommendedMovies.push(
       <img id="p1" src={movie.Poster} alt="moviePoster" />
     );
   });
-
+*/
   let userRecentMovies = [];
   
   data.recentMovies.forEach((movie) => {
@@ -137,23 +155,27 @@ const Profile = ({ match }) => {
   });
 
   let userFollowingUsers = [];
-
+/*
   data.followingUsers.forEach(user => {
-    userFollowingUsers.push(<NavDropdown.Item href="#">{user.userName}</NavDropdown.Item>)
+    userFollowingUsers.push(<NavDropdown.Item href="#">{user}</NavDropdown.Item>)
   });
-
+*/
   let userFollowingPeople = [];
-
+/*
   data.followingCelebrites.forEach(person => {
-    userFollowingPeople.push(<NavDropdown.Item href="#">{person.Name}</NavDropdown.Item>)
+    userFollowingPeople.push(<NavDropdown.Item href="#">{person}</NavDropdown.Item>)
   })
+*/
+
+  let contributorCheck = true; 
+  let disableContributorAccess = true;
 
   return (
     <div className="main-sec">
       <div className="top">
         <div className="main">
           <Navbar bg="dark" variant="dark" expand="xl">
-            <Navbar.Text>Signed in as: {data.name}</Navbar.Text>
+            <Navbar.Text>Signed in as: {data.name} </Navbar.Text>
 
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -190,52 +212,41 @@ const Profile = ({ match }) => {
                 </NavDropdown>
               </Nav>
             </Navbar.Collapse>
-
             <div>
-              <Form inline>
-                <FormControl
-                  type="text"
-                  placeholder="Browse latest movies"
-                  className="searchMovies"
-                  size="lg"
-                />
-                <Button variant="success" size="lg">
-                  Browse
-                </Button>
-              </Form>
+              
+            <Navbar.Text>User Type: {data.type}</Navbar.Text>
             </div>
           </Navbar>
 
+          {data.type === "Contributing"? contributorCheck = true : contributorCheck = false}
           <ButtonGroup size="lg" className="newPeople">
             <div>
               <Form inline>
                 <Form.Check
+                  checked = {contributorCheck}
                   type="switch"
                   id="custom-switch"
                   label="Change to contributing user"
+                  onChange = {handleChange}
                 />
               </Form>
             </div>
 
+            {data.type === "Contributing"? disableContributorAccess = false : disableContributorAccess = true}
             <div className="newPeople">
-              <Form inline>
-                <FormControl
-                  type="text"
-                  placeholder="Add new people"
-                  className="addNewPeople"
-                  size="lg"
-                  disabled
-                />
-                <Button variant="success" size="lg" disabled>
-                  Add
+              <Link to = "/viewAddPeopleForm"> 
+              <Button variant="success" size="lg" disabled = {disableContributorAccess}>
+                  Add New People
                 </Button>
-              </Form>
+              </Link>
             </div>
 
             <div className="addMovie">
-              <Button variant="secondary" size="lg" disabled>
+            <Link to = "/viewAddMovieForm"> 
+              <Button variant="secondary" size="lg" disabled = {disableContributorAccess} >
                 ADD A NEW MOVIE
               </Button>
+              </Link>
             </div>
           </ButtonGroup>
 

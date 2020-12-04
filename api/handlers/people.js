@@ -8,23 +8,37 @@ const mongoose = require("mongoose");
 //let peopleModel= require("././schemaPeople.js")
 let peopleModel=require("../../db/schema/schemaPeople")
 let User = require("../../db/schema/userSchema");
+const admin = require("../functions/auth");
 
-
-router.post('/', (req, res) => {
+router.post('/', admin.contributor, (req, res) => {
 
     const personObj = req.body.person;
     //personObj.Role = "actor";
     console.log(personObj); 
     const person = people.createPeople(personObj);
-    let newPerson = new peopleModel(person);
-    newPerson.save(function(err,result){
-        if (err){
-            res.status(400).send("People cannot be added");
-            console.log(err.message);
+    
+    peopleModel.findOne({Name: person.Name}).then(foundPerson => {
 
+        if (foundPerson) {
+            res.status(400).send(foundPerson);
+
+        } else {
+
+            let newPerson = new peopleModel(person);
+
+            newPerson.save(function(err,result){
+                if (err){
+                    res.status(400).send("People cannot be added");
+                    console.log(err.message);
+
+                }
+                res.status(200).json(result);
+
+            });
         }
-        res.status(200).json({result});
 
+    }).catch(err =>{
+        console.log(err);
     });
     
 });

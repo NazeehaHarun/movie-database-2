@@ -18,9 +18,7 @@ import AddPeople from "./pages/AddPeople/AddPeople";
 import OtherUser from "./pages/OtherUser/OtherUser"
 
 import Header from "./components/Header/Header";
-
-import { Simulate } from "react-dom/test-utils";
-//import DynamicMovieView from "./pages/MovieView/DynamicMovieView";
+import SearchMovie from "./pages/SearchMovie/SearchMovie";
 
 
 class App extends React.Component {
@@ -34,31 +32,33 @@ class App extends React.Component {
         <Route exact path = "/" component = {Header} exact />
         <Route exact path="/registration" component={Register} exact/>
         <Route exact path="/viewmovies" component={MovieView} exact/>
-        <Route path="/viewmovies/:movieTitle" component={MovieView}/>
+        <Route path="/viewmovies/:movieId" component={MovieView}/>
 
         <Route exact path="/viewUserProfile" component={Profile} exact/>
         
-        <Route path="/viewUserProfile/:name" component={Profile} />
+        <Route path="/viewUserProfile/:userId" component={Profile} />
 
         <Route exact path="/viewActorPage" component={Actor} exact/>
         
        
-        <Route path="/viewActorPage/:name" component={Actor} />
+        <Route path="/viewActorPage/:actorId" component={Actor} />
         
         
         
         <Route exact path="/viewDirectorPage" component={Director} exact/>
-        <Route path="/viewDirectorPage/:name" component={Director} />
+        <Route path="/viewDirectorPage/:directorId" component={Director} />
 
 
         <Route exact path="/viewWriterPage" component={Writer} exact/>
-        <Route path="/viewWriterPage/:name" component={Writer} />
+        <Route path="/viewWriterPage/:writerId" component={Writer} />
 
         <Route exact path="/viewAddMovieForm" component={AddMovie} exact/>
         <Route exact path="/viewAddPeopleForm" component={AddPeople} exact/>
 
         <Route exact path="/viewOtherProfiles" component={OtherUser} exact/>
-        <Route path="/viewOtherProfiles/:name" component={OtherUser} exact/>
+        <Route path="/viewOtherProfiles/:userId" component={OtherUser} exact/>
+
+        <Route path = "/searchMovie" component = {SearchMovie} /> 
         
         </Switch>
       </Router>

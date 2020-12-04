@@ -105,7 +105,7 @@ const Writer = ({match}) => {
                                 </ul>
 
                             </div>
-                            <FollowButton size = "lg" name = {data.name}/>
+                            <FollowButton size="lg" name={data.name} peopleId = {writerId} />
                         
                         </div>
                         

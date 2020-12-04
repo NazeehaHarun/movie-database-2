@@ -5,6 +5,7 @@ import Header from "../../components/Header/Header";
 import { Container, Row, Col, Jumbotron, Card, Toast } from "react-bootstrap";
 
 import FollowButton from "../../components/FollowButton/FollowButton";
+import NavigateButton from "../../components/NavigateButton/NavigateButton";
 import "./OtherUser.css";
 
 const OtherUser = ({ match }) => {
@@ -14,7 +15,7 @@ const OtherUser = ({ match }) => {
 
   const [data, setData] = useState({
     name: "Dave McKenney",
-    followers: [
+    following: [
       { Type: "Regular", userName: "Andrew Runka", id: "9" },
       { Type: "Regular", userName: "Alina Shaikhet", id: "10" },
     ],
@@ -33,47 +34,46 @@ const OtherUser = ({ match }) => {
     axios
       .get(`/users/${userId}`)
       .then((response) => {
-        console.log(response);
-        console.log(response.data.result);
+        const userData = response.data
+        console.log(userData.reviewList);
         setData({
-          name: response.data.result.userName,
-          //followers: response.data.result.followers,
-          //reviews: response.data.result.reviews
+          name: userData.userName,
+          following: userData.followingUsersList,
+          reviews: userData.reviewList
         })
       })
       .catch((err) => {
         console.log(err);
       });
   });
-
+  console.log(data);
   let userReviews= [];
-  let userFollowers= [];
-  /*
+  let usersFollowing= [];
+  
   data.reviews.forEach(review => {
 
     userReviews.push(
       <Card className="reviewCard">
-      <Card.Title>{review.Title}</Card.Title>
-      <Card.Text>Score: {review.Score}</Card.Text>
-      <Card.Text>Summary: {review.Summary} </Card.Text>
-      <Card.Text>{review.FullReview}</Card.Text>
+      
+      <Card.Text>Score: {review.rating}</Card.Text>
+      <Card.Text>Summary: {review.summary} </Card.Text>
+      <Card.Text>{review.fullReview}</Card.Text>
       </Card>
     );
 
   });
 
-  
+  data.following.forEach(following => {
 
-  data.followers.forEach(follower => {
-
-    userFollowers.push(
+    usersFollowing.push(
       <Card className="followingCard">
-      <Card.Title>{follower.userName}</Card.Title>
-      <FollowButton size="sm" name={follower.userName} />
+      <Card.Title>{following.userName}</Card.Title>
+      <FollowButton size="sm" name={following.userName} userId = {following._id} />
+      <NavigateButton route = {`/viewOtherProfiles/${following._id}`} text = "Visit"/>
       </Card>
     );
 
-  });*/
+  });
 
   return (
     <div>
@@ -85,7 +85,7 @@ const OtherUser = ({ match }) => {
             </Col>
 
             <Col>
-              <FollowButton size="lg" name={data.name} />
+              <FollowButton size="lg" name={data.name} userId = {userId} />
             </Col>
           </Row>
         </Container>
@@ -102,7 +102,7 @@ const OtherUser = ({ match }) => {
 
           <Col>
             Following
-            {userFollowers}
+            {usersFollowing}
           </Col>
         </Row>
       </Container>

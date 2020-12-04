@@ -45,26 +45,9 @@ const MovieView = ({match}) => {
       fullReview: "",
   });
 
-  const [hasSubmitted, setHasSubmitted] = useState(false);
-
   const ratingNumbers = [1,2,3,4,5,6,7,8,9,10];
 
   useEffect(() => {
-    console.log(hasSubmitted)
-    if (hasSubmitted === true) {
-      let review = reviews;
-      axios.put(`/movies/${movieId}/review`, review)
-      .then((response => {
-        console.log(response);
-        hasSubmitted = false; 
-
-      }))
-      .catch(err =>{
-        console.log(err);
-      });
-
-    } else {
-
       axios.get(`/movies/${movieId}`)
       .then((response) => {
         console.log(response);
@@ -85,30 +68,6 @@ const MovieView = ({match}) => {
       .catch((error) => {
         console.log(error)
       });
-
-    }
-    /*
-    axios.get(`/movies/${movieId}`)
-      .then((response) => {
-        console.log(response);
-        const movieObj = response.data.movie;
-        
-        setData({name: movieObj.Title, 
-          releaseYear: movieObj.Year, 
-          runTime: movieObj.Runtime, 
-          genres: movieObj.Genre, 
-          moviePlot: movieObj.Plot, 
-          posterLink: movieObj.Poster,
-          director: movieObj.Director,
-          writer: movieObj.Writer,
-          reviews: movieObj.reviews 
-        });
-
-      })
-      .catch((error) => {
-        console.log(error)
-      });*/
-
     
   }, [movieId]);
 
@@ -120,8 +79,18 @@ const MovieView = ({match}) => {
   const handleSubmit = (event) => {
     event.preventDefault();
    
-    setHasSubmitted(!hasSubmitted);
-    console.log(hasSubmitted);
+    let review = {
+      review: reviews
+    }
+    console.log(review);
+      axios.put(`/movies/${movieId}/review`, review)
+      .then((response => {
+        console.log(response);
+
+      }))
+      .catch(err =>{
+        console.log(err);
+      });
     
   }
 
@@ -130,9 +99,9 @@ const MovieView = ({match}) => {
   data.reviews.forEach(review => {
     movieReviews.push(
       <div>
-        <Card.Title as = "h5">
-            {review.summary} 
-        </Card.Title>
+        <Card.Header as = "h5">
+            Summary of Review: {review.summary} Rating: {review.rating}
+        </Card.Header>
         <Card.Text>
           {review.fullReview}
         </Card.Text>

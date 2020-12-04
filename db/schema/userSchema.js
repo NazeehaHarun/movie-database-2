@@ -38,7 +38,13 @@ const userSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Movie",
         required: false
-    }]
+    }], 
+
+    reviews: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: false,
+    }],
 });
 
 module.exports = mongoose.model("User", userSchema);

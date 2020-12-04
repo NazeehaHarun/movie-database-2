@@ -107,7 +107,7 @@ const Director = ({match}) => {
 
                             </div>
 
-                            <FollowButton size = "lg" name = {data.name}/>
+                            <FollowButton size="lg" name={data.name} peopleId = {directorId} />
                         
                         
                         </div>

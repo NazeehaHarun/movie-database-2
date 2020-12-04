@@ -1,4 +1,8 @@
 .body {
     background-color: rgb(240, 244, 255);
-    margin-top: 50px;
+    margin-top: 100px;
+}
+
+.movieContainer {
+    padding-top: 50px;
 }

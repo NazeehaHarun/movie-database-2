@@ -68,7 +68,7 @@ const Header = () => {
           </Nav>
 
           <Nav className="Drop">
-            <Nav.Link href="registration">Login/Register</Nav.Link>
+            <Nav.Link href="/registration">Login/Register</Nav.Link>
           </Nav>
 
           <Form inline onSubmit={handleSubmit}>
@@ -84,11 +84,7 @@ const Header = () => {
 
           </Form>
           <Form>
-            <Form.Check
-              label="Switch to contributing user"
-              id="switch"
-              type="switch"
-            />
+            
           </Form>
         </Navbar.Collapse>
       </Navbar>

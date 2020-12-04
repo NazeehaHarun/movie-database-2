@@ -51,7 +51,7 @@ const createMovie = (movieObj) => {
 }
 
 const leaveReview = (review) => {
-
+    
     //Ensure the review has all necessary information 
     if (!review.rating || !review.summary || !review.fullReview) {
         return null;

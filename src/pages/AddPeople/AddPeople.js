@@ -18,8 +18,6 @@ const AddPeople = () => {
                         <br />
                         <Form.Control id = "description" size ="lg" type="text" placeholder="Description"/>
                         <br />
-                        <Form.Control id = "id" size ="lg" type="text" placeholder="ID"/>
-                        <br />
                         <Form.Control id = "c1" size ="lg" type="text" placeholder="Contributor 1"/>
                         <br />
                         <Form.Control id = "c2" size ="lg" type="text" placeholder="Contributor 2"/>
