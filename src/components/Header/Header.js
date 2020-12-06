@@ -33,6 +33,18 @@ const Header = () => {
     console.log(hasSearch);
     
   };
+  
+  const handleLogout = (event) => {
+    event.preventDefault();
+
+    axios.get('/logout')
+    .then(response => {
+      console.log(response);
+    }).catch(error => {
+      console.log(error);
+    }); 
+
+  };
 
   return (
     <div className="header">
@@ -77,11 +89,15 @@ const Header = () => {
             />
 
             <NavigateButton route = {"/searchMovie/" + search.movieTitle} text = "Browse" variant = "outline-success"/>
-
           </Form>
           <Form>
             
           </Form>
+
+          <Button onClick = {handleLogout} type = "submit" variant = "primary">
+              Logout
+            </Button>
+
         </Navbar.Collapse>
       </Navbar>
 
