@@ -16,17 +16,26 @@ import {
   FormControl,
   Button,
   ButtonGroup,
+  Card
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+import {Link} from "react-router-dom";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
+import NavigateButton from "../../components/NavigateButton/NavigateButton";
+import UnfollowButton from "../../components/UnfollowButton/UnfollowButton";
 
 const Profile = ({ match }) => {
 
     const {
-        params: { name },
+        params: { userId },
       } = match;
 
   const [data, setData] = useState({
     name: "Nazeeha",
+    type: "Regular",
     recommendedMovies: [
       {
         Title: "Toy Story",
@@ -90,43 +99,77 @@ const Profile = ({ match }) => {
   useEffect(() => {
       
       axios
-      .get(`/users?name=${name}`)
+      .get(`/users/${userId}`)
       .then((response) => {
-        console.log(response);
-        console.log(response.data.searchedUser[0].userName);
-        setData({
-          name: response.data.searchedUser[0].userName,
-          recommendedMovies: response.data.searchedUser[0].recommendedMovies,
-          followingUsers: response.data.searchedUser[0].followingUsers,
-          followingCelebrites: response.data.searchedUser[0].followingPeople,
-          recentMovies: [
-            {
-              Title: "Violet Evergarden",
-              Poster: "https://i.redd.it/mh0czsfbgu641.jpg",
-            },
-            {
-              Title: "Demon Slayer",
-              Poster:
-                "https://upload.wikimedia.org/wikipedia/en/2/21/Kimetsu_no_Yaiba_Mugen_Ressha_Hen_Poster.jpg",
-            },
-            {
-              Title: "All My Life",
-              Poster:
-                "https://media2.firstshowing.net/firstshowing/img11/AllmyLifeOfficialPosterimagebig5990.jpg",
-            },
-          ],
+
+        const userObj = response.data; 
+        
+        axios.get(`/users/${userId}/movies`)
+        .then(response => {
+          let userMovies = response.data; 
+
+          setData({
+            name: userObj.userName,
+            type: userObj.Type,
+            recommendedMovies: userObj.recommendedMovies,
+            followingUsers: userObj.followingUsersList,
+            followingCelebrites: userObj.followingPeopleList,
+            recommendedMovies: userMovies,
+            recentMovies: [
+              {
+                Title: "Violet Evergarden",
+                Poster: "https://i.redd.it/mh0czsfbgu641.jpg",
+              },
+              {
+                Title: "Demon Slayer",
+                Poster:
+                  "https://upload.wikimedia.org/wikipedia/en/2/21/Kimetsu_no_Yaiba_Mugen_Ressha_Hen_Poster.jpg",
+              },
+              {
+                Title: "All My Life",
+                Poster:
+                  "https://media2.firstshowing.net/firstshowing/img11/AllmyLifeOfficialPosterimagebig5990.jpg",
+              },
+            ],
+          });
+
+
+
+        }).catch(error => {
+          console.log(error);
         });
+
+        
       })
       .catch((err) => {
         console.log(err);
       });
   });
 
+  const handleChange = () => {
+
+    axios.put(`/users/status`)
+    .then(response => {
+      console.log(response);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
   let userRecommendedMovies = [];
 
   data.recommendedMovies.forEach((movie) => {
     userRecommendedMovies.push(
-      <img id="p1" src={movie.Poster} alt="moviePoster" />
+      <Card style={{ width: '18rem' }}>
+          <Card.Img variant="top" src= {movie.Poster} />
+              <Card.Body>
+                 <Card.Title>{movie.Title}</Card.Title>   
+                 <Card.Text>Genre: {movie.Genre}</Card.Text>
+                  <Card.Text>Release Year: {movie.Year}</Card.Text>
+                  <Card.Text>Average rating: {movie.minrating}</Card.Text>
+                 <NavigateButton text = "Visit Movie" route = {`/viewmovies/${movie._id}`}/>
+            </Card.Body>
+      </Card>
     );
   });
 
@@ -139,37 +182,59 @@ const Profile = ({ match }) => {
   let userFollowingUsers = [];
 
   data.followingUsers.forEach(user => {
-    userFollowingUsers.push(<NavDropdown.Item href="#">{user.userName}</NavDropdown.Item>)
+    userFollowingUsers.push(
+      <Card style={{ width: '18rem' }}>
+        <Card.Body>
+          <Card.Title>{user.userName}</Card.Title>
+          
+          <NavigateButton route = {`/viewOtherProfiles/${user._id}`} text = "Visit"/>
+          <UnfollowButton size="md" name={user.userName} userId = {user._id} />
+        </Card.Body>
+    </Card>
+    )
   });
-
+  
   let userFollowingPeople = [];
-
+  
   data.followingCelebrites.forEach(person => {
-    userFollowingPeople.push(<NavDropdown.Item href="#">{person.Name}</NavDropdown.Item>)
+    let viewRoute = "";
+    if (person.Role === "Director") {
+      viewRoute = "viewDirectorPage";
+    }
+    else if (person.Role === "Writer") {
+      viewRoute = "viewWriterPage";
+    }
+    else if (person.Role === "Actor") {
+      viewRoute = "viewActorPage";
+    }
+
+    userFollowingPeople.push(
+      <Card style={{ width: '18rem' }}>
+        <Card.Body>
+          <Card.Title>{person.Name}</Card.Title>
+          
+          <NavigateButton route = {`/${viewRoute}/${person._id}`} text = "Visit"/>
+          <UnfollowButton size="md" name={person.userName} personId = {person._id} />
+        </Card.Body>
+      </Card>
+
+     )
   })
+
+
+  let contributorCheck = true; 
+  let disableContributorAccess = true;
 
   return (
     <div className="main-sec">
       <div className="top">
         <div className="main">
           <Navbar bg="dark" variant="dark" expand="xl">
-            <Navbar.Text>Signed in as: {data.name}</Navbar.Text>
+            <Navbar.Text>Signed in as: {data.name} </Navbar.Text>
 
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="Drop">
-                <NavDropdown title="Users you follow" id="basic-nav-dropdown">
-                  {userFollowingUsers}
-                </NavDropdown>
-              </Nav>
-              <Nav className="Drop2">
-                <NavDropdown
-                  title="Celebrities you follow"
-                  id="basic-nav-dropdown"
-                >
-                  {userFollowingPeople}
-                  </NavDropdown>
-              </Nav>
+             
 
               <Nav className="Drop3">
                 <NavDropdown title="Notifications" id="basic-nav-dropdown">
@@ -190,52 +255,41 @@ const Profile = ({ match }) => {
                 </NavDropdown>
               </Nav>
             </Navbar.Collapse>
-
             <div>
-              <Form inline>
-                <FormControl
-                  type="text"
-                  placeholder="Browse latest movies"
-                  className="searchMovies"
-                  size="lg"
-                />
-                <Button variant="success" size="lg">
-                  Browse
-                </Button>
-              </Form>
+              
+            <Navbar.Text>User Type: {data.type}</Navbar.Text>
             </div>
           </Navbar>
 
+          {data.type === "Contributing"? contributorCheck = true : contributorCheck = false}
           <ButtonGroup size="lg" className="newPeople">
             <div>
               <Form inline>
                 <Form.Check
+                  checked = {contributorCheck}
                   type="switch"
                   id="custom-switch"
                   label="Change to contributing user"
+                  onChange = {handleChange}
                 />
               </Form>
             </div>
 
+            {data.type === "Contributing"? disableContributorAccess = false : disableContributorAccess = true}
             <div className="newPeople">
-              <Form inline>
-                <FormControl
-                  type="text"
-                  placeholder="Add new people"
-                  className="addNewPeople"
-                  size="lg"
-                  disabled
-                />
-                <Button variant="success" size="lg" disabled>
-                  Add
+              <Link to = "/viewAddPeopleForm"> 
+              <Button variant="success" size="lg" disabled = {disableContributorAccess}>
+                  Add New People
                 </Button>
-              </Form>
+              </Link>
             </div>
 
             <div className="addMovie">
-              <Button variant="secondary" size="lg" disabled>
+            <Link to = "/viewAddMovieForm"> 
+              <Button variant="secondary" size="lg" disabled = {disableContributorAccess} >
                 ADD A NEW MOVIE
               </Button>
+              </Link>
             </div>
           </ButtonGroup>
 
@@ -319,6 +373,18 @@ const Profile = ({ match }) => {
           </div>
         </div>
       </div>
+
+      <Row className = "following">
+        <Col className = "post">
+        {userFollowingUsers}
+        </Col>
+
+        <Col>
+        {userFollowingPeople}
+        </Col>
+      </Row>
+
+
     </div>
   );
 };

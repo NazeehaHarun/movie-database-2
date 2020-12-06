@@ -13,17 +13,17 @@ const getMovies = (searchParameters) => {
 
     if (searchParameters.genre) {
 
-        queryObject.Genre = searchParameters.genre;
+        queryObject.Genre = {$in: searchParameters.genre};
     }
 
     if (searchParameters.year) {
         queryObject.Year = searchParameters.year;
     }
-
-    if (searchParameters.minRating) {
-        queryObject.averageRating = searchParameters.minRating;
+  
+    if (searchParameters.minrating) {
+        queryObject.averageRating = {$gte: searchParameters.minrating};
     }
-
+      
     return queryObject;
 };
 
@@ -51,7 +51,7 @@ const createMovie = (movieObj) => {
 }
 
 const leaveReview = (review) => {
-
+    
     //Ensure the review has all necessary information 
     if (!review.rating || !review.summary || !review.fullReview) {
         return null;

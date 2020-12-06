@@ -8,9 +8,11 @@ const users = require("../functions/users");
 const movies = require("../../db/movie-data.json");
 
 const User = require("../../db/schema/userSchema");
+const Review = require("../../db/schema/reviewSchema");
+const peopleModel = require("../../db/schema/schemaPeople");
+const Movie = require("../../db/schema/movieSchema");
 
 const admin = require("../functions/auth");
-const { user } = require("../functions/users");
 
 router.post("/", (req, res) => {
     
@@ -55,169 +57,200 @@ router.post("/", (req, res) => {
     }
 });
 
-router.post("/:id/follow", admin.auth, (req, res) => {
+router.put("/:id/follow", admin.auth, (req, res) => {
     
     const userObject = req.session.user;
-    const userToFollowObject = req.body.otherUser;
-
-    //Shouldn't need to search for session user since they are already logged in
-
-    if (users.followUser(userObject, userToFollowObject) !== false) {
-
-        User.findOne({userName: userObject.username})
-        .then(user => {
+    const userToFollowObjectId = req.params.id;
+    
+    let newFollowingUpdate = {followingUsers: userToFollowObjectId};
+   
+    User.findByIdAndUpdate(userObject._id, {$push: newFollowingUpdate}, function(err, result) {
+        if (err) {
+            throw err;
+        } else {
             
-            if (err) {
-                throw err; 
-            }
+            const update = {followers: userObject._id}
 
-            //User not Found
-            if (!user) {
-                res.status(400).send("User Does Not Exist");
-                return;
-            }
-            User.findOne({userName: userToFollowObject.username})
-            .then(userFollow => {
-
+            User.findByIdAndUpdate(userToFollowObjectId, {$push: update}, function(err, result) {
                 if (err) {
                     throw err;
-                }
-
-                if (!userFollow) {
-                    res.status(400).send("Cannot Find User you are trying to follow");
+                } else {
+                    
+                    res.status(200).send(result);
                     return;
                 }
+            });
+        }
 
-                user.followingUsers.push(userFollow.id);
-                userFollow.followers.push(user.id);
-
-                res.status(200).json(userFollow);
-                return;
-
-            });          
-        });
-        
-    }
-
-    res.status(400);
+    });
 
 });
 
-router.get("/similarMovies", admin.auth, (req, res) => {
 
-    let genre=[];
-    let freq ={};
-
-    let maximum =0;
-    //Need to figure out the logic to find the most common genre
+router.delete("/:id/follow", admin.auth, (req, res) => {
     
-    movieSearchHistory.forEach((movie)=>{
-       let gen= movie.Genre.split(",") //creates an array of genre
-       gen.forEach((g)=>{
-            genre.push(g.trim());
-            console.log(genre);
-       
-         });
+    const userObject = req.session.user;
+    const userToFollowObjectId = req.params.id;
+    
+    let newFollowingUpdate = {followingUsers: userToFollowObjectId};
+   
+    User.findByIdAndUpdate(userObject._id, {$pull: newFollowingUpdate}, function(err, result) {
+        if (err) {
+            throw err;
+        } else {
+            
+            const update = {followers: userObject._id}
+
+            User.findByIdAndUpdate(userToFollowObjectId, {$pull: update}, function(err, result) {
+                if (err) {
+                    throw err;
+                } else {
+                    
+                    res.status(200).send(result);
+                    return;
+                }
+            });
+        }
+
     });
-    
-    //Making an object from genre array
-    //{Adventure:3, Comedy:5, Action:8, Sci-Fic:10}
-    for(let i =0; i <genre.length; i++){
-        let type = genre[i];
-        if(freq[type]){
-            freq[type]++;
-        }
-        else{
-            freq[type]=1;
-        }
-    }
-    console.log(freq);
-
-    //Will return an array of keys and values in the object as nested arrays
-    let max ="";
-    let maxVal =-1;
-
-    for(let g of Object.keys(freq)){
-        
-        if(freq[g]>maxVal){
-            maxVal = freq[g];
-            max =g;
-        }
-    }
-    console.log(max);
-    console.log(maxVal);
-
-    const movieGenre = max;
-    console.log(movieGenre);
-
-    let count =0;
-    let similar=[];
-
-    movies.forEach((movie) => {
-
-        if (movie.Genre===movieGenre) {
-            similar.push(movie);
-            count++;
-            //Returns movie as a JSON object if found        
-        }
-        if(count===3){
-            return res.json(similar);
-        }
-    
-    });
-    //Returns a response of bad request if movie is not found
-    res.sendStatus(400);
 
 });
 
 router.get('/', admin.auth, (req, res) => {
 
     const name = req.query.name;
-    const searchedUser = users.user({name});
+    const queryObject = users.user({name});
+    console.log(queryObject);
+    User.find(queryObject, function(err, result) {
 
-    if (searchedUser !== null) {
-        res.status(200).json({searchedUser});
-        return;
-    }
+        if (err) {
+            throw err; 
+        } else {
+            res.status(200).json({result});
+            return; 
+        }
 
-    //Returns a response of bad request if movie is not found
-    res.sendStatus(400);
+    });
+    
 });
 
 router.get('/:user', admin.auth, (req, res) => {
     const user = req.params.user;
     const search = users.userWithId(user);
 
-    if (search !== null) {
-        User.findById(user, function(err, result) {
-
-            if (err) {
-                throw err;
-            } 
-
-            res.status(200).json(result);
+    User.findById( user, function(err,result){
+        if (err){
+            res.status(400).send("user cannot be found");
+            console.log(err.message);
             return;
+
+        } else {
+            let foundObj = result; 
+            let userObj = JSON.parse(JSON.stringify(result));
+            const userReviews = result.reviews; 
+
+            //Find all Reviews made by this user
+            Review.find({"_id": { $in: userReviews}}, function(err, result) {
+                if (err) {
+                    throw err;
+                    
+                } else {
+                    
+                    const reviews = result;
+                    userObj.reviewList = reviews;
+                    
+                    const followingUsers = foundObj.followingUsers;
+                    User.find({"_id": { $in: followingUsers}}, function(err, result) {
+                        
+                        if (err) {
+                            throw err;
+                        }
+
+                        const following = result; 
+                        userObj.followingUsersList = following;
+
+                        const followingPeople = foundObj.followingPeople;
+                        peopleModel.find({"_id": {$in: followingPeople }}, function(err, result) {
+                            if (err) {
+                                throw err;
+                            } else {
+                                const peopleFollowing = result;
+                                userObj.followingPeopleList = peopleFollowing;
+                                res.status(200).json(userObj);
+                            }
+                        });
+                    
+                    })
+                }
+            });
+        }
+    })
+});
+
+router.get('/:user/movies', admin.auth, (req, res) => {
+    const user = req.params.user;
+
+    User.findById(user, function(err,result){
+        if (err){
+           throw err; 
+        } else {
+            let userReviews = result.reviews; 
             
-        });
+            //Find all Reviews made by this user
+            Review.find({"_id": { $in: userReviews}}, function(err, result) {
+                if (err) {
+                    throw err;
+                    
+                } else {
+                    
+                    const reviews = result;
+                    let movieIds = [];
 
-    } else {
-        res.status(400); 
-        return;
-    }
+                    for (review of reviews) {
+                        movieIds.push(review.movie);
+                    }
+                    
+                    let searchObj = {};
+                    searchObj._id = {$in: movieIds};
 
-    
+                    Movie.find(searchObj, function(err, result){
+                        if (err) {
+                            throw err; 
+                        } else {
+                            res.status(200).send(result);
+                            return; 
+                        }
+                    });
+                }
+            });
+        }
+    })
 })
 
 router.put('/status', admin.auth, (req, res) => {
     let user = req.session.user;
+    const id = user._id;
+    const newUserType = users.changeUserType(user);
+    user.Type = newUserType;
 
     if (user !== null) {
-        user = users.changeUserType(user);
-        res.status(200).send({user});
-        return;
-    } 
 
-    res.status(400);
+        const update = {Type: newUserType}
+        User.findByIdAndUpdate(id, update, function(err, result) {
+            if (err) {
+                throw err; 
+            } else {
+                console.log(result);
+                res.status(200).send(result);
+                return;
+            }
+        });
+
+    } else{
+        res.status(400);
+    }
+
+    
 });
 
 module.exports = router;

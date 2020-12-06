@@ -6,8 +6,8 @@ const NavigateButton = (props) => {
 
     return (
         <div>
-            <Link to = {props.route}>
-                <Button>
+            <Link exact to = {props.route}>
+                <Button variant = "primary">
                 {props.text}
                 </Button>
             </Link>

@@ -7,23 +7,40 @@ const mongoose = require("mongoose");
 
 //let peopleModel= require("././schemaPeople.js")
 let peopleModel=require("../../db/schema/schemaPeople")
+let User = require("../../db/schema/userSchema");
+const admin = require("../functions/auth");
+let Movie = require("../../db/schema/movieSchema");
 
-
-router.post('/', (req, res) => {
+router.post('/', admin.contributor, (req, res) => {
 
     const personObj = req.body.person;
-    //personObj.Role = "actor";
-    console.log(personObj); 
+    
     const person = people.createPeople(personObj);
-    let newPerson = new peopleModel(person);
-    newPerson.save(function(err,result){
-        if (err){
-            res.status(400).send("People cannot be added");
-            console.log(err.message);
+    
+    peopleModel.findOne({Name: person.Name}).then(foundPerson => {
+         
+        if (foundPerson) {
+            
+            res.status(200).send(foundPerson);
 
+        } else {
+
+            let newPerson = new peopleModel(person);
+            
+            newPerson.save(function(err,result){
+                if (err){
+                    res.status(400).send("People cannot be added");
+                    console.log(err.message);
+
+                } else {
+                    res.status(200).json(result);
+                    return;
+                }
+            });
         }
-        res.status(200).json({result});
 
+    }).catch(err =>{
+        console.log(err);
     });
     
 });
@@ -32,14 +49,22 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
 
     const name = req.query.name;
-    //const searchedPeople = people.people({name});
-    peopleModel.findOne({"Name": name.toLowerCase()},function(err,result){
-        if (err){
-            res.status(400).send("People cannot be found");
-            console.log(err.message);
+    const searchObject= people.people({name});
+    console.log(searchObject);
 
+    peopleModel.find(searchObject)
+    .then(foundPerson => {
+        if (foundPerson) {
+
+            if (foundPerson.length === 0) {
+                res.status(400).send("Person not found");
+                return;
+            } else {
+                res.status(200).send(foundPerson);
+                return;
+
+            }
         }
-        res.status(200).json({result});
     })
     
 
@@ -47,17 +72,53 @@ router.get('/', (req, res) => {
 
 router.get('/:person', (req, res) => {
     const person = req.params.person;
-    const search = people.peopleWithId(person);
-    peopleModel.findOne({"id": person},function(err,result){
+    //const search = people.peopleWithId(person);
+    peopleModel.findById(person, function(err,result){
         if (err){
             res.status(400).send("People cannot be found");
             console.log(err.message);
+            return;
 
+        } else {
+            res.status(200).json({result});
         }
-        res.status(200).json({result});
     })
     
 })
+
+// /GET people
+router.get('/:person/movies', (req, res) => {
+
+    const personId = req.params.person;
+
+    peopleModel.findById(personId)
+    .then(foundPerson => {
+        if (foundPerson) {
+
+            if (foundPerson.length === 0) {
+                res.status(400).send("Person not found");
+                return;
+            } else {
+
+                let movieId = foundPerson.pastWorks;
+
+
+                Movie.find({"_id": movieId}, function(err, result){
+
+                    if (err) {
+                        throw err;
+                    } else {
+                        res.status(200).send(result);
+                        return; 
+                    }
+                });
+
+            }
+        }
+    })
+    
+
+});
 
 
 router.post("/:id/follow", (req, res) => {
@@ -65,14 +126,60 @@ router.post("/:id/follow", (req, res) => {
     //Implemented for purposes of theoretical business logic - No users actually exist on the system
     
     const userObject = req.session.user;
-    const peopleToFollowObject = req.body.people;
-
-    if (people.followUser(userObject, peopleToFollowObject) !== false) {
-        res.status(200).json(userObject.followers);
-        return;
-    }
+    const personToFollowObjectId = req.params.id;
     
-    res.status(400);
+    let newFollowingUpdate = {followingPeople: personToFollowObjectId};
+
+    User.findByIdAndUpdate(userObject._id, {$push: newFollowingUpdate}, function(err, result) {
+        if (err) {
+            throw err;
+        } else {
+            
+            const update = {followers: userObject._id}
+
+            peopleModel.findByIdAndUpdate(personToFollowObjectId, {$push: update}, function(err, result) {
+                if (err) {
+                    throw err;
+                } else {
+                    
+                    res.status(200).send(result);
+                    return;
+                }
+            });
+        }
+
+    });
+
+});
+
+router.delete("/:id/follow", (req, res) => {
+
+    //Implemented for purposes of theoretical business logic - No users actually exist on the system
+    
+    const userObject = req.session.user;
+    const personToFollowObjectId = req.params.id;
+    
+    let newFollowingUpdate = {followingPeople: personToFollowObjectId};
+
+    User.findByIdAndUpdate(userObject._id, {$pull: newFollowingUpdate}, function(err, result) {
+        if (err) {
+            throw err;
+        } else {
+            
+            const update = {followers: userObject._id}
+
+            peopleModel.findByIdAndUpdate(personToFollowObjectId, {$pull: update}, function(err, result) {
+                if (err) {
+                    throw err;
+                } else {
+                    
+                    res.status(200).send(result);
+                    return;
+                }
+            });
+        }
+
+    });
 
 });
 

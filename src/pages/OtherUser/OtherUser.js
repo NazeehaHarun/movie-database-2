@@ -5,16 +5,17 @@ import Header from "../../components/Header/Header";
 import { Container, Row, Col, Jumbotron, Card, Toast } from "react-bootstrap";
 
 import FollowButton from "../../components/FollowButton/FollowButton";
+import NavigateButton from "../../components/NavigateButton/NavigateButton";
 import "./OtherUser.css";
 
 const OtherUser = ({ match }) => {
   const {
-    params: { name },
+    params: { userId },
   } = match;
 
   const [data, setData] = useState({
     name: "Dave McKenney",
-    followers: [
+    following: [
       { Type: "Regular", userName: "Andrew Runka", id: "9" },
       { Type: "Regular", userName: "Alina Shaikhet", id: "10" },
     ],
@@ -31,44 +32,53 @@ const OtherUser = ({ match }) => {
 
   useEffect(() => {
     axios
-      .get(`/users?name=${name}`)
+      .get(`/users/${userId}`)
       .then((response) => {
-        console.log(response);
-        console.log(response.data.searchedUser[0].userName);
+        const userData = response.data
+        console.log(userData.reviewList);
         setData({
-          name: response.data.searchedUser[0].userName,
-          followers: response.data.searchedUser[0].followers,
-          reviews: response.data.searchedUser[0].reviews
+          name: userData.userName,
+          following: userData.followingPeopleList,
+          reviews: userData.reviewList
         })
       })
       .catch((err) => {
         console.log(err);
       });
   });
-
+  console.log(data);
   let userReviews= [];
-
+  let usersFollowing= [];
+  
   data.reviews.forEach(review => {
 
     userReviews.push(
       <Card className="reviewCard">
-      <Card.Title>{review.Title}</Card.Title>
-      <Card.Text>Score: {review.Score}</Card.Text>
-      <Card.Text>Summary: {review.Summary} </Card.Text>
-      <Card.Text>{review.FullReview}</Card.Text>
+      
+      <Card.Text>Score: {review.rating}</Card.Text>
+      <Card.Text>Summary: {review.summary} </Card.Text>
+      <Card.Text>{review.fullReview}</Card.Text>
       </Card>
     );
 
   });
 
-  let userFollowers= [];
-
-  data.followers.forEach(follower => {
-
-    userFollowers.push(
+  data.following.forEach(following => {
+    let viewRoute = "";
+    if (following.Role === "Director") {
+      viewRoute = "viewDirectorPage";
+    }
+    else if (following.Role === "Writer") {
+      viewRoute = "viewWriterPage";
+    }
+    else if (following.Role === "Actor") {
+      viewRoute = "viewActorPage";
+    }
+    usersFollowing.push(
       <Card className="followingCard">
-      <Card.Title>{follower.userName}</Card.Title>
-      <FollowButton size="sm" name={follower.userName} />
+      <Card.Title>{following.Name}</Card.Title>
+      <FollowButton size="sm" name={following.Name} userId = {following._id} />
+      <NavigateButton route = {`/${viewRoute}/${following._id}`} text = "Visit"/>
       </Card>
     );
 
@@ -84,7 +94,7 @@ const OtherUser = ({ match }) => {
             </Col>
 
             <Col>
-              <FollowButton size="lg" name={data.name} />
+              <FollowButton size="lg" name={data.name} userId = {userId} />
             </Col>
           </Row>
         </Container>
@@ -101,7 +111,7 @@ const OtherUser = ({ match }) => {
 
           <Col>
             Following
-            {userFollowers}
+            {usersFollowing}
           </Col>
         </Row>
       </Container>

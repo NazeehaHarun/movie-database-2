@@ -5,6 +5,11 @@ const mongoose = require("mongoose");
 const movies = require("../functions/movies");
 const Movie = require("../../db/schema/movieSchema");
 const Review = require("../../db/schema/reviewSchema");
+const User = require("../../db/schema/userSchema");
+const peopleModel = require("../../db/schema/schemaPeople");
+
+const admin = require("../functions/auth");
+const people = require("../functions/people");
 
 /**
  * @route GET /movies
@@ -21,14 +26,14 @@ router.get('/', (req, res) => {
     let movieList = [];
 
     Movie.find(queryObject, function(err, result) {
-        console.log(queryObject);
+        
         if (err) {
             
             res.status(400);
             return; 
 
         } else {
-            console.log(result);
+            
             movieList = result;
             res.status(200).json(movieList);
             return;
@@ -39,22 +44,64 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
     const id = req.params.id;
     const search = movies.getMovieWithId(id);
+    console.log(req.params.id);
 
-    if (search !== null) {
-        Movie.findById(id, function(err, result){
-            if (err){
-                res.status(400);
-                return;
-            }
-            res.status(200).json(result);
-        });
-    } else {
-        res.status(400); 
-    }
+    Movie.findById(req.params.id, function(err, result){
+        if (err){
+            res.status(400).send("Movie cannot be found");
+            console.log(err.message);
+            return;
+            
+        } else {
+            let movie = JSON.parse(JSON.stringify(result));
+            const reviewId = result.movieReviews;
+
+            //reviewId is a list
+            Review.find({"_id": { $in: reviewId}}, function(err, result) {
+                if (err) {
+                    throw err;
+                    
+                } else {
+                    movie.User = req.session.user.Type;
+                    const reviews = result;
+                    movie.reviews = reviews;
+                    res.status(200).json({movie});
+                }
+            });
+        }
+    });
    
-})
+});
 
-router.post('/', (req, res) => {
+router.get('/:id/similar', (req, res) => {
+
+    const id = req.params.id;
+    console.log(req.params.id);
+
+    Movie.findById(id, function(err, result) {
+
+        if (err) {
+            throw err;
+        } else {
+
+            const genres = result.Genre; 
+            let searchObj = {};
+            searchObj.Genre = {$in: genres};
+
+            Movie.find(searchObj, function(err, result){
+                if (err) {
+                    throw err;
+                } else {
+                    res.status(200).send(result);
+                    return;
+                }
+            });
+        }
+
+    });
+});
+
+router.post('/', admin.contributor, (req, res) => {
     
     const movieObj = req.body;
     console.log(movieObj);
@@ -67,6 +114,10 @@ router.post('/', (req, res) => {
             Genre: movieObj.movie.genre,
             Year: movieObj.movie.year,
             averageRating: movieObj.movie.rating,
+            Director: movieObj.movie.director,
+            Writer: movieObj.movie.writer,
+            Actors: movieObj.movie.actors,
+            Poster: movieObj.movie.poster
 
         });
 
@@ -118,19 +169,53 @@ router.put('/:movie/review', (req, res) => {
 
             } else {
                 
+                const savedReview = result;
                 const update = {movieReviews: result};
 
-                Movie.findByIdAndUpdate(movieId, { $push: update}, function(err, result) {
+                Movie.findByIdAndUpdate(movieId, { $push: update}, {new: true}, function(err, result) {
                     if (err){
                         throw err; 
         
                     } else {        
-                        res.status(200).json(result);
-                        return;
-        
+
+                        const movieObj = result;
+                        let average = movieObj.averageRating;
+                        let numReviews = movieObj.movieReviews.length;
+                        let update = {};
+                        if (numReviews === 0) {
+
+                            update = {averageRating: newReview.rating};
+                        
+                        } else {
+                            
+                            let newAverage = ((average * numReviews) + newReview.rating)/(numReviews+1);
+                            update = {averageRating: newAverage};
+                        }
+                        Movie.findByIdAndUpdate(movieId, {$set: update}, function(err, result) {
+                            
+                            if (err) {
+                                throw err; 
+                            } else {
+
+                                const update = {reviews: savedReview._id}
+                                User.findByIdAndUpdate(req.session.user._id, {$push: update}, function(err, result) {
+                                    
+                                    if (err) {  
+                                        throw err; 
+                                    
+                                    } else {
+                                       
+                                        res.status(200).json(movieObj);
+                                        return;
+                                    }
+
+                                });
+
+                            }
+
+                        });
                     }
                 });
-
             }
         });
 
@@ -174,32 +259,92 @@ router.get('/:movie/review', (req, res) => {
 
 });
 
+router.get('/:movie/people', (req, res) => {
 
+    const movieId = req.params.movie;
 
+    Movie.findById(movieId, function(err, result) {
+        if (err) {
+            throw err;
+        } else {
+            let movie = result;
+            
+            let peopleId = [];
 
-router.put('/:id', putMovie); 
+            for (director of movie.Director) {
+                peopleId.push(director);
+            }
 
-function putMovie (req,res){
-    
-    let flag =0;
-    let movieId = req.params.id; //store id
-    let movieObj = movies.getMovieWithId(movieId); //movie obj with the id
-    const movieForm = req.body; //obj
-    //let movie =JSON.stringify(movieForm);
-    let i =0;
-    movies.forEach(movieJS=>{
-        if(movieJS.imdbID==movieId){
-            movies[i]=movieForm;
-            flag =1;
-            res.status(200).json(movies[i]);
-            //fs.writeFileSync("../../db/movie-data.json",movie);
+            for (writer of movie.Writer) {
+                peopleId.push(writer);
+            }
+
+            for (actor of movie.Actors) {
+                peopleId.push(actor);
+            }
+            let searchObj = {}
+            searchObj._id = {$in: peopleId};
+
+                peopleModel.find(searchObj, function(err, result){
+                    if (err) {
+                        res.status(200).send("People not found with movie");
+                        return;
+                    } else {
+                        res.status(200).send(result);
+                        return;
+                    }
+                });
         }
-        i++
-    
     });
-    if(flag ===0){
-        res.sendStatus(400);
-    }
-}
+
+});
+
+
+router.put("/:movie", (req, res) => {
+
+    const movieId = req.params.movie;
+    const name = req.query.name;
+    
+    let update = {pastWorks: movieId};
+
+    peopleModel.findOneAndUpdate({Name: name}, {$push: update} , function(err, result) {
+        
+        if (err) {
+            throw err; 
+        } else {
+
+            if (result === null) {
+                res.status(400).send("Person not found")
+                return;
+
+            } else {
+                console.log(result);
+                const personRole = result.Role;
+                let update = {};
+
+                if (personRole === "Actor") {
+                    update = {Actors: result._id};
+                } else if (personRole === "Director") {
+                    update = {Director: result._id};
+                } else if (personRole === "Writer") {
+                    update = {Writer: result._id};
+                }
+
+                Movie.findByIdAndUpdate(movieId, {$push: update}, function(err, result){
+
+                    if (err) {
+                        throw err;
+                    } else {
+                        res.status(200).send(result);
+                        return; 
+                    }
+
+                });
+            }
+        }
+
+    });
+
+});
 
 module.exports = router;

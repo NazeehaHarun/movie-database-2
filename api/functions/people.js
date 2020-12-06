@@ -14,72 +14,13 @@ const createPeople = (personObj) => {
         return null;
     }
 
-    let newPerson = null;
-    
-    //Ensure person does not already exist
-    for (person of peopleDB) {
-        
-        if (person.Name == personObj.name) {
-            newPerson = person;
-        }
-    }
-
-    if (newPerson !== null) {
-        return null;
-    }
-
-
-        
-    newPerson = {
+    let newPerson = {
         
         Role:personObj.role,
-        Name: personObj.name.toLowerCase(),
-        Description:personObj.description,
-        id:personObj.id,
-        C1:personObj.c1,
-        C2:personObj.c2,
-        C3:personObj.c3,
-        C4:personObj.c4,
-        C5:personObj.c5,
-        C6:personObj.c6,
-        Profile:personObj.profile,
-        M1:personObj.m1,
-        M2:personObj.m2,
-        M3:personObj.m3,
-        //The left side has to match the schema
-        //the right side has to match client (left side in add people)
-        /*
-        name:  personObj.name,
-        pastWorks:  personObj.pastWorks,
-        roles: "Actor",
-        */
+        Name: personObj.name,
+        Image: personObj.image,
+        pastWorks: personObj.pastWorks
     }
-    /*
-    newPerson = {
-        id: uuidv4(),
-        role:"Actor",
-        name: personObj.name,
-        description:personObj.description,
-        c1:personObj.c1,
-        c2:personObj.c2,
-        c3:personObj.c3,
-        c4:personObj.c4,
-        c5:personObj.c5,
-        c6:personObj.c6,
-        profile:personObj.profile,
-        m1:personObj.m1,
-        m2:personObj.m2,
-        m3:personObj.m3,
-        
-        /*
-        name:  personObj.name,
-        pastWorks:  personObj.pastWorks,
-        roles: "Actor",
-        */
-    //}
-    
-
-  
 
     return newPerson; 
 
@@ -87,30 +28,15 @@ const createPeople = (personObj) => {
 
 const people = (searchParameters) => {
    
-    
-    let peopleList = [];
+    let userParams = {};
 
-    //If no parameters were supplied --> Return all the movies
-    if (!searchParameters.name) {
-        peopleDB.forEach(person => {
-            peopleList.push(person);
-        });
-
-        return peopleList;
+    //If no parameters were supplied --> Return all the users
+    if (searchParameters.name) {
+        userParams.Name = searchParameters.name;
     }
 
-    peopleDB.forEach(person => {
+    return userParams;
 
-        if (searchParameters.name !== undefined) {
-            if (JSON.stringify(person.Name).toLowerCase() === JSON.stringify(searchParameters.name).toLowerCase()) {
-                peopleList.push(person); 
-            }
-          
-        } 
-
-    });
-
-    return peopleList;
 };
 
 const peopleWithId = (peopleId) => {

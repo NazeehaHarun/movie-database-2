@@ -10,8 +10,11 @@ function auth(req, res, next) {
 }
 
 function contributor(req, res, next) {
-    res.status(200).send("Contributor");
-    return; 
+    if (!req.session.user.Type === "Contributing") {
+        res.status(401).send("Unauthorized. Contributing access required");
+        return;
+    }
+    next();
 }
 
 module.exports = {

@@ -11,9 +11,12 @@ import picture17 from './sea.jpg';
 import {Button} from 'react-bootstrap'
 import FollowButton from '../../components/FollowButton/FollowButton';
 import axios from 'axios';
+import Card from 'react-bootstrap/Card';
+import NavigateButton from "../../components/NavigateButton/NavigateButton";
+
 
 const Actor = ({match}) => {
-    const {params: {name}} = match;
+    const {params: {actorId}} = match;
 
     const initialState = ({ 
         Role: "Actor", 
@@ -26,10 +29,13 @@ const Actor = ({match}) => {
         C4:"Justin Russo",
         C5:"Robert Downey, Jr",
         C6:"Chris Evans",
-        Profile:"https://www.refinery29.com/images/8981298.jpg",
+        Image:"https://www.refinery29.com/images/8981298.jpg",
         M1:"https://m.media-amazon.com/images/M/MV5BOGQ5YTM3YzctOTVmMC00OGIyLWFkZTYtMWYwOWZhMjA2MWMwXkEyXkFqcGdeQXVyMjUyMTE5MA@@._V1_.jpg",
         M2:"https://cdn.collider.com/wp-content/uploads/2019/03/spider-man-far-from-home-poster-london.jpg",
-        M3:"https://i.insider.com/5ca3d2b892c8866e8b4618d9?width=750&format=jpeg&auto=webp"
+        M3:"https://i.insider.com/5ca3d2b892c8866e8b4618d9?width=750&format=jpeg&auto=webp",
+        pastWorks: [],
+        collaborators: [],
+
 
      
     });
@@ -37,31 +43,73 @@ const Actor = ({match}) => {
     const [data, setData] = useState(initialState);
     
     useEffect(() => {
-        axios.get(`/people?name=${name}`)
+        axios.get(`/people/${actorId}`)
           .then((response) => {
             const peopleObj = response.data.result;
-            setData({Role: peopleObj.Role, 
-              Name: peopleObj.Name,
-              id: peopleObj.id,
-              Description: peopleObj.Description,
-              C1: peopleObj.C1,
-              C2: peopleObj.C2,
-              C3: peopleObj.C3,
-              C4: peopleObj.C4,
-              C5: peopleObj.C5,
-              C6: peopleObj.C6,
-              Profile:peopleObj.Profile,
-              M1: peopleObj.M1,
-              M2: peopleObj.M2,
-              M3: peopleObj.M3
+
+            axios.get(`/people/${actorId}/movies`)
+            .then(response => {
+
+                const pastMovies = response.data;
+
+                setData({Role: peopleObj.Role, 
+                    Name: peopleObj.Name,
+                    pastWorks: pastMovies,
+                    Image: peopleObj.Image, 
+                    collaborators: peopleObj.collaborators
+                  });
+            })
+            .catch(error => {
+                console.log(error);
             });
-            console.log(response.data.result);
           })
           .catch((error) => {
             console.log(error)
           });
-      }, [name]);
+      }, [actorId]);
 
+
+
+      let displayMovies = [];
+
+      data.pastWorks.forEach(movie => {
+          displayMovies.push(
+              <Card style={{ width: '18rem' }}>
+              <Card.Img variant="top" src= {movie.Poster} />
+              <Card.Body>
+               <Card.Title>{movie.Name}</Card.Title>   
+               <NavigateButton text = "Visit Movie" route = {`/viewActorPage/${movie._id}`}/>
+               </Card.Body>
+              </Card>
+          );
+  
+      });
+
+      let displayCollaborators = [];
+
+      data.collaborators.forEach(collaborator => {
+        let route = "";
+        if (collaborator.Type === "Actor") {
+            route = "viewActorPage";
+        }
+        else if (collaborator.Type === "Director") {
+            route = "viewDirectorPage";
+        }
+        else if (collaborator.Type === "Writer") {
+            route = "viewWriterType";
+        }
+
+        displayCollaborators.push(
+            <Card style={{ width: '18rem' }}>
+            <Card.Body>
+             <Card.Title>{collaborator.Name}</Card.Title>   
+             <NavigateButton text = "Visit Collaborator" route = {`/${route}/${collaborator._id}`}/>
+             </Card.Body>
+            </Card>
+          );
+  
+      });
+  
       
     return (
         <div className ="main-sec1">
@@ -71,12 +119,12 @@ const Actor = ({match}) => {
                     <div className="intro-wrapper1">
                         <div className ="left1">
                         
-                            <img id ="p11" src ={data.Profile} alt="Actor's image" />;
+                            <img id ="p11" src ={data.Image} alt="Actor's image" />;
                             
                             <div className="info1">
                                 <p className = "p">Name: {data.Name}</p>
                                 <p className = "p">Role: {data.Role}</p>
-                                <p className = "p">ID: {data.id}</p>
+                                
                             
                             </div>
                         </div>
@@ -85,7 +133,7 @@ const Actor = ({match}) => {
                             <h1 className = "h1">{data.Name}</h1>
                             <div id="about1">
                             
-                                <p className = "p"> {data.Description}</p>
+                               
                                 
                                 <h4 className = "h4">Frequent collaborators</h4>
                                 <ul className = "ul">
@@ -98,28 +146,14 @@ const Actor = ({match}) => {
                                 </ul>
 
                             </div>
-                            <FollowButton size = "lg" name = {data.name}/>
+                            <FollowButton size="lg" name={data.name} peopleId = {actorId} />
                 
                             </div>
         
                         </div>
                         <h3 className = "h3">Known For</h3>
                         <div className="movies1">
-                            <div>
-                                <div className="post1">
-                                    <img id ="p12" src ={data.M1} alt="moviePoster" />;
-                                </div>
-                            </div>
-                            <div>
-                                <div className="post1">
-                                    <img id ="p13" src ={data.M2} alt="moviePoster" />;
-                                </div>
-                            </div>
-                            <div>
-                                <div className="post1">
-                                    <img id ="p14" src ={data.M3} alt="moviePoster" />;
-                                </div>
-                            </div>
+                            {displayMovies}
                          
                     </div>
                 

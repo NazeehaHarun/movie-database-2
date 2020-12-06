@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Container, Row, Col, Button, Toast } from "react-bootstrap";
 import axios from "axios";
 
-const FollowButton = (props) => {
+const UnfollowButton = (props) => {
     const [followNotification, setFollowNotification] = useState(false);
 
     const toggleFollowNotification = () => {
@@ -13,7 +13,7 @@ const FollowButton = (props) => {
         event.preventDefault();
 
         if (!props.peopleId === null) {
-            axios.post(`/people/${props.peopleId}/follow`).then(response => {
+            axios.delete(`/people/${props.peopleId}/follow`).then(response => {
                 console.log(response);
             })
             .catch(err => {
@@ -21,7 +21,7 @@ const FollowButton = (props) => {
             });
 
         } else {
-            axios.put(`/users/${props.userId}/follow`).then(response => {
+            axios.delete(`/users/${props.userId}/follow`).then(response => {
                 console.log(response);
             })
             .catch(err => {
@@ -36,7 +36,7 @@ const FollowButton = (props) => {
             <Container>
                 <Row >
                     <Col>
-                        <Button size = {props.size} onClick = {handleChange}>Follow</Button>
+                        <Button size = {props.size} onClick = {handleChange}>Un-Follow</Button>
                     </Col>
 
                     <Col>
@@ -52,4 +52,4 @@ const FollowButton = (props) => {
     );
 };
 
-export default FollowButton; 
+export default UnfollowButton; 

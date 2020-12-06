@@ -35,29 +35,14 @@ const followUser = (user, userToFollow) => {
 
 const user = (searchParameters) => {
     
-    let userList = [];
+    let userParams = {};
 
     //If no parameters were supplied --> Return all the users
-    if (!searchParameters.name) {
-        users.forEach(person => {
-            userList.push(person);
-        });
-
-        return userList;
+    if (searchParameters.name) {
+        userParams.userName = searchParameters.name;
     }
 
-    users.forEach(person => {
-
-        if (searchParameters.name !== undefined) {
-            if (JSON.stringify(person.userName).toLowerCase() === JSON.stringify(searchParameters.name).toLowerCase()) {
-                userList.push(person); 
-            }
-          
-        } 
-
-    });
-
-    return userList;
+    return userParams;
 };
 
 const userWithId = (userId) => {
@@ -71,15 +56,14 @@ const userWithId = (userId) => {
 }
 
 const changeUserType = (user) => {
-
+    
     if (user.Type === "Regular") {
-        user.Type = "Contributing";
-    } else {
-        user.Type = "Regular";
+        return "Contributing";
+
+    } else if (user.Type === "Contributing") {
+        return "Regular";
+
     }
-
-    return user;
-
 }
 
 

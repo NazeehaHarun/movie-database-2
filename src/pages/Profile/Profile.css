@@ -126,6 +126,15 @@
     
 }
 
+.following{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 500px);
+    grid-area: 5px;
+    justify-content:center;
+    padding-bottom: 30px;
+    padding-top:30px;
+    background-color: rgb(178, 169, 236)
+}
 
 
 
