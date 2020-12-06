@@ -16,10 +16,16 @@ import {
   FormControl,
   Button,
   ButtonGroup,
+  Card
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import {Link} from "react-router-dom";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
+import NavigateButton from "../../components/NavigateButton/NavigateButton";
+import UnfollowButton from "../../components/UnfollowButton/UnfollowButton";
 
 const Profile = ({ match }) => {
 
@@ -98,29 +104,42 @@ const Profile = ({ match }) => {
 
         const userObj = response.data; 
         
-        setData({
-          name: userObj.userName,
-          type: userObj.Type,
-          recommendedMovies: userObj.recommendedMovies,
-          followingUsers: userObj.followingUsers,
-          followingCelebrites: userObj.followingPeople,
-          recentMovies: [
-            {
-              Title: "Violet Evergarden",
-              Poster: "https://i.redd.it/mh0czsfbgu641.jpg",
-            },
-            {
-              Title: "Demon Slayer",
-              Poster:
-                "https://upload.wikimedia.org/wikipedia/en/2/21/Kimetsu_no_Yaiba_Mugen_Ressha_Hen_Poster.jpg",
-            },
-            {
-              Title: "All My Life",
-              Poster:
-                "https://media2.firstshowing.net/firstshowing/img11/AllmyLifeOfficialPosterimagebig5990.jpg",
-            },
-          ],
+        axios.get(`/users/${userId}/movies`)
+        .then(response => {
+          let userMovies = response.data; 
+
+          setData({
+            name: userObj.userName,
+            type: userObj.Type,
+            recommendedMovies: userObj.recommendedMovies,
+            followingUsers: userObj.followingUsersList,
+            followingCelebrites: userObj.followingPeopleList,
+            recommendedMovies: userMovies,
+            recentMovies: [
+              {
+                Title: "Violet Evergarden",
+                Poster: "https://i.redd.it/mh0czsfbgu641.jpg",
+              },
+              {
+                Title: "Demon Slayer",
+                Poster:
+                  "https://upload.wikimedia.org/wikipedia/en/2/21/Kimetsu_no_Yaiba_Mugen_Ressha_Hen_Poster.jpg",
+              },
+              {
+                Title: "All My Life",
+                Poster:
+                  "https://media2.firstshowing.net/firstshowing/img11/AllmyLifeOfficialPosterimagebig5990.jpg",
+              },
+            ],
+          });
+
+
+
+        }).catch(error => {
+          console.log(error);
         });
+
+        
       })
       .catch((err) => {
         console.log(err);
@@ -137,17 +156,23 @@ const Profile = ({ match }) => {
       console.log(err);
     })
   }
-
-
-  console.log(data.name);
   let userRecommendedMovies = [];
-/*
+
   data.recommendedMovies.forEach((movie) => {
     userRecommendedMovies.push(
-      <img id="p1" src={movie.Poster} alt="moviePoster" />
+      <Card style={{ width: '18rem' }}>
+          <Card.Img variant="top" src= {movie.Poster} />
+              <Card.Body>
+                 <Card.Title>{movie.Title}</Card.Title>   
+                 <Card.Text>Genre: {movie.Genre}</Card.Text>
+                  <Card.Text>Release Year: {movie.Year}</Card.Text>
+                  <Card.Text>Average rating: {movie.minrating}</Card.Text>
+                 <NavigateButton text = "Visit Movie" route = {`/viewmovies/${movie._id}`}/>
+            </Card.Body>
+      </Card>
     );
   });
-*/
+
   let userRecentMovies = [];
   
   data.recentMovies.forEach((movie) => {
@@ -155,17 +180,47 @@ const Profile = ({ match }) => {
   });
 
   let userFollowingUsers = [];
-/*
+
   data.followingUsers.forEach(user => {
-    userFollowingUsers.push(<NavDropdown.Item href="#">{user}</NavDropdown.Item>)
+    userFollowingUsers.push(
+      <Card style={{ width: '18rem' }}>
+        <Card.Body>
+          <Card.Title>{user.userName}</Card.Title>
+          
+          <NavigateButton route = {`/viewOtherProfiles/${user._id}`} text = "Visit"/>
+          <UnfollowButton size="md" name={user.userName} userId = {user._id} />
+        </Card.Body>
+    </Card>
+    )
   });
-*/
+  
   let userFollowingPeople = [];
-/*
+  
   data.followingCelebrites.forEach(person => {
-    userFollowingPeople.push(<NavDropdown.Item href="#">{person}</NavDropdown.Item>)
+    let viewRoute = "";
+    if (person.Role === "Director") {
+      viewRoute = "viewDirectorPage";
+    }
+    else if (person.Role === "Writer") {
+      viewRoute = "viewWriterPage";
+    }
+    else if (person.Role === "Actor") {
+      viewRoute = "viewActorPage";
+    }
+
+    userFollowingPeople.push(
+      <Card style={{ width: '18rem' }}>
+        <Card.Body>
+          <Card.Title>{person.Name}</Card.Title>
+          
+          <NavigateButton route = {`/${viewRoute}/${person._id}`} text = "Visit"/>
+          <UnfollowButton size="md" name={person.userName} personId = {person._id} />
+        </Card.Body>
+      </Card>
+
+     )
   })
-*/
+
 
   let contributorCheck = true; 
   let disableContributorAccess = true;
@@ -179,19 +234,7 @@ const Profile = ({ match }) => {
 
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="Drop">
-                <NavDropdown title="Users you follow" id="basic-nav-dropdown">
-                  {userFollowingUsers}
-                </NavDropdown>
-              </Nav>
-              <Nav className="Drop2">
-                <NavDropdown
-                  title="Celebrities you follow"
-                  id="basic-nav-dropdown"
-                >
-                  {userFollowingPeople}
-                  </NavDropdown>
-              </Nav>
+             
 
               <Nav className="Drop3">
                 <NavDropdown title="Notifications" id="basic-nav-dropdown">
@@ -330,6 +373,18 @@ const Profile = ({ match }) => {
           </div>
         </div>
       </div>
+
+      <Row className = "following">
+        <Col className = "post">
+        {userFollowingUsers}
+        </Col>
+
+        <Col>
+        {userFollowingPeople}
+        </Col>
+      </Row>
+
+
     </div>
   );
 };

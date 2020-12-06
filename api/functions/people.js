@@ -13,33 +13,14 @@ const createPeople = (personObj) => {
     if (personObj === null) {
         return null;
     }
-        
+
     let newPerson = {
         
         Role:personObj.role,
-        Name: personObj.name.toLowerCase(),
-        Description:personObj.description,
-        C1:personObj.c1,
-        C2:personObj.c2,
-        C3:personObj.c3,
-        C4:personObj.c4,
-        C5:personObj.c5,
-        C6:personObj.c6,
-        Profile:personObj.profile,
-        M1:personObj.m1,
-        M2:personObj.m2,
-        M3:personObj.m3,
-        //The left side has to match the schema
-        //the right side has to match client (left side in add people)
-        /*
-        name:  personObj.name,
-        pastWorks:  personObj.pastWorks,
-        roles: "Actor",
-        */
+        Name: personObj.name,
+        Image: personObj.image,
+        pastWorks: personObj.pastWorks
     }
-  
-
-  
 
     return newPerson; 
 
@@ -47,30 +28,15 @@ const createPeople = (personObj) => {
 
 const people = (searchParameters) => {
    
-    
-    let peopleList = [];
+    let userParams = {};
 
-    //If no parameters were supplied --> Return all the movies
-    if (!searchParameters.name) {
-        peopleDB.forEach(person => {
-            peopleList.push(person);
-        });
-
-        return peopleList;
+    //If no parameters were supplied --> Return all the users
+    if (searchParameters.name) {
+        userParams.Name = searchParameters.name;
     }
 
-    peopleDB.forEach(person => {
+    return userParams;
 
-        if (searchParameters.name !== undefined) {
-            if (JSON.stringify(person.Name).toLowerCase() === JSON.stringify(searchParameters.name).toLowerCase()) {
-                peopleList.push(person); 
-            }
-          
-        } 
-
-    });
-
-    return peopleList;
 };
 
 const peopleWithId = (peopleId) => {

@@ -57,10 +57,6 @@ const Header = () => {
           </Nav>
 
           <Nav className="Drop">
-            <Nav.Link href="/viewAddMovieForm">Add Movie</Nav.Link>
-          </Nav>
-
-          <Nav className="Drop">
             <Nav.Link href="/viewUserProfile">View Profile</Nav.Link>
           </Nav>
           <Nav className="Drop">

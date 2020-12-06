@@ -61,7 +61,7 @@ const SearchMovie = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
+        console.log(data);
         axios.get(`/movies?title=${data.title}&genre=${data.genre}&year=${data.year}&minrating=${data.minrating}`)
         .then((response => {
             

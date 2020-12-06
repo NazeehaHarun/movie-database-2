@@ -9,6 +9,7 @@ const AddMovie = () => {
         title: "",
         genre: "",
         year: "",
+        score: "",
         director: "",
         writer: "",
         actor: "",
@@ -20,36 +21,50 @@ const AddMovie = () => {
     };  
 
     const handleSubmit = (event) => {
-        
+        event.preventDefault();
+
         let person = {
-            role: "Director",
-            name: data.director,
+
+            person: {
+                role: "Director",
+                name: data.director,
+            }
+            
         }
 
         let createDirector = axios.post(`/people`, person);
 
         person = {
-            role: "Writer",
-            name: data.writer,
+            person: {
+                role: "Writer",
+                name: data.writer,
+                m1: data.title,
+            }
         }
 
         let createWriter = axios.post(`/people`, person);
 
         person = {
-            role: "Actor",
-            name: data.actor,
+            person: {
+                role: "Actor",
+                name: data.actor,
+                m1: data.title,
+            }
         }
 
         let createActor = axios.post(`/people`, person);
 
         let movie = {
-            title: data.title,
-            genre: data.genre,
-            year: data.year,
-            poster: data.poster
+            movie: {
+                title: data.title,
+                genre: data.genre,
+                year: data.year,
+                poster: data.poster,
+                averageRating: data.score,
+                m1: data.title,
+            }
+            
         }
-
-        //let formRequest = axios.post(`/movies`, movie); 
         
         axios.all([createDirector, createWriter, createActor]).then(axios.spread((...responses) => {
             const responseOne = responses[0]
@@ -60,7 +75,22 @@ const AddMovie = () => {
             console.log(responseTwo);
             console.log(responseThree);
 
-            //const responesFour = responses[3]
+            let director = responseOne.data._id;
+            let writer = responseOne.data._id;
+            let actors = responseOne.data._id;
+
+            movie.movie.director = director;
+            movie.movie.writer = writer;
+            movie.movie.actors = actors;
+
+            axios.post(`/movies`, movie)
+            .then(response => {
+                console.log(response);
+
+            })
+            .catch(err =>{ 
+                console.log(err);
+            })
 
             // use/access the results 
           })).catch(errors => {
@@ -77,19 +107,21 @@ const AddMovie = () => {
             <Form onSubmit = {handleSubmit}>
                 <Form.Group>
                     <div className="movie">
-                        <Form.Control id = "title" size ="lg" type="text" placeholder="Title of the movie" onChange = {handleChange}/> 
+                        <Form.Control name = "title" size ="lg" type="text" placeholder="Title of the movie" onChange = {handleChange}/> 
                         <br />
-                        <Form.Control id = "genre" size ="lg" type="text" placeholder="Genre of the movie"onChange = {handleChange}/>
+                        <Form.Control name = "genre" size ="lg" type="text" placeholder="Genre of the movie"onChange = {handleChange}/>
                         <br />
-                        <Form.Control id = "year" size ="lg" type="text" placeholder="Release year" onChange = {handleChange}/>
+                        <Form.Control name = "year" size ="lg" type="text" placeholder="Release year" onChange = {handleChange}/>
                         <br />
-                        <Form.Control id = "director" size ="lg" type="text" placeholder="Director" onChange = {handleChange}/>
+                        <Form.Control name = "score" size ="lg" type="text" placeholder="Score" onChange = {handleChange}/>
                         <br />
-                        <Form.Control id = "writer" size ="lg" type="text" placeholder="Writer" onChange = {handleChange}/>
+                        <Form.Control name = "director" size ="lg" type="text" placeholder="Director" onChange = {handleChange}/>
                         <br />
-                        <Form.Control id = "actor" size ="lg" type="text" placeholder="Actor" onChange = {handleChange}/>
+                        <Form.Control name = "writer" size ="lg" type="text" placeholder="Writer" onChange = {handleChange}/>
                         <br />
-                        <Form.Control id = "poster" size ="lg" type="text" placeholder="Poster Link" onChange = {handleChange}/>
+                        <Form.Control name = "actor" size ="lg" type="text" placeholder="Actor" onChange = {handleChange}/>
+                        <br />
+                        <Form.Control name = "poster" size ="lg" type="text" placeholder="Poster Link" onChange = {handleChange}/>
                         <br />
                        
                     </div>

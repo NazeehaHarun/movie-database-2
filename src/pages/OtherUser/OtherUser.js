@@ -38,7 +38,7 @@ const OtherUser = ({ match }) => {
         console.log(userData.reviewList);
         setData({
           name: userData.userName,
-          following: userData.followingUsersList,
+          following: userData.followingPeopleList,
           reviews: userData.reviewList
         })
       })
@@ -64,12 +64,21 @@ const OtherUser = ({ match }) => {
   });
 
   data.following.forEach(following => {
-
+    let viewRoute = "";
+    if (following.Role === "Director") {
+      viewRoute = "viewDirectorPage";
+    }
+    else if (following.Role === "Writer") {
+      viewRoute = "viewWriterPage";
+    }
+    else if (following.Role === "Actor") {
+      viewRoute = "viewActorPage";
+    }
     usersFollowing.push(
       <Card className="followingCard">
-      <Card.Title>{following.userName}</Card.Title>
-      <FollowButton size="sm" name={following.userName} userId = {following._id} />
-      <NavigateButton route = {`/viewOtherProfiles/${following._id}`} text = "Visit"/>
+      <Card.Title>{following.Name}</Card.Title>
+      <FollowButton size="sm" name={following.Name} userId = {following._id} />
+      <NavigateButton route = {`/${viewRoute}/${following._id}`} text = "Visit"/>
       </Card>
     );
 

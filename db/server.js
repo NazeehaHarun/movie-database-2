@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 //New session created - secret should be secret
-app.use(session ({secret: 'some session here', resave: true, saveUninitialized: true}));
+app.use(session ({secret: 'some session here', resave: true, saveUninitialized: true }));
 
 app.use(express.urlencoded({extended: true}));
 
@@ -54,6 +54,8 @@ mongoose.connection.once("open", function() {
     });
 
 });
+
+module.exports = app;
 
 
 

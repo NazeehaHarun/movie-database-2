@@ -16,6 +16,7 @@ const movieSchema = mongoose.Schema({
     averageRating: {
         type: Number,
         required: false,
+        default: 0
     },
     Runtime: {
         type: String,

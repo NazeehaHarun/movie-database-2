@@ -8,9 +8,8 @@ import pictureae from './endgame.png';
 import {Button} from 'react-bootstrap'
 import FollowButton from '../../components/FollowButton/FollowButton';
 import axios from 'axios';
-
-
-
+import Card from 'react-bootstrap/Card';
+import NavigateButton from "../../components/NavigateButton/NavigateButton";
 
 const Director = ({match}) => {
 
@@ -28,10 +27,12 @@ const Director = ({match}) => {
         C4:"Justin Russo",
         C5:"Robert Downey, Jr",
         C6:"Chris Evans",
-        Profile:"https://www.gstatic.com/tv/thumb/persons/303029/303029_v9_bb.jpg",
+        Image:"https://www.gstatic.com/tv/thumb/persons/303029/303029_v9_bb.jpg",
         M1:"https://upload.wikimedia.org/wikipedia/en/b/b7/The_Mummy_Returns_poster.jpg",
         M2:"https://resizing.flixster.com/Zdh9vCOYKFwrrzMCxRFmJZ1lHJE=/206x305/v2/https://flxt.tmsimg.com/assets/p19239_p_v8_ab.jpg",
-        M3:"https://upload.wikimedia.org/wikipedia/en/b/b6/Jumanji_poster.jpg"
+        M3:"https://upload.wikimedia.org/wikipedia/en/b/b6/Jumanji_poster.jpg",
+        pastWorks: [],
+        collaborators: [],
 
      
     });
@@ -40,36 +41,70 @@ const Director = ({match}) => {
     
     useEffect(() => {
         axios.get(`/people/${directorId}`)
-          .then((response) => {
-            const peopleObj = response.data.result;
-            setData({Role: peopleObj.Role, 
-              Name: peopleObj.Name,
-              //id: peopleObj.id,
-              Description: peopleObj.Description,
-              C1: peopleObj.C1,
-              C2: peopleObj.C2,
-              C3: peopleObj.C3,
-              C4: peopleObj.C4,
-              C5: peopleObj.C5,
-              C6: peopleObj.C6,
-              Profile:peopleObj.Profile,
-              M1: peopleObj.M1,
-              M2: peopleObj.M2,
-              M3: peopleObj.M3
-            });
-            console.log(response.data.result);
-          })
-          .catch((error) => {
-            console.log(error)
-          });
-      }, [directorId]);
+        .then((response) => {
+          const peopleObj = response.data.result;
 
-    /*
-    const [data, setData] = useState({
-        name: "Joe Russo"
-    })
-    */
-    
+          axios.get(`/people/${directorId}/movies`)
+          .then(response => {
+
+              const pastMovies = response.data;
+
+              setData({Role: peopleObj.Role, 
+                  Name: peopleObj.Name,
+                  pastWorks: pastMovies,
+                  Image: peopleObj.Image, 
+                });
+          })
+          .catch(error => {
+              console.log(error);
+          });
+        })
+        .catch((error) => {
+          console.log(error)
+        });
+    }, [directorId]);
+
+
+
+    let displayMovies = [];
+
+    data.pastWorks.forEach(movie => {
+        displayMovies.push(
+            <Card style={{ width: '18rem' }}>
+            <Card.Img variant="top" src= {movie.Poster} />
+            <Card.Body>
+             <Card.Title>{movie.Name}</Card.Title>   
+             <NavigateButton text = "Visit Movie" route = {`/viewActorPage/${movie._id}`}/>
+             </Card.Body>
+            </Card>
+        );
+
+    });
+
+    let displayCollaborators = [];
+
+    data.collaborators.forEach(collaborator => {
+      let route = "";
+      if (collaborator.Type === "Actor") {
+          route = "viewActorPage";
+      }
+      else if (collaborator.Type === "Director") {
+          route = "viewDirectorPage";
+      }
+      else if (collaborator.Type === "Writer") {
+          route = "viewWriterType";
+      }
+
+      displayCollaborators.push(
+          <Card style={{ width: '18rem' }}>
+          <Card.Body>
+           <Card.Title>{collaborator.Name}</Card.Title>   
+           <NavigateButton text = "Visit Collaborator" route = {`/${route}/${collaborator._id}`}/>
+           </Card.Body>
+          </Card>
+        );
+
+    });
 
     return (
         <div className ="main-sec2">
@@ -79,12 +114,11 @@ const Director = ({match}) => {
                     <div className="intro-wrapper2">
                         <div className ="left2">
                         
-                            <img id ="paa" src ={data.Profile} alt="Joe Russo" />;
+                            <img id ="paa" src ={data.Image} alt="Joe Russo" />;
                             
                             <div className="info2">
                                 <p className = "p">Name: {data.Name}</p>
                                 <p className = "p">Role: {data.Role}</p>
-                                <p className = "p">ID: {data.id}</p>
                             </div>
                         </div>
 
@@ -114,24 +148,7 @@ const Director = ({match}) => {
                         
                     </div>
                     <h3 className = "h3">Known For</h3>
-                        <div className="movies2">
-                            <div>
-                                <div className="post2">
-                                    <img id ="pab" src ={data.M1} alt="moviePoster" />;
-                                </div>
-                            </div>
-                            <div>
-                                <div className="post2">
-                                    <img id ="pac" src ={data.M2} alt="moviePoster" />;
-                                </div>
-                            </div>
-                            <div>
-                                <div className="post2">
-                                    <img id ="pad" src ={data.M3} alt="moviePoster" />;
-                                </div>
-                            </div>
-                          
-                        </div>
+                    {displayMovies}
                     </div>
             
         </div>

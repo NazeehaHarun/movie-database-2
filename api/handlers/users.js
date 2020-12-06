@@ -10,9 +10,9 @@ const movies = require("../../db/movie-data.json");
 const User = require("../../db/schema/userSchema");
 const Review = require("../../db/schema/reviewSchema");
 const peopleModel = require("../../db/schema/schemaPeople");
+const Movie = require("../../db/schema/movieSchema");
 
 const admin = require("../functions/auth");
-const reviewSchema = require("../../db/schema/reviewSchema");
 
 router.post("/", (req, res) => {
     
@@ -86,12 +86,42 @@ router.put("/:id/follow", admin.auth, (req, res) => {
 
 });
 
+
+router.delete("/:id/follow", admin.auth, (req, res) => {
+    
+    const userObject = req.session.user;
+    const userToFollowObjectId = req.params.id;
+    
+    let newFollowingUpdate = {followingUsers: userToFollowObjectId};
+   
+    User.findByIdAndUpdate(userObject._id, {$pull: newFollowingUpdate}, function(err, result) {
+        if (err) {
+            throw err;
+        } else {
+            
+            const update = {followers: userObject._id}
+
+            User.findByIdAndUpdate(userToFollowObjectId, {$pull: update}, function(err, result) {
+                if (err) {
+                    throw err;
+                } else {
+                    
+                    res.status(200).send(result);
+                    return;
+                }
+            });
+        }
+
+    });
+
+});
+
 router.get('/', admin.auth, (req, res) => {
 
     const name = req.query.name;
-    const searchedUser = users.user({name});
-
-    User.findOne({userName: name}, function(err, result) {
+    const queryObject = users.user({name});
+    console.log(queryObject);
+    User.find(queryObject, function(err, result) {
 
         if (err) {
             throw err; 
@@ -155,8 +185,46 @@ router.get('/:user', admin.auth, (req, res) => {
             });
         }
     })
+});
 
-    
+router.get('/:user/movies', admin.auth, (req, res) => {
+    const user = req.params.user;
+
+    User.findById(user, function(err,result){
+        if (err){
+           throw err; 
+        } else {
+            let userReviews = result.reviews; 
+            
+            //Find all Reviews made by this user
+            Review.find({"_id": { $in: userReviews}}, function(err, result) {
+                if (err) {
+                    throw err;
+                    
+                } else {
+                    
+                    const reviews = result;
+                    let movieIds = [];
+
+                    for (review of reviews) {
+                        movieIds.push(review.movie);
+                    }
+                    
+                    let searchObj = {};
+                    searchObj._id = {$in: movieIds};
+
+                    Movie.find(searchObj, function(err, result){
+                        if (err) {
+                            throw err; 
+                        } else {
+                            res.status(200).send(result);
+                            return; 
+                        }
+                    });
+                }
+            });
+        }
+    })
 })
 
 router.put('/status', admin.auth, (req, res) => {
