@@ -21,19 +21,6 @@ class Register extends React.Component{
     }
     
   }
-  handleFirstNameChange=(event)=>{
-    this.setState({
-      FirstName:event.target.value
-    })
-    
-  }
-
-  handleLastNameChange=(event)=>{
-    this.setState({
-      LastName:event.target.value
-    })
-    
-  }
 
   handleusernameChange=(event)=>{
     this.setState({
@@ -43,17 +30,16 @@ class Register extends React.Component{
   }
 
 
-
-  handleemailChange=(event)=>{
+  handlepasswordChange=(event)=>{
     this.setState({
-      email:event.target.value
+      password:event.target.value
     })
     
   }
 
-  handlepasswordChange=(event)=>{
+  handleuserTypeChange=(event)=>{
     this.setState({
-      password:event.target.value
+      userType:event.target.value
     })
     
   }
@@ -71,10 +57,7 @@ class Register extends React.Component{
     
 
     const formData = {
-      firstName: this.state.FirstName,
-      lastName: this.state.LastName,
       username: this.state.username,
-      email: this.state.email,
       password: this.state.password,
       reconfirmPassword: this.state.reconfirm_password,
       returningUsername: this.state.returningusername,
@@ -84,9 +67,7 @@ class Register extends React.Component{
 
     //Register
     if (formData.returningUsername.length !== 0 && formData.returningPassword !== 0) {
-      this.setState({
-        success: true 
-      });
+      
       const user = {
         user: {
 
@@ -99,12 +80,15 @@ class Register extends React.Component{
 
       axios.post("/login", user)
       .then((response => {
-
+        this.setState({
+          success: true 
+        });
         console.log(response);
 
       }))
       .catch(err =>{
         console.log(err);
+        console.log(err.message);
       });
       
     } 
@@ -112,12 +96,18 @@ class Register extends React.Component{
     else {
 
       const user = {
-        user: formData
+        user: {
+          username: formData.username,
+          password: formData.password,
+          type: formData.userType
+        }
     }
 
     axios.post("/users", user)
       .then((response => {
-
+        this.setState({
+          success: true 
+        });
         console.log(response);
 
       }))
@@ -176,25 +166,16 @@ class Register extends React.Component{
           <h3>Create an account!</h3>
           
             <label className ="label1" htmlFor ="Fname">First Name</label>
-            <input type ="text" id="Fname" className="input1" placeholder="Enter your first name" name="Fname" value ={this.state.FirstName}onChange={this.handleFirstNameChange}/>
-          
-          
-            <label className ="label1" htmlFor ="Lname">Last Name</label>
-            <input type ="text" id="Lname" className="input1" placeholder="Enter your last name" name ="Lname" value ={this.state.LastName}onChange={this.handleLastNameChange}/>
-          
           
             <label className ="label1" htmlFor="user">Username</label>
             <input type ="text" id ="user" className ="input1" placeholder="Enter your username"value ={this.state.username}onChange={this.handleusernameChange}/>
           
-          
-            <label className ="label1" htmlFor="email"> Email Address</label>
-            <input type ="text" id ="email" className ="input1" placeholder="Enter your email address" name ="email" value ={this.state.email}onChange={this.handleemailChange}/>
-          
-          
             <label className ="label1" htmlFor="password">Password</label>
             <input type ="text" id ="password" className ="input1" placeholder="Enter your password" name="password" secureTextEntry ={true} value ={this.state.password}onChange={this.handlepasswordChange}/>
           
-          
+            <label className ="label1" htmlFor="password">User Type</label>
+            <input type ="text" className ="input1" placeholder="Enter your userType (Regular or Contributing)" name="userType" secureTextEntry ={true} value ={this.state.userType}onChange={this.handleuserTypeChange}/>
+
             <label className ="label1" htmlFor="reconfirm">Reconfirm Password</label>
             <input type ="text" id ="reconfirm" className ="input1" placeholder="Re-enter your password"  name="reconfirm"  value ={this.state.reconfirm_password}onChange={this.handlereconfirm_passwordChange}/>
             <div className= "reg">
