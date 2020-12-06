@@ -185,25 +185,29 @@ const MovieView = ({match}) => {
   });
 
   let poster = "";
+  
   let displaySimilarMovies = [];
+  console.log(data.similarMovies);
   data.similarMovies.forEach(movie => {
-    displaySimilarMovies.push(
-      <div>
-      <Card style={{ width: '18rem' }}>
-
-                    {movie.Poster !== undefined ? (
-                      <Card.Img variant="top" src= {movie.Poster} />
-                    ): null }
-                        <Card.Body>
-                            <Card.Title>{movie.Title}</Card.Title>   
-                            <Card.Text>Genre: {movie.Genre}</Card.Text>
-                            <Card.Text>Release Year: {movie.Year}</Card.Text>
-                            <Card.Text>Average rating: {movie.averageRating}</Card.Text>
-                            <NavigateButton text = "Visit Movie" route = {`/viewmovies/${movie._id}`}/>
-                    </Card.Body>
-            </Card>
-      </div>
-    );
+    if (movie !== undefined) {
+      displaySimilarMovies.push(
+        <div>
+        <Card style={{ width: '18rem' }}>
+  
+                      {movie.Poster !== undefined ? (
+                        <Card.Img variant="top" src= {movie.Poster} />
+                      ): null }
+                          <Card.Body>
+                              <Card.Title>{movie.Title}</Card.Title>   
+                              <Card.Text>Genre: {movie.Genre}</Card.Text>
+                              <Card.Text>Release Year: {movie.Year}</Card.Text>
+                              <Card.Text>Average rating: {movie.averageRating}</Card.Text>
+                              <NavigateButton text = "Visit Movie" route = {`/viewmovies/${movie._id}`}/>
+                      </Card.Body>
+              </Card>
+        </div>
+      );
+    }
   })
 
   let editMovieForm = [];
