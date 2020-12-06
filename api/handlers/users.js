@@ -18,40 +18,44 @@ router.post("/", (req, res) => {
     
     const userObject = req.body.user; 
     const createdUser = users.registerUser(userObject);
-
+    
     if (createdUser !== null) {
         
         //Checking unique usernames and ensuring user does not already exist in database
-        User.findOne({userName: createdUser.username})
+        User.findOne({userName: createdUser.userName})
         .then(data => {
 
             //User already exists in the database
+            console.log(data);
             if (data) {
+                
                 res.status(400).send("User already exists");
                 return;
-            }
+            } else {
 
-            //Salt and Hash Password
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(createdUser.password, salt, (err, hash) => {
-                    if (err) {
-                        throw err; 
-                    }  
-
-                    createdUser.password = hash;
-                    createdUser.save(function(err, result) {
-
+                //Salt and Hash Password
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(createdUser.password, salt, (err, hash) => {
                         if (err) {
-                           throw err; 
-                        }
-                        res.status(200).json({createdUser});
-                        return;
-                    
-                    });
-                })
-            });
+                            throw err; 
+                        }  
+
+                        createdUser.password = hash;
+                        createdUser.save(function(err, result) {
+
+                            if (err) {
+                            throw err; 
+                            }
+                            res.status(200).json({createdUser});
+                            return;
+                        
+                        });
+                    })
+                });
+            }
         });
     } else {
+        
         res.status(400).send("Invalid Input: Please enter all fields");
         return;
     }
@@ -124,7 +128,8 @@ router.get('/', admin.auth, (req, res) => {
     User.find(queryObject, function(err, result) {
 
         if (err) {
-            throw err; 
+            res.status(400).send("User not found");
+            return; 
         } else {
             res.status(200).json({result});
             return; 
